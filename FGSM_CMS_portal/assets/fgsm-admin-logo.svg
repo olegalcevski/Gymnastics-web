@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" role="img" aria-label="ФГСМ">
+  <rect width="320" height="80" rx="10" fill="#11111d"/>
+  <circle cx="44" cy="40" r="27" fill="none" stroke="#c9a84c" stroke-width="3"/>
+  <text x="44" y="45" text-anchor="middle" font-family="Georgia,serif" font-size="15" font-weight="700" fill="#c9a84c">ФГСМ</text>
+  <text x="84" y="34" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#fff">ФЕДЕРАЦИЈА НА ГИМНАСТИЧКИТЕ</text>
+  <text x="84" y="53" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.5" fill="#c9a84c">СПОРТОВИ НА МАКЕДОНИЈА</text>
+</svg>
