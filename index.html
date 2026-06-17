@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Федерација на гимнастичките спортови на Македонија — новости, натпревари, резултати, дисциплини, едукација и документи.">
+<title>ФГСМ — Федерација на гимнастичките спортови на Македонија</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   ФГСМ PORTAL — VISUAL DNA PRESERVED FROM THE ORIGINAL WEBSITE
+   Structure mirrors the Croatian federation portal in Macedonian.
+   ================================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Inter',sans-serif;color:#1c1c2e;background:#fff;overflow-x:hidden}
+body.locked{overflow:hidden}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+button,input,textarea{font:inherit}
+button{color:inherit}
+:root{
+  --red:#8b1a2b;
+  --red-2:#6e1220;
+  --red-3:#4d0c17;
+  --gold:#c9a84c;
+  --gold-2:#a8872c;
+  --cream:#f7f5f0;
+  --light:#f0edea;
+  --line:#e4dfd8;
+  --gray:#6b7280;
+  --dark:#1c1c2e;
+  --ink:#11111d;
+  --nav-h:78px;
+  --shadow:0 20px 60px rgba(20,18,28,.14);
+}
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:var(--light)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:10px}
+.container{width:min(92%,1240px);margin-inline:auto}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.section{padding:7.5rem 0}
+.section-label{font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.9rem}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4.4vw,3.55rem);line-height:1.04;font-weight:700;color:var(--dark)}
+.section-title.light{color:#fff}
+.section-copy{font-size:1rem;line-height:1.8;color:var(--gray);max-width:640px}
+.gold-rule{width:56px;height:3px;background:var(--gold);margin:1.35rem 0}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+.skip-link{position:fixed;left:1rem;top:-100px;z-index:9999;background:#fff;color:var(--dark);padding:.8rem 1rem;border-radius:4px;box-shadow:var(--shadow)}
+.skip-link:focus{top:1rem}
+
+/* NAVIGATION */
+#navbar{position:fixed;inset:0 0 auto;height:var(--nav-h);z-index:1200;transition:background .3s,box-shadow .3s;border-bottom:1px solid rgba(255,255,255,.08)}
+#navbar.scrolled,#navbar.menu-open{background:rgba(18,18,31,.98);box-shadow:0 10px 35px rgba(0,0,0,.22);backdrop-filter:blur(16px)}
+.nav-inner{height:100%;display:flex;align-items:center;gap:1.4rem}
+.nav-logo{display:flex;align-items:center;gap:.75rem;min-width:285px}
+.nav-logo-mark{width:46px;height:46px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:1.06rem;font-weight:700;color:var(--gold);flex:none}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:650;color:#fff;line-height:1.14}
+.nav-logo-text span{display:block;font-family:'Inter',sans-serif;font-size:.55rem;font-weight:500;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;margin-top:.18rem}
+.desktop-nav{margin-left:auto;height:100%;display:flex;align-items:center;gap:.15rem;list-style:none}
+.desktop-nav>li{height:100%;display:flex;align-items:center}
+.nav-trigger,.nav-direct{height:100%;display:flex;align-items:center;gap:.35rem;padding:0 .62rem;border:0;background:none;cursor:pointer;font-size:.7rem;font-weight:650;letter-spacing:.065em;text-transform:uppercase;color:rgba(255,255,255,.78);transition:color .2s}
+.nav-trigger:hover,.nav-trigger.active,.nav-direct:hover{color:#fff}
+.nav-trigger .chev{font-size:.62rem;color:var(--gold);transition:transform .2s}
+.nav-trigger.active .chev{transform:rotate(180deg)}
+.nav-cta{display:inline-flex;align-items:center;gap:.45rem;background:var(--red);color:#fff;padding:.7rem .9rem;border-radius:3px;font-size:.68rem;font-weight:700;letter-spacing:.065em;text-transform:uppercase;white-space:nowrap;transition:background .2s,transform .2s}
+.nav-cta:hover{background:var(--red-2);transform:translateY(-1px)}
+.hamburger{display:none;margin-left:auto;width:44px;height:44px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.04);border-radius:50%;cursor:pointer;position:relative}
+.hamburger span{position:absolute;left:11px;width:20px;height:2px;background:#fff;transition:.25s}
+.hamburger span:nth-child(1){top:14px}.hamburger span:nth-child(2){top:21px}.hamburger span:nth-child(3){top:28px}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* desktop mega panel */
+.mega-panel{position:fixed;top:var(--nav-h);left:0;right:0;z-index:1150;background:rgba(18,18,31,.992);color:#fff;border-top:1px solid rgba(201,168,76,.18);box-shadow:0 28px 70px rgba(0,0,0,.35);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .22s,transform .22s,visibility .22s;max-height:calc(100vh - var(--nav-h));overflow:auto}
+.mega-panel.open{opacity:1;visibility:visible;transform:none}
+.mega-shell{padding:2.3rem 0 2.8rem}
+.mega-top{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:1.7rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,.09)}
+.mega-kicker{font-size:.66rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.45rem}
+.mega-title{font-family:'Cormorant Garamond',serif;font-size:2.15rem;line-height:1;color:#fff}
+.mega-open-all{border:1px solid rgba(201,168,76,.35);background:transparent;color:var(--gold);padding:.68rem 1rem;border-radius:3px;cursor:pointer;font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.mega-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1.15rem}
+.mega-column{min-width:0;border-left:1px solid rgba(255,255,255,.09);padding-left:1rem}
+.mega-column:first-child{border-left:0;padding-left:0}
+.mega-heading{display:flex;align-items:center;justify-content:space-between;width:100%;border:0;background:none;color:#fff;text-align:left;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;margin-bottom:.7rem;padding:.15rem 0}
+.mega-heading span:last-child{color:var(--gold);font-family:'Inter',sans-serif;font-size:.7rem}
+.mega-list{list-style:none;display:flex;flex-direction:column;gap:.16rem}
+.mega-list button{width:100%;border:0;background:none;text-align:left;color:rgba(255,255,255,.58);font-size:.76rem;line-height:1.35;padding:.31rem .2rem;cursor:pointer;transition:color .18s,transform .18s}
+.mega-list button:hover{color:#fff;transform:translateX(3px)}
+.mega-subgroup{margin:.42rem 0 .3rem;padding:.5rem .55rem;background:rgba(255,255,255,.025);border-left:2px solid rgba(201,168,76,.28)}
+.mega-subgroup-label{display:block;color:var(--gold);font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.25rem}
+.mega-more{color:rgba(201,168,76,.86)!important;font-weight:650!important}
+
+/* mobile menu */
+.mobile-drawer{position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;background:rgba(18,18,31,.998);z-index:1170;color:#fff;transform:translateX(100%);transition:transform .3s ease;overflow:auto;padding:1rem 1rem 3rem}
+.mobile-drawer.open{transform:none}
+.mobile-top-link,.mobile-node-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;border-bottom:1px solid rgba(255,255,255,.09);background:none;color:#fff;text-align:left;padding:1rem .3rem;font-size:.86rem;font-weight:650;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.mobile-node-trigger::after{content:'+';color:var(--gold);font-size:1.1rem}
+.mobile-node.open>.mobile-node-trigger::after{content:'−'}
+.mobile-children{display:none;padding:.35rem 0 .7rem .7rem;border-left:1px solid rgba(201,168,76,.25)}
+.mobile-node.open>.mobile-children{display:block}
+.mobile-children .mobile-node-trigger,.mobile-children .mobile-top-link{font-size:.77rem;text-transform:none;letter-spacing:.02em;padding:.72rem .5rem;color:rgba(255,255,255,.72)}
+.mobile-children .mobile-children{margin-left:.5rem}
+.mobile-cta{display:flex;justify-content:center;margin-top:1.2rem;background:var(--red);padding:1rem;border-radius:3px;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+
+/* HERO */
+#hero{min-height:100vh;background:linear-gradient(135deg,#0d0d1a 0%,#1c1c2e 43%,#2d1020 100%);position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.045) 1px,transparent 1px);background-size:62px 62px;mask-image:linear-gradient(to bottom,#000,transparent 88%)}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.18}
+.hero-orb.one{width:520px;height:520px;background:var(--red);top:-170px;left:-160px}
+.hero-orb.two{width:420px;height:420px;background:var(--gold);bottom:-180px;right:4%;opacity:.11}
+.hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;gap:4rem;padding:calc(var(--nav-h) + 4.2rem) 0 5rem}
+.hero-eyebrow{display:flex;align-items:center;gap:.7rem;margin-bottom:1.45rem;color:var(--gold);font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+.hero-eyebrow::before{content:'';width:42px;height:2px;background:var(--gold)}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5.4vw,5rem);line-height:.97;color:#fff;font-weight:700;letter-spacing:-.02em;margin-bottom:1.5rem}
+.hero-title em{font-style:normal;color:var(--gold)}
+.hero-subtitle{font-size:1.03rem;line-height:1.78;color:rgba(255,255,255,.64);max-width:610px;margin-bottom:2.2rem}
+.hero-actions{display:flex;gap:.9rem;flex-wrap:wrap}
+.btn-primary,.btn-outline,.btn-light{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;padding:.93rem 1.45rem;border-radius:3px;font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:.23s}
+.btn-primary{background:var(--red);color:#fff;border:1px solid var(--red)}
+.btn-primary:hover{background:var(--red-2);transform:translateY(-2px);box-shadow:0 10px 30px rgba(139,26,43,.38)}
+.btn-outline{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.26)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-2px)}
+.btn-light{background:#fff;color:var(--dark);border:1px solid #fff}
+.btn-light:hover{color:var(--red);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.8rem;padding-top:1.7rem;border-top:1px solid rgba(255,255,255,.1)}
+.hero-stat strong{display:block;font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:2rem;line-height:1}
+.hero-stat span{display:block;margin-top:.35rem;font-size:.65rem;color:rgba(255,255,255,.44);letter-spacing:.09em;text-transform:uppercase}
+.hero-visual{display:grid;place-items:center;position:relative}
+#ribbon-canvas{width:min(100%,520px);aspect-ratio:1;display:block}
+.hero-badge{position:absolute;right:3%;bottom:10%;width:140px;height:140px;border:1px solid rgba(201,168,76,.33);border-radius:50%;display:grid;place-items:center;text-align:center;color:#fff;background:rgba(28,28,46,.64);backdrop-filter:blur(10px);animation:floatBadge 4s ease-in-out infinite}
+.hero-badge strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--gold)}
+.hero-badge span{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+@keyframes floatBadge{50%{transform:translateY(-10px)}}
+
+/* FEATURED EVENT — target section 2 */
+.feature-event{background:var(--cream);padding:0 0 7rem}
+.event-card{position:relative;overflow:hidden;min-height:420px;border-radius:6px;background:linear-gradient(120deg,var(--red-3),var(--red) 55%,#311020);display:grid;grid-template-columns:1fr .82fr;box-shadow:var(--shadow)}
+.event-card::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:48px 48px;mask-image:linear-gradient(90deg,#000,transparent)}
+.event-content{position:relative;z-index:2;padding:4.3rem;align-self:center}
+.event-content .section-label{color:#e2c875}
+.event-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,4.8rem);line-height:.96;color:#fff;margin-bottom:1.2rem}
+.event-copy{color:rgba(255,255,255,.68);font-size:1rem;line-height:1.75;max-width:560px;margin-bottom:1.8rem}
+.event-visual{position:relative;display:grid;place-items:center;min-height:320px}
+.event-rings{width:280px;height:280px;border:1px solid rgba(201,168,76,.35);border-radius:50%;position:relative}
+.event-rings::before,.event-rings::after{content:'';position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.18)}
+.event-rings::before{inset:36px}.event-rings::after{inset:78px}
+.event-number{position:absolute;inset:0;display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:6rem;color:rgba(255,255,255,.9);font-weight:700}
+
+/* CALENDAR — target section 3 */
+#calendar{background:var(--dark);color:#fff}
+.calendar-head{display:flex;align-items:end;justify-content:space-between;gap:2rem;margin-bottom:2.5rem}
+.calendar-head .section-copy{color:rgba(255,255,255,.52)}
+.calendar-tabs{display:flex;gap:.55rem;flex-wrap:wrap;margin-bottom:1.6rem}
+.calendar-tab{border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.04);color:rgba(255,255,255,.65);padding:.72rem 1.1rem;border-radius:3px;cursor:pointer;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;transition:.2s}
+.calendar-tab.active,.calendar-tab:hover{background:var(--red);border-color:var(--red);color:#fff}
+.calendar-board{border:1px solid rgba(255,255,255,.1);border-radius:5px;overflow:hidden;background:rgba(255,255,255,.025)}
+.calendar-row{display:grid;grid-template-columns:145px 1.8fr .8fr .85fr .8fr;align-items:center;min-height:82px;border-bottom:1px solid rgba(255,255,255,.08)}
+.calendar-row:last-child{border-bottom:0}
+.calendar-row>div{padding:1rem 1.1rem}
+.calendar-date{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--gold);font-weight:700}
+.calendar-name strong{display:block;color:#fff;font-size:.9rem;margin-bottom:.25rem}
+.calendar-name span,.calendar-cell{font-size:.75rem;color:rgba(255,255,255,.49);line-height:1.45}
+.calendar-type{display:inline-flex;padding:.36rem .55rem;border:1px solid rgba(201,168,76,.25);color:var(--gold);font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:2px}
+.calendar-empty{display:none;padding:3rem;text-align:center;color:rgba(255,255,255,.5)}
+.section-actions{margin-top:2rem;display:flex;justify-content:flex-end}
+
+/* NEWS — target section 4 */
+#news{background:var(--cream)}
+.news-head{display:flex;align-items:end;justify-content:space-between;gap:2rem;margin-bottom:3rem}
+.text-link{display:inline-flex;align-items:center;gap:.45rem;color:var(--red);font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:0;background:none;cursor:pointer}
+.text-link::after{content:'→';transition:transform .2s}.text-link:hover::after{transform:translateX(4px)}
+.news-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:1.4rem}
+.news-card{background:#fff;border:1px solid var(--line);border-radius:5px;overflow:hidden;transition:transform .25s,box-shadow .25s;cursor:pointer}
+.news-card:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.news-card.featured{grid-row:span 2}
+.news-media{height:210px;background:linear-gradient(135deg,var(--red-3),var(--red));position:relative;overflow:hidden}
+.news-card.featured .news-media{height:330px}
+.news-media::before{content:'';position:absolute;width:190px;height:190px;border:1px solid rgba(255,255,255,.18);border-radius:50%;right:-30px;bottom:-40px}
+.news-media::after{content:'ФГСМ';position:absolute;left:1.4rem;bottom:1rem;font-family:'Cormorant Garamond',serif;font-size:3.2rem;font-weight:700;color:rgba(255,255,255,.16)}
+.news-card:nth-child(2) .news-media{background:linear-gradient(135deg,#191a36,#3a1740)}
+.news-card:nth-child(3) .news-media{background:linear-gradient(135deg,#203225,#456127)}
+.news-card:nth-child(4) .news-media{background:linear-gradient(135deg,#29394b,#1a6081)}
+.news-card:nth-child(5) .news-media{background:linear-gradient(135deg,#4b351a,#8a671f)}
+.news-body{padding:1.45rem}
+.news-meta{display:flex;gap:.65rem;align-items:center;margin-bottom:.75rem;font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold)}
+.news-date{color:#9b9ba5}
+.news-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;line-height:1.14;color:var(--dark);font-weight:700}
+.news-card.featured .news-title{font-size:1.85rem}
+.news-excerpt{font-size:.82rem;color:var(--gray);line-height:1.65;margin-top:.75rem}
+
+/* GOALS — target slogan + objectives */
+#goals{background:#fff;position:relative;overflow:hidden}
+.goals-slogan{text-align:center;max-width:980px;margin:0 auto 4.5rem}
+.goals-slogan h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1.02;color:var(--dark)}
+.goals-slogan h2 em{color:var(--red);font-style:normal}
+.goals-layout{display:grid;grid-template-columns:.72fr 1.28fr;gap:4.5rem;align-items:start}
+.goals-intro{position:sticky;top:120px}
+.goals-list{counter-reset:goals;display:grid;gap:.7rem}
+.goal-item{counter-increment:goals;display:grid;grid-template-columns:54px 1fr;gap:1.1rem;align-items:start;padding:1.15rem 0;border-bottom:1px solid var(--line)}
+.goal-item::before{content:counter(goals,decimal-leading-zero);font-family:'Cormorant Garamond',serif;color:var(--gold);font-size:1.55rem;font-weight:700}
+.goal-item p{font-size:.92rem;line-height:1.65;color:#41414c}
+
+/* QUICK LINKS — target section */
+#quick-links{background:var(--light)}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2.6rem}
+.quick-card{min-height:230px;background:#fff;border:1px solid var(--line);padding:2rem;display:flex;flex-direction:column;justify-content:space-between;border-radius:4px;cursor:pointer;transition:transform .25s,background .25s,color .25s}
+.quick-card:hover{transform:translateY(-5px);background:var(--red);color:#fff}
+.quick-icon{width:50px;height:50px;border:1px solid rgba(139,26,43,.2);border-radius:50%;display:grid;place-items:center;font-size:1.35rem;color:var(--red)}
+.quick-card:hover .quick-icon{border-color:rgba(255,255,255,.35);color:var(--gold)}
+.quick-card h3{font-family:'Cormorant Garamond',serif;font-size:1.45rem;margin-bottom:.35rem}
+.quick-card p{font-size:.8rem;line-height:1.55;color:var(--gray)}
+.quick-card:hover p{color:rgba(255,255,255,.68)}
+.quick-arrow{font-size:1.2rem;color:var(--gold)}
+
+/* SOCIAL OVERVIEW — target section */
+#social{background:var(--dark);color:#fff}
+.social-head{display:flex;justify-content:space-between;align-items:end;gap:2rem;margin-bottom:2.4rem}
+.social-tabs{display:flex;gap:.5rem}
+.social-tab{border:1px solid rgba(255,255,255,.14);background:none;color:rgba(255,255,255,.58);padding:.65rem .9rem;border-radius:3px;font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer}
+.social-tab.active{background:var(--red);border-color:var(--red);color:#fff}
+.social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.social-post{aspect-ratio:1;background:linear-gradient(145deg,#2c2c43,#151523);border:1px solid rgba(255,255,255,.08);padding:1.25rem;display:flex;flex-direction:column;justify-content:space-between;border-radius:4px;transition:transform .22s,border-color .22s}
+.social-post:hover{transform:translateY(-5px);border-color:rgba(201,168,76,.4)}
+.social-mark{font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--gold);opacity:.7}
+.social-post p{font-size:.8rem;line-height:1.55;color:rgba(255,255,255,.62)}
+.social-post span{font-size:.62rem;color:var(--gold);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+
+/* ORGANIZATIONS & PARTNERS — target final homepage blocks */
+#organizations{background:#fff;padding:5.6rem 0 3.4rem}
+.logo-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+.org-logo,.partner-logo{min-height:110px;border:1px solid var(--line);background:var(--cream);display:grid;place-items:center;text-align:center;padding:1rem;border-radius:4px;font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--dark)}
+.org-logo small,.partner-logo small{display:block;font-family:'Inter',sans-serif;font-size:.58rem;color:var(--gray);letter-spacing:.1em;text-transform:uppercase;margin-top:.25rem}
+#partners{background:#fff;padding:2rem 0 6.5rem}
+.partner-strip{display:grid;grid-template-columns:repeat(6,1fr);gap:.75rem;margin:2rem 0}
+.partner-logo{min-height:85px;font-size:1rem;background:#fff}
+.partner-note{text-align:center;color:var(--gray);font-size:.9rem}
+.partner-note a{color:var(--red);font-weight:700}
+
+/* FOOTER */
+footer{background:#0d0d1a;color:#fff;border-top:1px solid rgba(201,168,76,.18);padding:4.5rem 0 1.8rem}
+.footer-top{display:grid;grid-template-columns:1.45fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem}
+.footer-brand p{font-size:.82rem;line-height:1.72;color:rgba(255,255,255,.42);max-width:330px;margin-top:1.1rem}
+.footer-socials{display:flex;gap:.6rem;margin-top:1.2rem}
+.footer-socials a{width:36px;height:36px;border:1px solid rgba(255,255,255,.14);border-radius:50%;display:grid;place-items:center;color:rgba(255,255,255,.55);transition:.2s}
+.footer-socials a:hover{border-color:var(--gold);color:var(--gold)}
+.footer-col h4{font-size:.68rem;letter-spacing:.17em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.footer-col ul{list-style:none;display:grid;gap:.58rem}
+.footer-col button,.footer-col a{border:0;background:none;color:rgba(255,255,255,.46);font-size:.8rem;text-align:left;cursor:pointer;transition:color .18s}
+.footer-col button:hover,.footer-col a:hover{color:#fff}
+.footer-contact{font-size:.8rem;line-height:1.8;color:rgba(255,255,255,.48)}
+.footer-bottom{display:flex;justify-content:space-between;gap:1rem;align-items:center;padding-top:1.6rem;border-top:1px solid rgba(255,255,255,.07);font-size:.72rem;color:rgba(255,255,255,.28)}
+.footer-legal{display:flex;gap:1.2rem;flex-wrap:wrap}
+.footer-legal button{border:0;background:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:.72rem}
+.footer-legal button:hover{color:#fff}
+
+/* PORTAL PAGE OVERLAY — every hierarchy branch becomes accessible */
+.portal-overlay{position:fixed;inset:var(--nav-h) 0 0;background:var(--cream);z-index:1100;transform:translateY(105%);transition:transform .38s cubic-bezier(.22,.75,.2,1);overflow:auto}
+.portal-overlay.open{transform:none}
+.portal-hero{background:linear-gradient(135deg,#121220,#251522);color:#fff;padding:4.2rem 0 3.6rem;position:relative;overflow:hidden}
+.portal-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.04) 1px,transparent 1px);background-size:52px 52px}
+.portal-hero-inner{position:relative}
+.portal-close{position:absolute;right:0;top:-1rem;width:46px;height:46px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.05);color:#fff;border-radius:50%;cursor:pointer;font-size:1.25rem}
+.portal-breadcrumbs{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center;font-size:.68rem;color:rgba(255,255,255,.46);margin-bottom:1.1rem}
+.portal-breadcrumbs button{border:0;background:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:.68rem}
+.portal-breadcrumbs button:hover{color:var(--gold)}
+.portal-breadcrumbs span{color:var(--gold)}
+.portal-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,5vw,4.5rem);line-height:.98;max-width:900px}
+.portal-summary{max-width:720px;margin-top:1.1rem;color:rgba(255,255,255,.58);line-height:1.7}
+.portal-body{display:grid;grid-template-columns:290px 1fr;gap:4rem;padding:4rem 0 6rem}
+.portal-sidebar{align-self:start;position:sticky;top:2rem;border:1px solid var(--line);background:#fff;border-radius:4px;padding:1.1rem;max-height:calc(100vh - var(--nav-h) - 4rem);overflow:auto}
+.portal-sidebar-title{font-size:.64rem;font-weight:700;color:var(--gold-2);letter-spacing:.14em;text-transform:uppercase;padding:.55rem .65rem .9rem;border-bottom:1px solid var(--line);margin-bottom:.4rem}
+.side-tree,.side-tree ul{list-style:none}
+.side-tree ul{padding-left:.7rem;border-left:1px solid #ebe7e1;margin-left:.45rem}
+.side-tree button{width:100%;border:0;background:none;text-align:left;color:#555562;padding:.48rem .55rem;cursor:pointer;font-size:.74rem;line-height:1.35;border-radius:3px;transition:.15s}
+.side-tree button:hover,.side-tree button.current{background:var(--light);color:var(--red)}
+.portal-content{min-width:0}
+.portal-content h2{font-family:'Cormorant Garamond',serif;font-size:2.2rem;margin-bottom:1rem;color:var(--dark)}
+.portal-content h3{font-family:'Cormorant Garamond',serif;font-size:1.45rem;margin:2rem 0 .7rem;color:var(--dark)}
+.portal-content p{font-size:.94rem;line-height:1.78;color:#555562;margin-bottom:1rem}
+.portal-callout{background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);padding:1.4rem 1.5rem;margin:1.6rem 0;border-radius:3px}
+.portal-callout strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1.25rem;margin-bottom:.35rem}
+.portal-child-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+.portal-child-card{background:#fff;border:1px solid var(--line);padding:1.35rem;border-radius:4px;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s}
+.portal-child-card:hover{transform:translateY(-4px);box-shadow:0 12px 34px rgba(20,18,28,.09);border-color:rgba(139,26,43,.25)}
+.portal-child-card span{display:block;font-size:.63rem;color:var(--gold-2);font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:.5rem}
+.portal-child-card strong{font-family:'Cormorant Garamond',serif;font-size:1.15rem;color:var(--dark)}
+.portal-child-card p{font-size:.75rem;margin:.5rem 0 0;line-height:1.5}
+.resource-table{width:100%;border-collapse:collapse;margin-top:1.5rem;background:#fff;border:1px solid var(--line)}
+.resource-table th,.resource-table td{text-align:left;padding:.9rem;border-bottom:1px solid var(--line);font-size:.76rem}
+.resource-table th{background:var(--light);color:var(--dark);font-size:.63rem;letter-spacing:.08em;text-transform:uppercase}
+.resource-status{display:inline-flex;padding:.28rem .45rem;background:rgba(201,168,76,.14);color:var(--gold-2);font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border-radius:2px}
+
+/* cookie banner */
+.cookie-banner{position:fixed;left:1rem;right:1rem;bottom:1rem;z-index:1600;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow);padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1.2rem;border-radius:5px;max-width:1100px;margin:auto;transition:opacity .25s,transform .25s}
+.cookie-banner.hidden{opacity:0;transform:translateY(20px);pointer-events:none}
+.cookie-banner p{font-size:.76rem;color:var(--gray);line-height:1.5}
+.cookie-actions{display:flex;gap:.5rem;flex:none}
+.cookie-actions button{border:1px solid var(--line);background:#fff;padding:.65rem .8rem;border-radius:3px;cursor:pointer;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.cookie-actions .accept{background:var(--red);border-color:var(--red);color:#fff}
+
+
+/* CONTENT MANAGEMENT RENDERERS */
+.cms-empty{background:#fff;border:1px dashed #d8d1c8;border-radius:5px;padding:2rem;text-align:center;margin:1.4rem 0;color:var(--gray)}
+.cms-empty strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--dark);margin-bottom:.35rem}
+.cms-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1.4rem 0 2rem}
+.cms-card{background:#fff;border:1px solid var(--line);border-radius:5px;overflow:hidden;display:flex;flex-direction:column;min-width:0;transition:transform .22s,box-shadow .22s}
+.cms-card:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(20,18,28,.09)}
+.cms-card-media{height:180px;background:linear-gradient(135deg,var(--red-3),var(--red));background-size:cover;background-position:center;position:relative}
+.cms-card-media::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(13,13,26,.55),transparent 65%)}
+.cms-card-body{padding:1.2rem;display:flex;flex-direction:column;flex:1}
+.cms-kicker{font-size:.61rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--gold-2);margin-bottom:.55rem}
+.cms-card h3{font-family:'Cormorant Garamond',serif;font-size:1.28rem;line-height:1.16;margin:0 0 .55rem}
+.cms-card p{font-size:.79rem;line-height:1.6;margin:0 0 .8rem;color:var(--gray)}
+.cms-card-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto;padding-top:.65rem}
+.cms-action{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#fff;color:var(--red);padding:.55rem .7rem;border-radius:3px;font-size:.64rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.cms-action.primary{background:var(--red);border-color:var(--red);color:#fff}
+.cms-action:hover{border-color:var(--gold)}
+.cms-meta-row{display:flex;gap:.55rem;flex-wrap:wrap;margin:.3rem 0 .8rem}
+.cms-pill{display:inline-flex;padding:.3rem .48rem;background:rgba(201,168,76,.13);color:var(--gold-2);border-radius:2px;font-size:.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.cms-people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.4rem}
+.person-card{background:#fff;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.person-photo{aspect-ratio:4/3;background:linear-gradient(135deg,#2d2d43,#6e1220);background-size:cover;background-position:center}
+.person-body{padding:1.1rem}.person-body h3{font-size:1.25rem;margin:0 0 .25rem}.person-role{color:var(--red);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.cms-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin-top:1.4rem}
+.cms-gallery figure{background:#fff;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.cms-gallery img{width:100%;aspect-ratio:4/3;object-fit:cover}.cms-gallery figcaption{padding:.85rem;font-size:.76rem;line-height:1.5;color:var(--gray)}
+.cms-rich ul{margin:.5rem 0 1.2rem 1.15rem;color:#555562}.cms-rich li{margin:.35rem 0;line-height:1.65;font-size:.94rem}
+.cms-updated{font-size:.65rem;color:#99939a;margin-top:1.5rem;text-transform:uppercase;letter-spacing:.06em}
+.partner-logo img{max-width:150px;max-height:58px;object-fit:contain}.partner-logo a{display:grid;place-items:center;width:100%;height:100%}
+.news-media[data-image]{background-size:cover;background-position:center}.news-media[data-image]::before{background:linear-gradient(to top,rgba(13,13,26,.72),transparent 62%);inset:0;width:auto;height:auto;border:0;border-radius:0;right:auto;bottom:auto}
+.news-media[data-image]::after{display:none}
+@media(max-width:900px){.cms-grid,.cms-people,.cms-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.cms-grid,.cms-people,.cms-gallery{grid-template-columns:1fr}}
+
+/* RESPONSIVE */
+@media(max-width:1160px){
+  .desktop-nav{display:none}.hamburger{display:block}.nav-logo{min-width:0}
+  .hero-inner{grid-template-columns:1fr .8fr;gap:2rem}
+  .news-grid{grid-template-columns:1.2fr 1fr}.news-card.featured{grid-row:span 2}.news-grid .news-card:last-child{display:none}
+  .calendar-row{grid-template-columns:120px 1.6fr .75fr .8fr}.calendar-row>div:last-child{display:none}
+  .partner-strip{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:900px){
+  :root{--nav-h:72px}.nav-logo-text{display:none}
+  .hero-inner{grid-template-columns:1fr;padding-top:calc(var(--nav-h) + 2.5rem)}.hero-visual{order:-1}.hero-visual canvas{max-height:310px}.hero-badge{width:105px;height:105px;right:12%;bottom:4%}
+  .event-card{grid-template-columns:1fr}.event-content{padding:3rem}.event-visual{min-height:240px}
+  .calendar-head,.news-head,.social-head{align-items:flex-start;flex-direction:column}
+  .calendar-row{grid-template-columns:110px 1fr .8fr}.calendar-row>div:nth-child(4),.calendar-row>div:nth-child(5){display:none}
+  .news-grid{grid-template-columns:1fr 1fr}.news-card.featured{grid-column:span 2;grid-row:auto}.news-grid .news-card:last-child{display:block}
+  .goals-layout{grid-template-columns:1fr;gap:2rem}.goals-intro{position:static}
+  .quick-grid,.social-grid{grid-template-columns:repeat(2,1fr)}
+  .logo-strip{grid-template-columns:repeat(2,1fr)}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .portal-body{grid-template-columns:1fr;gap:2rem}.portal-sidebar{position:static;max-height:360px}.portal-child-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:620px){
+  .section{padding:5.4rem 0}.hero-title{font-size:2.8rem}.hero-subtitle{font-size:.92rem}.hero-stats{gap:1.3rem;flex-wrap:wrap}.hero-stat strong{font-size:1.6rem}
+  .event-content{padding:2.2rem 1.45rem}.event-title{font-size:2.8rem}.event-rings{width:210px;height:210px}.event-number{font-size:4.5rem}
+  .calendar-row{grid-template-columns:92px 1fr}.calendar-row>div:nth-child(3){display:none}.calendar-row>div{padding:.85rem}.calendar-date{font-size:1rem}
+  .news-grid,.quick-grid,.social-grid,.logo-strip,.partner-strip{grid-template-columns:1fr}.news-card.featured{grid-column:auto}.news-card.featured .news-media{height:230px}
+  .social-post{aspect-ratio:auto;min-height:210px}
+  .footer-top{grid-template-columns:1fr}.footer-bottom{align-items:flex-start;flex-direction:column}
+  .portal-hero{padding:3rem 0}.portal-close{position:static;margin-left:auto;display:block;margin-bottom:1rem}.portal-body{padding-top:2rem}.portal-child-grid{grid-template-columns:1fr}
+  .cookie-banner{align-items:stretch;flex-direction:column}.cookie-actions{display:grid;grid-template-columns:1fr 1fr}.cookie-actions button{width:100%}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+<a href="#main" class="skip-link">Прескокни до содржината</a>
+
+<header id="navbar">
+  <div class="container nav-inner">
+    <a href="#hero" class="nav-logo js-scroll" aria-label="ФГСМ почетна">
+      <span class="nav-logo-mark">ФГСМ</span>
+      <span class="nav-logo-text">Федерација на гимнастичките<span>спортови на Македонија</span></span>
+    </a>
+    <nav aria-label="Главна навигација">
+      <ul class="desktop-nav" id="desktop-nav"></ul>
+    </nav>
+    <a href="#calendar" class="nav-cta js-scroll">Календар 2026 <span>↗</span></a>
+    <button class="hamburger" id="hamburger" aria-label="Отвори мени" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="mega-panel" id="mega-panel" aria-hidden="true"><div class="container mega-shell" id="mega-content"></div></div>
+<aside class="mobile-drawer" id="mobile-drawer" aria-label="Мобилна навигација"></aside>
+
+<main id="main">
+<section id="hero">
+  <div class="hero-grid-bg"></div><div class="hero-orb one"></div><div class="hero-orb two"></div>
+  <div class="container hero-inner">
+    <div class="hero-content reveal">
+      <div class="hero-eyebrow" id="hero-eyebrow">Официјална национална федерација</div>
+      <h1 class="hero-title"><span id="hero-title-before">Македонската гимнастика има</span> <em id="hero-title-highlight">дом.</em></h1>
+      <p class="hero-subtitle" id="hero-subtitle">Централно место за новости, натпревари, резултати, национални селекции, стручни програми, едукација и официјални документи на Федерацијата на гимнастичките спортови на Македонија.</p>
+      <div class="hero-actions">
+        <button class="btn-primary route-btn" id="hero-primary" data-route="branches"><span class="button-label">Истражи ги гранките</span> <span>→</span></button>
+        <a class="btn-outline js-scroll" id="hero-secondary" href="#calendar">Календар на натпревари</a>
+      </div>
+      <div class="hero-stats" id="hero-stats" aria-label="Федерациски показатели">
+        <div class="hero-stat"><strong>4+</strong><span>Гимнастички гранки</span></div>
+        <div class="hero-stat"><strong>FIG</strong><span>Меѓународни стандарди</span></div>
+        <div class="hero-stat"><strong>365</strong><span>Дена поддршка</span></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <canvas id="ribbon-canvas" width="520" height="520" aria-label="Интерактивна гимнастичка лента"></canvas>
+      <div class="hero-badge"><div><strong id="hero-badge-title">ФГСМ</strong><span id="hero-badge-text">Традиција · развој · успех</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="feature-event">
+  <div class="container">
+    <article class="event-card reveal">
+      <div class="event-content">
+        <p class="section-label" id="featured-eyebrow">Истакната федерациска активност</p>
+        <h2 class="event-title" id="featured-title">Подготвени за сезоната 2026</h2>
+        <p class="event-copy" id="featured-text">Следете ги националните првенства, меѓународните настапи, контролните тренинзи и едукативните активности на македонската гимнастика.</p>
+        <div class="hero-actions">
+          <a href="#calendar" class="btn-light js-scroll" id="featured-primary">Отвори календар</a>
+          <button class="btn-outline route-btn" id="featured-secondary" data-route="competitions/results">Резултати</button>
+        </div>
+      </div>
+      <div class="event-visual" aria-hidden="true"><div class="event-rings"><div class="event-number" id="featured-number">26</div></div></div>
+    </article>
+  </div>
+</section>
+
+<section id="calendar" class="section">
+  <div class="container">
+    <div class="calendar-head reveal">
+      <div><p class="section-label" id="calendar-eyebrow">Натпревари и активности</p><h2 class="section-title light" id="calendar-title">Календар на натпревари</h2></div>
+      <p class="section-copy" id="calendar-intro">Преглед по гранка со датум, категорија, тип на настан и локација — организиран по истиот федерациски модел како целната структура.</p>
+    </div>
+    <div class="calendar-tabs reveal" id="calendar-tabs" role="tablist"></div>
+    <div class="calendar-board reveal" id="calendar-board" aria-live="polite"></div>
+    <div class="section-actions"><button class="btn-outline route-btn" data-route="competitions/calendar">Сите натпревари <span>→</span></button></div>
+  </div>
+</section>
+
+<section id="news" class="section">
+  <div class="container">
+    <div class="news-head reveal">
+      <div><p class="section-label" id="news-eyebrow">Новости</p><h2 class="section-title" id="news-title">Последни објави</h2></div>
+      <button class="text-link route-btn" data-route="news">Сите новости</button>
+    </div>
+    <div class="news-grid" id="news-grid"></div>
+  </div>
+</section>
+
+<section id="goals" class="section">
+  <div class="container">
+    <div class="goals-slogan reveal"><p class="section-label">Нашата насока</p><h2><span id="goals-slogan-before">Традицијата нè води,</span> <em id="goals-slogan-highlight">гордоста нè движи,</em> <span id="goals-slogan-after">успехот нè дефинира.</span></h2></div>
+    <div class="goals-layout">
+      <div class="goals-intro reveal"><p class="section-label" id="goals-eyebrow">Стратешки приоритети</p><h2 class="section-title" id="goals-title">Цели на ФГСМ</h2><div class="gold-rule"></div><p class="section-copy" id="goals-intro">Федерацијата го развива гимнастичкиот спорт од најмладите категории до врвните репрезентативни настапи, со јасни стандарди и долгорочна соработка.</p></div>
+      <div class="goals-list reveal" id="goals-list">
+        <div class="goal-item"><p>Развој, промоција и системско унапредување на гимнастичките спортови во Македонија.</p></div>
+        <div class="goal-item"><p>Создавање услови за врвни спортски резултати и поддршка на талентирани гимнастичари.</p></div>
+        <div class="goal-item"><p>Поттикнување на гимнастиката кај децата и младите преку безбедни и квалитетни програми.</p></div>
+        <div class="goal-item"><p>Вклучување на сите возрасни категории и развој на пристапни програми за различни способности.</p></div>
+        <div class="goal-item"><p>Промоција на здраво, активно и одговорно живеење преку гимнастичко движење.</p></div>
+        <div class="goal-item"><p>Унапредување на соработката меѓу клубовите, тренерите, судиите и федерациските тела.</p></div>
+        <div class="goal-item"><p>Развивање меѓународни спортски врски и активно учество во европските и светските структури.</p></div>
+        <div class="goal-item"><p>Промоција на олимписките идеали, фер-плејот, толеранцијата и одговорноста.</p></div>
+        <div class="goal-item"><p>Постојана едукација и заштита на интегритетот, безбедноста и добросостојбата на спортистите.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quick-links" class="section">
+  <div class="container">
+    <p class="section-label reveal">Брз пристап</p><h2 class="section-title reveal">Брзи поврзувања</h2>
+    <div class="quick-grid">
+      <button class="quick-card route-btn reveal" data-route="about"><span class="quick-icon">◎</span><span><h3>За ФГСМ</h3><p>Мисија, федерациски тела, членови и организациска поставеност.</p></span><span class="quick-arrow">→</span></button>
+      <button class="quick-card route-btn reveal" data-route="gallery"><span class="quick-icon">▧</span><span><h3>Галерија</h3><p>Визуелен архив од натпревари, подготовки и федерациски активности.</p></span><span class="quick-arrow">→</span></button>
+      <button class="quick-card route-btn reveal" data-route="documents"><span class="quick-icon">≡</span><span><h3>Документи</h3><p>Правилници, програми, обрасци, одлуки и официјални материјали.</p></span><span class="quick-arrow">→</span></button>
+      <button class="quick-card route-btn reveal" data-route="contact"><span class="quick-icon">@</span><span><h3>Контакт</h3><p>Контакт информации за клубови, спортисти, медиуми и партнери.</p></span><span class="quick-arrow">→</span></button>
+    </div>
+  </div>
+</section>
+
+<section id="social" class="section">
+  <div class="container">
+    <div class="social-head reveal"><div><p class="section-label">ФГСМ на социјалните мрежи</p><h2 class="section-title light">Преглед на објави</h2></div><div class="social-tabs" role="tablist"><button class="social-tab active">Instagram</button><button class="social-tab">Facebook</button><button class="social-tab">YouTube</button></div></div>
+    <div class="social-grid reveal" id="social-grid">
+      <article class="social-post"><span class="social-mark">01</span><p>Национални селекции, подготовки и моменти од гимнастичките сали.</p><span>ФГСМ · Instagram</span></article>
+      <article class="social-post"><span class="social-mark">02</span><p>Резултати, признанија и официјални федерациски известувања.</p><span>ФГСМ · Facebook</span></article>
+      <article class="social-post"><span class="social-mark">03</span><p>Видео изјави, настапи и едукативни материјали за гимнастичката заедница.</p><span>ФГСМ · YouTube</span></article>
+      <article class="social-post"><span class="social-mark">04</span><p>Следете ја македонската гимнастика дома и на меѓународната сцена.</p><span>Следете нè</span></article>
+    </div>
+  </div>
+</section>
+
+<section id="organizations">
+  <div class="container">
+    <p class="section-label reveal">Институционална мрежа</p><h2 class="section-title reveal">Кровни организации</h2>
+    <div class="logo-strip reveal">
+      <a class="org-logo" href="https://www.gymnastics.sport/" target="_blank" rel="noopener">FIG<small>Светска гимнастика</small></a>
+      <a class="org-logo" href="https://www.europeangymnastics.com/" target="_blank" rel="noopener">EG<small>Европска гимнастика</small></a>
+      <a class="org-logo" href="https://mok.org.mk/" target="_blank" rel="noopener">МОК<small>Олимписки комитет</small></a>
+      <div class="org-logo">ФГСМ<small>Национална федерација</small></div>
+    </div>
+  </div>
+</section>
+<section id="partners">
+  <div class="container">
+    <p class="section-label reveal">Заедно за гимнастиката</p><h2 class="section-title reveal">Партнери и спонзори</h2>
+    <div class="partner-strip reveal" id="partner-strip"><div class="partner-logo">Партнер 01</div><div class="partner-logo">Партнер 02</div><div class="partner-logo">Партнер 03</div><div class="partner-logo">Партнер 04</div><div class="partner-logo">Партнер 05</div><div class="partner-logo">Партнер 06</div></div>
+    <p class="partner-note reveal" id="partner-note">За партнерство или спонзорство испратете барање на <a href="mailto:contact.fgsm.bt@gmail.com">contact.fgsm.bt@gmail.com</a>.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#hero" class="nav-logo js-scroll"><span class="nav-logo-mark">ФГСМ</span><span class="nav-logo-text">Федерација на гимнастичките<span>спортови на Македонија</span></span></a>
+        <p>Официјален федерациски портал за развојот, организацијата и меѓународното претставување на македонската гимнастика.</p>
+        <div class="footer-socials"><a href="https://www.facebook.com/p/%D0%A4%D0%B5%D0%B4%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D1%98%D0%B0-%D0%BD%D0%B0-%D0%93%D0%B8%D0%BC%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%BA%D0%B8%D1%82%D0%B5-%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D0%BE%D0%B2%D0%B8-%D0%BD%D0%B0-%D0%A0%D0%B5%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0-%D0%9C%D0%B0%D0%BA%D0%B5%D0%B4%D0%BE%D0%BD%D0%B8%D1%98%D0%B0-61587880341323/" target="_blank" rel="noopener" aria-label="Facebook">f</a><a href="mailto:contact.fgsm.bt@gmail.com" aria-label="Е-пошта">@</a></div>
+      </div>
+      <div class="footer-col"><h4>Федерација</h4><ul><li><button class="route-btn" data-route="about">За ФГСМ</button></li><li><button class="route-btn" data-route="about/bodies">Тела и членови</button></li><li><button class="route-btn" data-route="news">Новости</button></li><li><button class="route-btn" data-route="contact">Контакт</button></li></ul></div>
+      <div class="footer-col"><h4>Гимнастика</h4><ul><li><button class="route-btn" data-route="branches/msg">МСГ</button></li><li><button class="route-btn" data-route="branches/zsg">ЖСГ</button></li><li><button class="route-btn" data-route="branches/rg">РГ</button></li><li><button class="route-btn" data-route="branches/pk">ПК</button></li><li><button class="route-btn" data-route="branches/gfa">Гимнастика за сите</button></li></ul></div>
+      <div class="footer-col"><h4>Контакт</h4><div class="footer-contact" id="footer-contact">contact.fgsm.bt@gmail.com<br>+389 78 863 136<br>Битола / Скопје, Македонија<br><br><a href="https://www.fgsrm.com/" target="_blank" rel="noopener">Официјална веб-страна ↗</a></div></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 ФГСМ. Сите права задржани.</span><div class="footer-legal"><button class="route-btn" data-route="privacy">Правила за приватност</button><button class="route-btn" data-route="privacy/statement">Изјава за приватност</button><button class="route-btn" data-route="terms">Услови на користење</button></div></div>
+  </div>
+</footer>
+
+<section class="portal-overlay" id="portal-overlay" aria-hidden="true">
+  <div class="portal-hero"><div class="container portal-hero-inner"><button class="portal-close" id="portal-close" aria-label="Затвори">×</button><div class="portal-breadcrumbs" id="portal-breadcrumbs"></div><h1 class="portal-title" id="portal-title"></h1><p class="portal-summary" id="portal-summary"></p></div></div>
+  <div class="container portal-body"><aside class="portal-sidebar"><div class="portal-sidebar-title">Структура на порталот</div><div id="portal-sidebar-tree"></div></aside><article class="portal-content" id="portal-content"></article></div>
+</section>
+
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Поставки за колачиња"><p>Оваа веб-страница користи неопходни колачиња за правилно функционирање и подобро корисничко искуство.</p><div class="cookie-actions"><button id="cookie-essential">Само неопходни</button><button class="accept" id="cookie-accept">Прифати сè</button></div></div>
+
+<script>
+'use strict';
+/* ================================================================
+   EXACT TARGET INFORMATION ARCHITECTURE, TRANSLATED / ADAPTED
+   ================================================================ */
+const n=(id,label,children=[],summary='')=>({id,label,children,summary});
+const siteTree=[
+  n('news','Новости',[], 'Официјални вести, соопштенија, резултати и активности на ФГСМ.'),
+  n('about','За нас',[
+    n('about','За ФГСМ',[], 'Мисија, визија, надлежности и развој на Федерацијата.'),
+    n('about/bodies','Тела и членови',[], 'Организациска поставеност, федерациски тела и членство.')
+  ]),
+  n('branches','Гранки',[
+    n('branches/msg','МСГ',[
+      n('branches/msg/general','Општо за МСГ'),
+      n('branches/msg/national-team','Национален тим'),
+      n('branches/msg/judges','Судии'),
+      n('branches/msg/competitions','Натпревари'),
+      n('branches/msg/manual','Дигитален прирачник',[
+        n('branches/msg/manual/absolute','Апсолутна програма'),
+        n('branches/msg/manual/universal-2','Универзална програма 2'),
+        n('branches/msg/manual/universal-1','Универзална програма 1'),
+        n('branches/msg/manual/free','Слободна програма',[
+          n('branches/msg/manual/free/floor','НАЦ елементи — партер'),
+          n('branches/msg/manual/free/pommel','НАЦ елементи — коњ со рачки'),
+          n('branches/msg/manual/free/rings','НАЦ елементи — карики'),
+          n('branches/msg/manual/free/parallel-bars','НАЦ елементи — разбој'),
+          n('branches/msg/manual/free/high-bar','НАЦ елементи — вратило')
+        ]),
+        n('branches/msg/manual/compulsory','Задолжителна програма',[
+          n('branches/msg/manual/compulsory/cadets','Кадети'),
+          n('branches/msg/manual/compulsory/younger-juniors','Помлади јуниори'),
+          n('branches/msg/manual/compulsory/juniors','Јуниори'),
+          n('branches/msg/manual/compulsory/younger-seniors','Помлади сениори'),
+          n('branches/msg/manual/compulsory/vault','Прескок за сите категории')
+        ]),
+        n('branches/msg/manual/basic-2','Основна програма 2',[
+          n('branches/msg/manual/basic-2/younger-boys','Помлади момчиња'),n('branches/msg/manual/basic-2/boys','Момчиња'),n('branches/msg/manual/basic-2/older-boys','Постари момчиња'),n('branches/msg/manual/basic-2/younger-cadets','Помлади кадети'),n('branches/msg/manual/basic-2/cadets','Кадети'),n('branches/msg/manual/basic-2/older-cadets','Постари кадети'),n('branches/msg/manual/basic-2/younger-juniors','Помлади јуниори'),n('branches/msg/manual/basic-2/juniors','Јуниори'),n('branches/msg/manual/basic-2/older-juniors','Постари јуниори'),n('branches/msg/manual/basic-2/younger-seniors','Помлади сениори')
+        ]),
+        n('branches/msg/manual/basic-1','Основна програма 1',[
+          n('branches/msg/manual/basic-1/younger-boys','Помлади момчиња'),n('branches/msg/manual/basic-1/boys','Момчиња'),n('branches/msg/manual/basic-1/older-boys','Постари момчиња'),n('branches/msg/manual/basic-1/younger-cadets','Помлади кадети'),n('branches/msg/manual/basic-1/cadets','Кадети'),n('branches/msg/manual/basic-1/older-cadets','Постари кадети'),n('branches/msg/manual/basic-1/younger-juniors','Помлади јуниори'),n('branches/msg/manual/basic-1/juniors','Јуниори'),n('branches/msg/manual/basic-1/older-juniors','Постари јуниори'),n('branches/msg/manual/basic-1/younger-seniors','Помлади сениори')
+        ])
+      ]),
+      n('branches/msg/documents','Документи'),n('branches/msg/rules','Правилници и пропозиции'),n('branches/msg/preparations','Подготовки и контролни тренинзи')
+    ],'Машка спортска гимнастика — национален тим, судии, натпревари, програми и документи.'),
+    n('branches/zsg','ЖСГ',[
+      n('branches/zsg/general','Општо за ЖСГ'),n('branches/zsg/national-team','Национален тим'),n('branches/zsg/judges','Судијки'),n('branches/zsg/competitions','Натпревари'),
+      n('branches/zsg/manual','Дигитален прирачник',[
+        n('branches/zsg/manual/absolute','Апсолутна програма',[
+          n('branches/zsg/manual/absolute/cadets','Кадетки',[
+            n('branches/zsg/manual/absolute/cadets/uneven-bars','Двовисински разбој'),n('branches/zsg/manual/absolute/cadets/beam','Греда'),n('branches/zsg/manual/absolute/cadets/floor','Партер')
+          ])
+        ]),
+        n('branches/zsg/manual/universal-2','Универзална програма 2',[
+          n('branches/zsg/manual/universal-2/vault','Прескок'),n('branches/zsg/manual/universal-2/uneven-bars','Двовисински разбој'),n('branches/zsg/manual/universal-2/beam','Греда'),n('branches/zsg/manual/universal-2/floor','Партер')
+        ]),
+        n('branches/zsg/manual/universal-1','Универзална програма 1',[
+          n('branches/zsg/manual/universal-1/vault','Прескок'),n('branches/zsg/manual/universal-1/uneven-bars','Двовисински разбој'),n('branches/zsg/manual/universal-1/beam','Греда'),n('branches/zsg/manual/universal-1/floor','Партер')
+        ]),
+        n('branches/zsg/manual/compulsory','Задолжителна програма',[
+          n('branches/zsg/manual/compulsory/girls','Девојчиња'),
+          n('branches/zsg/manual/compulsory/younger-cadets','Помлади кадетки',[
+            n('branches/zsg/manual/compulsory/younger-cadets/vault','Прескок'),n('branches/zsg/manual/compulsory/younger-cadets/uneven-bars','Двовисински разбој'),n('branches/zsg/manual/compulsory/younger-cadets/beam','Греда'),n('branches/zsg/manual/compulsory/younger-cadets/floor','Партер')
+          ]),
+          n('branches/zsg/manual/compulsory/cadets','Кадетки',[
+            n('branches/zsg/manual/compulsory/cadets/vault','Прескок'),n('branches/zsg/manual/compulsory/cadets/uneven-bars','Двовисински разбој'),n('branches/zsg/manual/compulsory/cadets/beam','Греда'),n('branches/zsg/manual/compulsory/cadets/floor','Партер')
+          ]),
+          n('branches/zsg/manual/compulsory/younger-juniors','Помлади јуниорки',[
+            n('branches/zsg/manual/compulsory/younger-juniors/vault','Прескок'),n('branches/zsg/manual/compulsory/younger-juniors/uneven-bars','Двовисински разбој'),n('branches/zsg/manual/compulsory/younger-juniors/beam','Греда'),n('branches/zsg/manual/compulsory/younger-juniors/floor','Партер')
+          ]),
+          n('branches/zsg/manual/compulsory/juniors-seniors','Јуниорки и помлади сениорки',[
+            n('branches/zsg/manual/compulsory/juniors-seniors/vault','Прескок'),n('branches/zsg/manual/compulsory/juniors-seniors/uneven-bars','Двовисински разбој'),n('branches/zsg/manual/compulsory/juniors-seniors/beam','Греда'),n('branches/zsg/manual/compulsory/juniors-seniors/floor','Партер')
+          ])
+        ]),
+        n('branches/zsg/manual/basic-2','Основна програма 2',[
+          n('branches/zsg/manual/basic-2/younger-girls','Помлади девојчиња'),n('branches/zsg/manual/basic-2/girls','Девојчиња и постари девојчиња'),n('branches/zsg/manual/basic-2/cadets','Помлади кадетки и кадетки'),n('branches/zsg/manual/basic-2/older-cadets','Постари кадетки и помлади јуниорки'),n('branches/zsg/manual/basic-2/juniors','Јуниорки и постари јуниорки'),n('branches/zsg/manual/basic-2/younger-seniors','Помлади сениорки')
+        ]),
+        n('branches/zsg/manual/basic-1','Основна програма 1',[
+          n('branches/zsg/manual/basic-1/younger-girls','Помлади девојчиња и девојчиња'),n('branches/zsg/manual/basic-1/older-girls','Постари девојчиња и помлади кадетки'),n('branches/zsg/manual/basic-1/cadets','Кадетки и постари кадетки'),n('branches/zsg/manual/basic-1/juniors','Помлади јуниорки и јуниорки'),n('branches/zsg/manual/basic-1/older-juniors','Постари јуниорки и помлади сениорки')
+        ])
+      ]),
+      n('branches/zsg/documents','Документи'),n('branches/zsg/rules','Правилници и пропозиции'),n('branches/zsg/preparations','Подготовки и контролни тренинзи')
+    ],'Женска спортска гимнастика — национален тим, судијки, натпревари, програми и документи.'),
+    n('branches/rg','РГ',[
+      n('branches/rg/general','Општо за РГ'),n('branches/rg/national-team','Национален тим'),n('branches/rg/judges','Судијки'),n('branches/rg/competitions','Натпревари'),n('branches/rg/manual','Дигитален прирачник'),n('branches/rg/documents','Документи'),n('branches/rg/rules','Правилници и пропозиции'),n('branches/rg/preparations','Подготовки и контролни тренинзи')
+    ],'Ритмичка гимнастика — селекции, судење, натпревари и стручни материјали.'),
+    n('branches/pk','ПК',[
+      n('branches/pk/general','Општо за ПК'),n('branches/pk/national-team','Национален тим'),n('branches/pk/judges','Судии'),n('branches/pk/competitions','Натпревари'),n('branches/pk/documents','Документи'),n('branches/pk/rules','Правилници и пропозиции')
+    ],'Паркур — развој, национален тим, судии, натпревари и регулатива.'),
+    n('branches/gfa','Гимнастика за сите',[],'Инклузивни, рекреативни и масовни гимнастички програми за сите возрасти.')
+  ]),
+  n('competitions','Натпревари',[
+    n('competitions/calendar','Календар'),
+    n('competitions/results','Резултати',[
+      n('competitions/results/artistic','Спортска гимнастика',[
+        n('competitions/results/artistic/national','Првенство и Куп на Македонија'),
+        n('competitions/results/artistic/international-cup','Меѓународен куп Македонија'),
+        n('competitions/results/artistic/world-cup','Светски куп',[
+          n('competitions/results/artistic/world-cup/finals','Македонски финални настапи')
+        ]),
+        n('competitions/results/artistic/olympics','Олимписки игри'),n('competitions/results/artistic/world-championship','Светско првенство'),n('competitions/results/artistic/junior-world','Светско јуниорско првенство'),n('competitions/results/artistic/european','Европско првенство'),n('competitions/results/artistic/junior-european','Европско јуниорско првенство'),n('competitions/results/artistic/youth-olympic-festival','Олимписки фестивал на млади'),n('competitions/results/artistic/eyof','Европски олимписки фестивал на млади'),n('competitions/results/artistic/mediterranean','Медитерански игри'),n('competitions/results/artistic/universiade','Универзијада'),n('competitions/results/artistic/regions-2026','Регионални натпревари 2026')
+      ]),
+      n('competitions/results/rhythmic','Ритмичка гимнастика',[
+        n('competitions/results/rhythmic/national','Првенство и Куп на Македонија'),n('competitions/results/rhythmic/regions-2026','Регионални натпревари 2026')
+      ]),
+      n('competitions/results/parkour','Паркур',[
+        n('competitions/results/parkour/cup','Куп на Македонија'),n('competitions/results/parkour/championship','Првенство на Македонија'),n('competitions/results/parkour/world-cup','Светски куп')
+      ])
+    ]),
+    n('competitions/absolute','Апсолутно првенство')
+  ]),
+  n('education','Едукација',[
+    n('education/coaches-judges','Тренери и судии'),
+    n('education/erasmus','Еразмус+',[
+      n('education/erasmus/gymnastics-future','Гимнастика за иднината')
+    ])
+  ]),
+  n('documents','Документи'),
+  n('contact','Контакт')
+];
+
+const extras=[n('gallery','Галерија'),n('privacy','Правила за приватност',[n('privacy/statement','Изјава за приватност')]),n('terms','Услови на користење')];
+const allRoots=[...siteTree,...extras];
+const routeMap=new Map();
+function indexTree(nodes,parents=[]){nodes.forEach(node=>{routeMap.set(node.id,{node,parents});indexTree(node.children,[...parents,node]);});}
+indexTree(allRoots);
+
+const genericSummaries={
+  'МСГ':'Машка спортска гимнастика','ЖСГ':'Женска спортска гимнастика','РГ':'Ритмичка гимнастика','ПК':'Паркур',
+  'Дигитален прирачник':'Структурирана библиотека на национални програми, категории и елементи.',
+  'Документи':'Официјални материјали, обрасци, одлуки и федерациски документи.',
+  'Натпревари':'Календар, категории, резултати и официјални информации за натпреварувачкиот систем.',
+  'Национален тим':'Информации за селекциите, стручниот штаб и репрезентативните активности.',
+  'Судии':'Судиски кадар, лиценцирање, семинари и стручни материјали.','Судијки':'Судиски кадар, лиценцирање, семинари и стручни материјали.'
+};
+
+/* NAV BUILDERS */
+const desktopNav=document.getElementById('desktop-nav');
+const megaPanel=document.getElementById('mega-panel');
+const megaContent=document.getElementById('mega-content');
+let activeMega=null,closeTimer=null;
+function directButton(node){return `<button class="nav-direct route-btn" data-route="${node.id}">${node.label}</button>`}
+siteTree.forEach(node=>{
+  const li=document.createElement('li');
+  if(node.children.length){li.innerHTML=`<button class="nav-trigger" data-mega="${node.id}" aria-expanded="false">${node.label}<span class="chev">⌄</span></button>`;}
+  else li.innerHTML=directButton(node);
+  desktopNav.appendChild(li);
+});
+function flattenPreview(node,max=7){
+  const out=[];
+  function walk(items,depth=0){for(const item of items){if(out.length>=max)break;out.push({item,depth});if(item.children.length&&depth<1)walk(item.children,depth+1);}}
+  walk(node.children);return out;
+}
+function openMega(id){
+  clearTimeout(closeTimer);const entry=routeMap.get(id);if(!entry)return;activeMega=id;
+  document.querySelectorAll('.nav-trigger').forEach(b=>{const on=b.dataset.mega===id;b.classList.toggle('active',on);b.setAttribute('aria-expanded',String(on));});
+  const root=entry.node;
+  const columns=root.children.length?root.children:[root];
+  megaContent.innerHTML=`<div class="mega-top"><div><div class="mega-kicker">ФГСМ портал</div><h2 class="mega-title">${root.label}</h2></div><button class="mega-open-all route-btn" data-route="${root.id}">Отвори ја целата секција</button></div><div class="mega-grid">${columns.map(col=>{
+    const preview=flattenPreview(col,8);
+    return `<div class="mega-column"><button class="mega-heading route-btn" data-route="${col.id}"><span>${col.label}</span><span>→</span></button><ul class="mega-list">${preview.map(({item,depth})=>`<li class="${item.children.length?'mega-subgroup':''}">${item.children.length?`<span class="mega-subgroup-label">${item.label}</span>`:`<button class="route-btn" data-route="${item.id}" style="padding-left:${depth*.7+.2}rem">${item.label}</button>`}${item.children.length?item.children.slice(0,4).map(c=>`<button class="route-btn" data-route="${c.id}">${c.label}</button>`).join(''):''}</li>`).join('')}${col.children.length>8?`<li><button class="route-btn mega-more" data-route="${col.id}">Цела структура →</button></li>`:''}</ul></div>`;
+  }).join('')}</div>`;
+  megaPanel.classList.add('open');megaPanel.setAttribute('aria-hidden','false');document.getElementById('navbar').classList.add('menu-open');bindRouteButtons(megaContent);
+}
+function closeMega(){activeMega=null;megaPanel.classList.remove('open');megaPanel.setAttribute('aria-hidden','true');document.getElementById('navbar').classList.remove('menu-open');document.querySelectorAll('.nav-trigger').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-expanded','false');});}
+document.querySelectorAll('.nav-trigger').forEach(btn=>{btn.addEventListener('mouseenter',()=>openMega(btn.dataset.mega));btn.addEventListener('click',()=>activeMega===btn.dataset.mega?closeMega():openMega(btn.dataset.mega));});
+desktopNav.addEventListener('mouseleave',()=>closeTimer=setTimeout(closeMega,220));megaPanel.addEventListener('mouseenter',()=>clearTimeout(closeTimer));megaPanel.addEventListener('mouseleave',()=>closeTimer=setTimeout(closeMega,220));
+
+function mobileNode(node,level=0){
+  if(!node.children.length)return `<button class="mobile-top-link route-btn" data-route="${node.id}">${node.label}<span>→</span></button>`;
+  return `<div class="mobile-node"><button class="mobile-node-trigger" aria-expanded="false">${node.label}</button><div class="mobile-children">${node.children.map(c=>mobileNode(c,level+1)).join('')}<button class="mobile-top-link route-btn" data-route="${node.id}">Отвори: ${node.label}<span>→</span></button></div></div>`;
+}
+const mobileDrawer=document.getElementById('mobile-drawer');
+mobileDrawer.innerHTML=siteTree.map(node=>mobileNode(node)).join('')+`<a href="#calendar" class="mobile-cta js-scroll">Календар 2026</a>`;
+mobileDrawer.querySelectorAll('.mobile-node-trigger').forEach(btn=>btn.addEventListener('click',()=>{const parent=btn.parentElement;parent.classList.toggle('open');btn.setAttribute('aria-expanded',String(parent.classList.contains('open')));}));
+
+/* MOBILE / SCROLL */
+const hamburger=document.getElementById('hamburger');
+function closeMobile(){hamburger.classList.remove('open');hamburger.setAttribute('aria-expanded','false');mobileDrawer.classList.remove('open');if(!document.getElementById('portal-overlay').classList.contains('open'))document.body.classList.remove('locked');}
+hamburger.addEventListener('click',()=>{const open=!mobileDrawer.classList.contains('open');hamburger.classList.toggle('open',open);hamburger.setAttribute('aria-expanded',String(open));mobileDrawer.classList.toggle('open',open);document.body.classList.toggle('locked',open);closeMega();});
+const navbar=document.getElementById('navbar');window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>45),{passive:true});
+document.addEventListener('click',e=>{const anchor=e.target.closest('a[href^="#"]');if(!anchor)return;const id=anchor.getAttribute('href');const target=document.querySelector(id);if(!target)return;e.preventDefault();closeMega();closeMobile();target.scrollIntoView({behavior:'smooth'});});
+
+
+/* CMS CONTENT LAYER — editable through /admin/ */
+const CMS_FILES={settings:'content/settings.json',news:'content/news.json',events:'content/events.json',results:'content/results.json',documents:'content/documents.json',people:'content/people.json',gallery:'content/gallery.json',partners:'content/partners.json',pages:'content/pages.json',social:'content/social.json'};
+const cmsState={
+  settings:{},
+  news:[{slug:'dobredojdovte-na-fgsm-portalot',published:true,featured:true,date:'2026-06-17',category:'Федерација',branch:'all',title:'Добредојдовте на новиот портал на ФГСМ',excerpt:'Новиот портал ги обединува гранките, календарот, резултатите, документите и стручните материјали на едно место.',body:'Содржината се внесува преку заштитен административен панел и автоматски се форматира во дизајнот на ФГСМ.',image:'',image_alt:'ФГСМ портал'}],
+  events:[
+    {slug:'nacionalen-kalendar-msg-2026',published:true,branch:'msg',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — МСГ',category:'Сите категории',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
+    {slug:'nacionalen-kalendar-zsg-2026',published:true,branch:'zsg',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ЖСГ',category:'Сите категории',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
+    {slug:'nacionalen-kalendar-rg-2026',published:true,branch:'rg',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — РГ',category:'Индивидуално / групно',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
+    {slug:'nacionalen-kalendar-pk-2026',published:true,branch:'pk',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ПК',category:'Фристајл / брзина',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'}
+  ],
+  results:[],documents:[],people:[],gallery:[],partners:[],pages:[],social:[]
+};
+const branchLabels={all:'ФГСМ',msg:'МСГ',zsg:'ЖСГ',rg:'РГ',pk:'ПК',gfa:'Гимнастика за сите'};
+function escapeHtml(value=''){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));}
+function safeUrl(value=''){const v=String(value||'').trim();if(!v)return '';if(v.startsWith('/')||v.startsWith('./')||v.startsWith('../')||/^https?:\/\//i.test(v)||/^mailto:/i.test(v)||/^tel:/i.test(v))return v;return '';}
+function setText(id,value){const el=document.getElementById(id);if(el&&value!==undefined&&value!==null&&String(value)!=='')el.textContent=String(value);}
+function mkDate(value){if(!value)return '';const d=new Date(`${String(value).slice(0,10)}T12:00:00`);if(Number.isNaN(d.getTime()))return String(value);return new Intl.DateTimeFormat('mk-MK',{day:'2-digit',month:'long',year:'numeric'}).format(d);}
+function eventDate(item){if(item.date_label)return item.date_label;const start=mkDate(item.start_date);const end=mkDate(item.end_date);return end&&end!==start?`${start} — ${end}`:start;}
+function routeBranch(id=''){for(const key of ['msg','zsg','rg','pk','gfa'])if(id.includes(`/${key}`)||id===`branches/${key}`||id.includes(`results/${key}`))return key;return 'all';}
+function published(items){return (items||[]).filter(item=>item&&item.published!==false&&item.active!==false);}
+function formatBody(text=''){
+  const lines=String(text||'').replace(/\r/g,'').split('\n');let html='',inList=false;
+  const closeList=()=>{if(inList){html+='</ul>';inList=false;}};
+  lines.forEach(raw=>{const line=raw.trim();if(!line){closeList();return;}if(line.startsWith('### ')){closeList();html+=`<h3>${escapeHtml(line.slice(4))}</h3>`;}else if(line.startsWith('## ')){closeList();html+=`<h2>${escapeHtml(line.slice(3))}</h2>`;}else if(line.startsWith('- ')){if(!inList){html+='<ul>';inList=true;}html+=`<li>${escapeHtml(line.slice(2))}</li>`;}else{closeList();html+=`<p>${escapeHtml(line)}</p>`;}});closeList();return `<div class="cms-rich">${html}</div>`;
+}
+async function fetchCmsFile(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(`${path}: ${response.status}`);return response.json();}
+async function loadCmsContent(){
+  const entries=Object.entries(CMS_FILES);const loaded=await Promise.allSettled(entries.map(([,path])=>fetchCmsFile(path)));
+  loaded.forEach((result,index)=>{if(result.status!=='fulfilled')return;const key=entries[index][0],data=result.value;if(key==='settings')cmsState.settings=data||{};else cmsState[key]=Array.isArray(data)?data:(data&&Array.isArray(data.items)?data.items:[]);});
+  applySettings();renderCalendar(activeCalendarKey);renderNews();renderPartners();renderSocial();
+  if(document.getElementById('portal-overlay').classList.contains('open'))openRoute(currentRoute,false);
+}
+function applySettings(){
+  const s=cmsState.settings||{},h=s.hero||{},f=s.featured||{},c=s.calendar||{},nw=s.news||{},g=s.goals||{},contact=s.contact||{};
+  setText('hero-eyebrow',h.eyebrow);setText('hero-title-before',h.title_before);setText('hero-title-highlight',h.title_highlight);setText('hero-subtitle',h.subtitle);setText('hero-badge-title',h.badge_title);setText('hero-badge-text',h.badge_text);
+  const hp=document.getElementById('hero-primary');if(hp){setTextIn(hp,'.button-label',h.primary_label);if(h.primary_route)hp.dataset.route=h.primary_route;}
+  const hs=document.getElementById('hero-secondary');if(hs){setText('hero-secondary',h.secondary_label);if(h.secondary_anchor)hs.href=`#${h.secondary_anchor}`;}
+  if(Array.isArray(h.stats)&&h.stats.length){document.getElementById('hero-stats').innerHTML=h.stats.map(x=>`<div class="hero-stat"><strong>${escapeHtml(x.value)}</strong><span>${escapeHtml(x.label)}</span></div>`).join('');}
+  setText('featured-eyebrow',f.eyebrow);setText('featured-title',f.title);setText('featured-text',f.text);setText('featured-primary',f.primary_label);setText('featured-secondary',f.secondary_label);setText('featured-number',f.visual_number);
+  const fp=document.getElementById('featured-primary');if(fp&&f.primary_anchor)fp.href=`#${f.primary_anchor}`;const fs=document.getElementById('featured-secondary');if(fs&&f.secondary_route)fs.dataset.route=f.secondary_route;
+  setText('calendar-eyebrow',c.eyebrow);setText('calendar-title',c.title);setText('calendar-intro',c.intro);setText('news-eyebrow',nw.eyebrow);setText('news-title',nw.title);
+  setText('goals-slogan-before',g.slogan_before);setText('goals-slogan-highlight',g.slogan_highlight);setText('goals-slogan-after',g.slogan_after);setText('goals-eyebrow',g.eyebrow);setText('goals-title',g.title);setText('goals-intro',g.intro);
+  if(Array.isArray(g.items)&&g.items.length)document.getElementById('goals-list').innerHTML=g.items.map(x=>`<div class="goal-item"><p>${escapeHtml(typeof x==='string'?x:(x.item||''))}</p></div>`).join('');
+  const footer=document.getElementById('footer-contact');if(footer&&(contact.email||contact.phone||contact.location)){footer.innerHTML=`${escapeHtml(contact.email||'')}<br>${escapeHtml(contact.phone||'')}<br>${escapeHtml(contact.location||'')}<br><br><a href="https://www.fgsrm.com/" target="_blank" rel="noopener">Официјална веб-страна ↗</a>`;}
+}
+function setTextIn(root,selector,value){const el=root&&root.querySelector(selector);if(el&&value)el.textContent=value;}
+function renderPartners(){
+  const box=document.getElementById('partner-strip');if(!box)return;const items=published(cmsState.partners).sort((a,b)=>(a.order||10)-(b.order||10));
+  if(!items.length){box.innerHTML='<div class="partner-logo"><small>Место за</small>Партнер</div><div class="partner-logo"><small>Место за</small>Спонзор</div>';}
+  else box.innerHTML=items.map(x=>{const logo=safeUrl(x.logo),url=safeUrl(x.url),inner=logo?`<img src="${escapeHtml(logo)}" alt="${escapeHtml(x.name)}">`:`${escapeHtml(x.name)}${x.type?`<small>${escapeHtml(x.type)}</small>`:''}`;return `<div class="partner-logo">${url?`<a href="${escapeHtml(url)}" target="_blank" rel="noopener">${inner}</a>`:inner}</div>`;}).join('');
+  const note=document.getElementById('partner-note');if(note){const email=(cmsState.settings.contact||{}).email||'contact.fgsm.bt@gmail.com';note.innerHTML=`${escapeHtml(cmsState.settings.partners_note||'За партнерство или спонзорство контактирајте ја Федерацијата.')} <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>.`;}
+}
+function renderSocial(){const box=document.getElementById('social-grid');if(!box)return;const items=published(cmsState.social);if(!items.length)return;box.innerHTML=items.slice(0,4).map((x,i)=>{const url=safeUrl(x.url),image=safeUrl(x.image);const style=image?` style="background-image:linear-gradient(145deg,rgba(28,28,46,.72),rgba(13,13,26,.88)),url('${escapeHtml(image)}');background-size:cover;background-position:center"`:'';const body=`<span class="social-mark">${String(i+1).padStart(2,'0')}</span><p>${escapeHtml(x.title)}</p><span>${escapeHtml(x.platform||'ФГСМ')}</span>`;return url?`<a class="social-post" href="${escapeHtml(url)}" target="_blank" rel="noopener"${style}>${body}</a>`:`<article class="social-post"${style}>${body}</article>`;}).join('');}
+
+
+/* CALENDAR */
+const calendarTabs=document.getElementById('calendar-tabs'),calendarBoard=document.getElementById('calendar-board');
+let activeCalendarKey='msg';
+[['msg','МСГ'],['zsg','ЖСГ'],['rg','РГ'],['pk','ПК'],['gfa','Гимнастика за сите']].forEach(([id,label],i)=>{const b=document.createElement('button');b.className='calendar-tab'+(i===0?' active':'');b.textContent=label;b.dataset.tab=id;b.setAttribute('role','tab');calendarTabs.appendChild(b);});
+function renderCalendar(key=activeCalendarKey){activeCalendarKey=key;const items=published(cmsState.events).filter(x=>x.branch===key).sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length){calendarBoard.innerHTML='<div class="cms-empty"><strong>Нема објавени настани</strong><span>Новиот настан ќе се појави тука веднаш по објавување од административниот панел.</span></div>';return;}calendarBoard.innerHTML=items.map(e=>`<div class="calendar-row"><div class="calendar-date">${escapeHtml(eventDate(e))}</div><div class="calendar-name"><strong>${escapeHtml(e.name)}</strong><span>${escapeHtml(e.category||'')}</span></div><div class="calendar-cell"><span class="calendar-type">${escapeHtml(e.type||'Настан')}</span></div><div class="calendar-cell">${escapeHtml(e.location||'')}</div><div class="calendar-cell"><button class="text-link" data-entry-type="events" data-entry-id="${escapeHtml(e.slug||e.name)}">Детали</button></div></div>`).join('');}
+renderCalendar('msg');calendarTabs.addEventListener('click',e=>{const btn=e.target.closest('.calendar-tab');if(!btn)return;calendarTabs.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));renderCalendar(btn.dataset.tab);});
+
+/* NEWS */
+const newsGrid=document.getElementById('news-grid');
+function renderNews(){const items=published(cmsState.news).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))).slice(0,5);if(!items.length){newsGrid.innerHTML='<div class="cms-empty"><strong>Нема објавени новости</strong><span>Првата објава ќе се појави тука по објавување од административниот панел.</span></div>';return;}newsGrid.innerHTML=items.map((x,i)=>`<article class="news-card ${(x.featured||i===0)?'featured':''} reveal" data-entry-type="news" data-entry-id="${escapeHtml(x.slug||x.title)}" tabindex="0"><div class="news-media" ${x.image?`data-image="${escapeHtml(x.image)}"`:''}></div><div class="news-body"><div class="news-meta"><span>${escapeHtml(x.category||'Новости')}</span><span class="news-date">${escapeHtml(mkDate(x.date)||'')}</span></div><h3 class="news-title">${escapeHtml(x.title)}</h3><p class="news-excerpt">${escapeHtml(x.excerpt||'')}</p></div></article>`).join('');newsGrid.querySelectorAll('.news-media[data-image]').forEach(el=>{const u=safeUrl(el.dataset.image);if(u)el.style.backgroundImage=`linear-gradient(to top,rgba(13,13,26,.72),transparent 65%),url("${u.replace(/"/g,'%22')}")`;});newsGrid.querySelectorAll('.reveal').forEach(el=>{el.classList.add('visible');});}
+renderNews();
+
+/* PORTAL VIEW */
+const portal=document.getElementById('portal-overlay'),portalTitle=document.getElementById('portal-title'),portalSummary=document.getElementById('portal-summary'),portalBreadcrumbs=document.getElementById('portal-breadcrumbs'),portalContent=document.getElementById('portal-content'),sidebar=document.getElementById('portal-sidebar-tree');
+let currentRoute='about';
+function nodeSummary(node){return node.summary||genericSummaries[node.label]||`Официјална секција на ФГСМ: ${node.label}. Содржината е организирана според федерациската хиерархија и е подготвена за внес на потврдени материјали.`;}
+function branchContext(parents){const labels=parents.map(p=>p.label);if(labels.includes('МСГ'))return 'машката спортска гимнастика';if(labels.includes('ЖСГ'))return 'женската спортска гимнастика';if(labels.includes('РГ'))return 'ритмичката гимнастика';if(labels.includes('ПК'))return 'паркур';return 'македонската гимнастика';}
+function customPageFor(route){return published(cmsState.pages).find(x=>x.route===route)||null;}
+function customPageHtml(page){if(!page)return '';return `${page.title?`<h2>${escapeHtml(page.title)}</h2>`:''}${page.body?formatBody(page.body):''}${page.callout_title||page.callout_text?`<div class="portal-callout"><strong>${escapeHtml(page.callout_title||'Важно')}</strong><p>${escapeHtml(page.callout_text||'')}</p></div>`:''}${page.updated?`<div class="cms-updated">Последно ажурирање: ${escapeHtml(mkDate(page.updated))}</div>`:''}`;}
+function emptyHtml(title='Содржината се подготвува',text='Официјалните информации ќе бидат објавени тука по нивната потврда.') {return `<div class="cms-empty"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(text)}</span></div>`;}
+function newsArchiveHtml(){const items=published(cmsState.news).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени новости','Нова објава се додава преку административниот панел.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-media" ${x.image?`data-bg="${escapeHtml(x.image)}"`:''}></div><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(x.category||'Новости')} · ${escapeHtml(mkDate(x.date))}</div><h3>${escapeHtml(x.title)}</h3><p>${escapeHtml(x.excerpt||'')}</p><div class="cms-card-actions"><button class="cms-action primary" data-entry-type="news" data-entry-id="${escapeHtml(x.slug||x.title)}">Прочитај</button></div></div></article>`).join('')}</div>`;}
+function eventArchiveHtml(branch='all'){let items=published(cmsState.events);if(branch!=='all')items=items.filter(x=>x.branch===branch);items.sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length)return emptyHtml('Нема објавени настани','Календарот ќе се ажурира по официјална потврда.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(branchLabels[x.branch]||'ФГСМ')} · ${escapeHtml(eventDate(x))}</div><h3>${escapeHtml(x.name)}</h3><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(x.type||'Настан')}</span><span class="cms-pill">${escapeHtml(x.location||'')}</span></div><p>${escapeHtml(x.description||x.category||'')}</p><div class="cms-card-actions"><button class="cms-action primary" data-entry-type="events" data-entry-id="${escapeHtml(x.slug||x.name)}">Детали</button>${safeUrl(x.bulletin)?`<a class="cms-action" href="${escapeHtml(safeUrl(x.bulletin))}" target="_blank" rel="noopener">Билтен</a>`:''}</div></div></article>`).join('')}</div>`;}
+function resultArchiveHtml(branch='all'){let items=published(cmsState.results);if(branch!=='all')items=items.filter(x=>x.branch===branch);items.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени резултати','PDF резултатите ќе се појават тука веднаш по објавувањето.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(branchLabels[x.branch]||'ФГСМ')} · ${escapeHtml(mkDate(x.date))}</div><h3>${escapeHtml(x.title)}</h3><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(x.competition_type||'Резултати')}</span><span class="cms-pill">${escapeHtml(x.category||'')}</span></div><p>${escapeHtml(x.summary||x.location||'')}</p><div class="cms-card-actions">${safeUrl(x.file)?`<a class="cms-action primary" href="${escapeHtml(safeUrl(x.file))}" target="_blank" rel="noopener">Отвори резултати</a>`:''}</div></div></article>`).join('')}</div>`;}
+function documentsHtml(route,branch='all'){let items=published(cmsState.documents).filter(x=>x.route===route||(route==='documents'&&(x.route==='documents'||!x.route))||(branch!=='all'&&x.branch===branch&&(!x.route||x.route==='documents')));items.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени документи','Документите, правилниците и програмите се додаваат преку административниот панел.');return `<table class="resource-table"><thead><tr><th>Документ</th><th>Категорија</th><th>Датум / верзија</th><th></th></tr></thead><tbody>${items.map(x=>`<tr><td><strong>${escapeHtml(x.title)}</strong>${x.description?`<br><small>${escapeHtml(x.description)}</small>`:''}</td><td>${escapeHtml(x.category||branchLabels[x.branch]||'ФГСМ')}</td><td>${escapeHtml(mkDate(x.date))}${x.version?`<br><span class="resource-status">${escapeHtml(x.version)}</span>`:''}</td><td>${safeUrl(x.file)?`<a class="cms-action primary" href="${escapeHtml(safeUrl(x.file))}" target="_blank" rel="noopener">Отвори</a>`:''}</td></tr>`).join('')}</tbody></table>`;}
+function peopleHtml(route,groups,branch='all'){let items=published(cmsState.people).filter(x=>(!groups.length||groups.includes(x.group))&&(x.route===route||(!x.route&&(x.branch===branch||x.branch==='all'))));items.sort((a,b)=>(a.order||10)-(b.order||10));if(!items.length)return emptyHtml('Нема објавени лица','Составите и функциите ќе бидат прикажани по официјална потврда.');return `<div class="cms-people">${items.map(x=>`<article class="person-card"><div class="person-photo" ${x.photo?`data-bg="${escapeHtml(x.photo)}"`:''}></div><div class="person-body"><div class="person-role">${escapeHtml(x.role||'')}</div><h3>${escapeHtml(x.name)}</h3>${x.club?`<p>${escapeHtml(x.club)}</p>`:''}${x.mandate?`<p><small>${escapeHtml(x.mandate)}</small></p>`:''}${x.bio?`<p>${escapeHtml(x.bio)}</p>`:''}</div></article>`).join('')}</div>`;}
+function galleryHtml(){const items=published(cmsState.gallery).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Галеријата се подготвува','Фотографиите ќе бидат објавени по избор и одобрување.');return `<div class="cms-gallery">${items.map(x=>`<figure><img src="${escapeHtml(safeUrl(x.image))}" alt="${escapeHtml(x.alt||x.title)}" loading="lazy"><figcaption><strong>${escapeHtml(x.title)}</strong><br>${escapeHtml(x.caption||'')}<br><small>${escapeHtml(mkDate(x.date))}</small></figcaption></figure>`).join('')}</div>`;}
+function hydrateDynamicMedia(root){root.querySelectorAll('[data-bg]').forEach(el=>{const u=safeUrl(el.dataset.bg);if(u)el.style.backgroundImage=`url("${u.replace(/"/g,'%22')}")`;});}
+function contentFor(node,parents){
+  const context=branchContext([...parents,node]),branch=routeBranch(node.id),custom=customPageHtml(customPageFor(node.id));
+  if(node.id==='contact'){const c=cmsState.settings.contact||{};return `${custom||'<h2>Контакт со Федерацијата</h2>'}<div class="portal-callout"><strong>ФГСМ</strong><p>Е-пошта: <a href="mailto:${escapeHtml(c.email||'contact.fgsm.bt@gmail.com')}">${escapeHtml(c.email||'contact.fgsm.bt@gmail.com')}</a><br>Телефон: <a href="tel:${escapeHtml((c.phone||'+38978863136').replace(/\s/g,''))}">${escapeHtml(c.phone||'+389 78 863 136')}</a><br>Локација: ${escapeHtml(c.location||'Битола / Скопје, Македонија')}</p></div>`;}
+  if(node.id==='news')return `${custom||'<h2>Новости</h2><p>Официјални вести, соопштенија и активности на ФГСМ.</p>'}${newsArchiveHtml()}`;
+  if(node.id==='gallery')return `${custom||'<h2>Галерија</h2><p>Визуелен архив од федерациски активности и натпревари.</p>'}${galleryHtml()}`;
+  if(node.id==='documents'||node.label==='Документи')return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјална библиотека за ${escapeHtml(context)}.</p>`}${documentsHtml(node.id,branch)}`;
+  if(node.id==='about/bodies')return `${custom||'<h2>Тела и членови</h2><p>Официјална организациска структура на Федерацијата.</p>'}${peopleHtml(node.id,['leadership','board','staff'],'all')}`;
+  if(node.id.includes('national-team'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Национална селекција за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['national-team','coach','staff'],branch)}`;
+  if(node.id.includes('judges'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Судиски кадар и лиценцирани лица за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['judge'],branch)}`;
+  if(node.id==='education/coaches-judges')return `${custom||'<h2>Тренери и судии</h2><p>Стручен кадар, едукација и лиценцирање.</p>'}${peopleHtml(node.id,['coach','judge','staff'],'all')}`;
+  if(node.id.includes('results'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјални резултати и архиви.</p>`}${resultArchiveHtml(branch)}`;
+  if(node.id==='competitions'||node.id==='competitions/calendar'||node.id.endsWith('/competitions'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Календар и информации за натпреварите.</p>`}${eventArchiveHtml(branch)}`;
+  if(custom)return custom;
+  if(node.id==='privacy'||node.id==='privacy/statement')return `<h2>${escapeHtml(node.label)}</h2><p>Личните податоци доставени преку официјалните контакт канали се користат исклучиво за обработка на барањето и комуникација со испраќачот.</p>`;
+  if(node.id==='terms')return `<h2>Услови на користење</h2><p>Содржината на порталот има информативен и официјален федерациски карактер. За натпреварувачки и административни постапки важат објавените акти, правилници и одлуки.</p>`;
+  if(node.id.includes('/manual'))return `<h2>${escapeHtml(node.label)}</h2><p>Стручни материјали за ${escapeHtml(context)}.</p>${documentsHtml(node.id,branch)}`;
+  if(node.id.startsWith('education'))return `<h2>${escapeHtml(node.label)}</h2><p>Едукација за тренери, судии и федерациски кадри.</p>${documentsHtml(node.id,branch)}`;
+  return `<h2>${escapeHtml(node.label)}</h2><p>${escapeHtml(nodeSummary(node))}</p><div class="portal-callout"><strong>Федерациска секција</strong><p>Содржината за оваа страница може да се внесе преку „Содржина на сите внатрешни страници“ во административниот панел со route ID: <code>${escapeHtml(node.id)}</code>.</p></div>`;
+}
+function sideTreeHtml(nodes,current){return `<ul class="side-tree">${nodes.map(node=>`<li><button class="route-btn ${node.id===current?'current':''}" data-route="${node.id}">${node.label}</button>${node.children.length?sideTreeHtml(node.children,current):''}</li>`).join('')}</ul>`;}
+function openRoute(id,push=true){
+  const entry=routeMap.get(id)||routeMap.get('about');const {node,parents}=entry;currentRoute=node.id;
+  closeMega();closeMobile();
+  portalTitle.textContent=node.label;portalSummary.textContent=nodeSummary(node);
+  portalBreadcrumbs.innerHTML=`<button class="portal-home">Почетна</button>${parents.map(p=>`<span>›</span><button class="route-btn" data-route="${p.id}">${p.label}</button>`).join('')}<span>›</span><strong>${node.label}</strong>`;
+  portalContent.innerHTML=contentFor(node,parents);hydrateDynamicMedia(portalContent);
+  if(node.children.length){portalContent.innerHTML+=`<h3>Содржина на секцијата</h3><div class="portal-child-grid">${node.children.map(child=>`<button class="portal-child-card route-btn" data-route="${child.id}"><span>${node.label}</span><strong>${child.label}</strong><p>${nodeSummary(child)}</p></button>`).join('')}</div>`;}
+  const root=parents[0]||node;sidebar.innerHTML=sideTreeHtml([root],node.id);
+  bindRouteButtons(portal);portal.querySelector('.portal-home').addEventListener('click',closePortal,{once:true});
+  portal.classList.add('open');portal.setAttribute('aria-hidden','false');document.body.classList.add('locked');portal.scrollTop=0;
+  if(push)history.pushState({route:node.id},'',`#/${node.id}`);
+}
+function closePortal(push=true){portal.classList.remove('open');portal.setAttribute('aria-hidden','true');document.body.classList.remove('locked');if(push)history.pushState({},'',location.pathname+location.search);}
+function openEntry(type,id,push=true){
+  const list=cmsState[type]||[],item=list.find(x=>(x.slug||x.name||x.title)===id);if(!item)return;
+  closeMega();closeMobile();currentRoute=type==='news'?'news':'competitions/calendar';
+  portalTitle.textContent=item.title||item.name||'Содржина';portalSummary.textContent=item.excerpt||item.description||item.summary||'';
+  portalBreadcrumbs.innerHTML=`<button class="portal-home">Почетна</button><span>›</span><button class="route-btn" data-route="${type==='news'?'news':'competitions/calendar'}">${type==='news'?'Новости':'Календар'}</button><span>›</span><strong>${escapeHtml(item.title||item.name||'Детали')}</strong>`;
+  if(type==='news')portalContent.innerHTML=`${item.image?`<img src="${escapeHtml(safeUrl(item.image))}" alt="${escapeHtml(item.image_alt||item.title)}" style="width:100%;max-height:520px;object-fit:cover;border-radius:5px;margin-bottom:1.5rem">`:''}<div class="cms-kicker">${escapeHtml(item.category||'Новости')} · ${escapeHtml(mkDate(item.date))}</div><h2>${escapeHtml(item.title)}</h2>${formatBody(item.body||item.excerpt||'')}`;
+  else portalContent.innerHTML=`<h2>${escapeHtml(item.name||'Настан')}</h2><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(eventDate(item))}</span><span class="cms-pill">${escapeHtml(item.type||'Настан')}</span><span class="cms-pill">${escapeHtml(item.location||'')}</span></div>${formatBody(item.description||'')}<table class="resource-table"><tbody>${item.category?`<tr><th>Категорија</th><td>${escapeHtml(item.category)}</td></tr>`:''}${item.organizer?`<tr><th>Организатор</th><td>${escapeHtml(item.organizer)}</td></tr>`:''}</tbody></table><div class="cms-card-actions">${safeUrl(item.bulletin)?`<a class="cms-action primary" href="${escapeHtml(safeUrl(item.bulletin))}" target="_blank" rel="noopener">Отвори билтен</a>`:''}${safeUrl(item.registration_url)?`<a class="cms-action" href="${escapeHtml(safeUrl(item.registration_url))}" target="_blank" rel="noopener">Пријавување</a>`:''}${safeUrl(item.results_url)?`<a class="cms-action" href="${escapeHtml(safeUrl(item.results_url))}" target="_blank" rel="noopener">Резултати</a>`:''}</div>`;
+  sidebar.innerHTML='';bindRouteButtons(portal);portal.querySelector('.portal-home').addEventListener('click',closePortal,{once:true});portal.classList.add('open');portal.setAttribute('aria-hidden','false');document.body.classList.add('locked');portal.scrollTop=0;
+  if(push)history.pushState({entryType:type,entryId:id},'',`#/entry/${encodeURIComponent(type)}/${encodeURIComponent(id)}`);
+}
+document.addEventListener('click',e=>{const target=e.target.closest('[data-entry-type][data-entry-id]');if(!target)return;e.preventDefault();openEntry(target.dataset.entryType,target.dataset.entryId);});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[data-entry-type][data-entry-id]')){e.preventDefault();openEntry(e.target.dataset.entryType,e.target.dataset.entryId);}});
+
+document.getElementById('portal-close').addEventListener('click',()=>closePortal());
+function bindRouteButtons(scope=document){scope.querySelectorAll('.route-btn').forEach(btn=>{if(btn.dataset.bound)return;btn.dataset.bound='1';btn.addEventListener('click',e=>{e.preventDefault();openRoute(btn.dataset.route);});});}
+bindRouteButtons();
+window.addEventListener('popstate',e=>{if(e.state&&e.state.entryType)openEntry(e.state.entryType,e.state.entryId,false);else if(e.state&&e.state.route)openRoute(e.state.route,false);else closePortal(false);});
+if(location.hash.startsWith('#/entry/')){const parts=location.hash.slice(8).split('/');setTimeout(()=>openEntry(decodeURIComponent(parts[0]||''),decodeURIComponent(parts.slice(1).join('/')||''),false),150);}else if(location.hash.startsWith('#/')){const id=decodeURIComponent(location.hash.slice(2));setTimeout(()=>openRoute(id,false),100);}
+
+loadCmsContent().catch(error=>console.warn('CMS content fallback active:',error));
+if(window.netlifyIdentity){window.netlifyIdentity.on('init',user=>{if(!user)window.netlifyIdentity.on('login',()=>{window.location.href='/admin/';});});}
+
+/* REVEAL */
+const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');revealObserver.unobserve(entry.target);}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+/* SOCIAL TABS */
+document.querySelectorAll('.social-tab').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('.social-tab').forEach(t=>t.classList.toggle('active',t===tab));}));
+
+/* COOKIE */
+const cookieBanner=document.getElementById('cookie-banner');if(localStorage.getItem('fgsm-cookie'))cookieBanner.classList.add('hidden');function saveCookie(v){localStorage.setItem('fgsm-cookie',v);cookieBanner.classList.add('hidden');}document.getElementById('cookie-accept').addEventListener('click',()=>saveCookie('all'));document.getElementById('cookie-essential').addEventListener('click',()=>saveCookie('essential'));
+
+/* INTERACTIVE RIBBON — preserved visual language from original */
+(function(){
+  const canvas=document.getElementById('ribbon-canvas'),ctx=canvas.getContext('2d');let t=0,mx=0,my=0,raf;
+  function size(){const d=Math.min(canvas.parentElement.clientWidth,520),r=devicePixelRatio||1;canvas.style.width=d+'px';canvas.style.height=d+'px';canvas.width=d*r;canvas.height=d*r;ctx.setTransform(r,0,0,r,0,0);return d}let D=size();
+  addEventListener('resize',()=>D=size());canvas.addEventListener('pointermove',e=>{const r=canvas.getBoundingClientRect();mx=(e.clientX-r.left)/r.width-.5;my=(e.clientY-r.top)/r.height-.5});canvas.addEventListener('pointerleave',()=>{mx=0;my=0});
+  function point(a,s,cx,cy){const den=1+Math.sin(a)**2;const x=s*Math.cos(a)/den,y=s*Math.sin(a)*Math.cos(a)/den;return{x:cx+x+my*y*.12,y:cy+y*.72+mx*x*.13}}
+  function lerp(a,b,f){return a+(b-a)*f}
+  function draw(){ctx.clearRect(0,0,D,D);const cx=D/2+mx*18,cy=D/2+my*18,s=D*.36,steps=230;
+    for(let g=3;g>0;g--){ctx.beginPath();for(let i=0;i<=steps;i++){const p=point(i/steps*Math.PI*2,s,cx+7,cy+8);i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)}ctx.strokeStyle=`rgba(139,26,43,${.055/g})`;ctx.lineWidth=18+g*6;ctx.stroke()}
+    for(let i=0;i<steps;i++){const a=i/steps*Math.PI*2,b=(i+1)/steps*Math.PI*2,p=point(a,s,cx,cy),q=point(b,s,cx,cy),phase=(i/steps+t*.12)%1;let r,g,bl;if(phase<.33){const f=phase/.33;r=lerp(201,139,f);g=lerp(168,26,f);bl=lerp(76,43,f)}else if(phase<.66){const f=(phase-.33)/.33;r=lerp(139,230,f);g=lerp(26,215,f);bl=lerp(43,205,f)}else{const f=(phase-.66)/.34;r=lerp(230,201,f);g=lerp(215,168,f);bl=lerp(205,76,f)}ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=`rgb(${r|0},${g|0},${bl|0})`;ctx.lineWidth=9;ctx.lineCap='round';ctx.stroke()}
+    const bp=point(t*.55,s,cx,cy);ctx.beginPath();ctx.arc(bp.x,bp.y,7,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#c9a84c';ctx.lineWidth=2;ctx.stroke();
+    ctx.strokeStyle='rgba(201,168,76,.09)';ctx.lineWidth=1;[.38,.52].forEach(k=>{ctx.beginPath();ctx.arc(cx,cy,D*k,0,Math.PI*2);ctx.stroke()});t+=.012;raf=requestAnimationFrame(draw)}
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting&&!raf)draw();else if(!e.isIntersecting&&raf){cancelAnimationFrame(raf);raf=null}}));obs.observe(canvas);
+})();
+</script>
+</body>
+</html>
