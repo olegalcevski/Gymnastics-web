@@ -1,6 +1,22 @@
 {
   "items": [
     {
+      "featured": true,
+      "published": true,
+      "name": "Натпревар Лето",
+      "slug": "natprevar-leten",
+      "start_date": "2026-06-20",
+      "end_date": "2026-06-24",
+      "branch": "РГ",
+      "category": "Индивидуално / групно",
+      "type": "слободен",
+      "location": "Скопје",
+      "organizer": "фгсм",
+      "status": "во тек",
+      "description": "Натпревар за деца во борис трајковси, летен.",
+      "results_url": "C:\\Users\\Dell\\Downloads\\REZULTATI-UNIVERZALNI-I-APSOLUTNI-PROGRAM.pdf"
+    },
+    {
       "slug": "nacionalen-kalendar-msg-2026",
       "published": true,
       "featured": true,
