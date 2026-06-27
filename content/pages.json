@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "route": "branches/msg",
+      "route": "branches/msg/general",
       "published": true,
       "title": "Нови правила",
       "body": "Сите натпреварувачи во мсг мора да се полнолетни",
