@@ -176,6 +176,19 @@ details.adv textarea{min-height:170px;font-family:Consolas,monospace;margin-top:
 
 <script>
 const cfg = window.APP_CONFIG || { MODE:'static', API_BASE_URL:'' };
+const API_BASE = (cfg.API_BASE_URL || "/.netlify/functions").replace(/\/$/, "");
+
+function normalizeMediaUrl(value) {
+  if (!value) return "";
+  value = String(value).trim();
+  if (!value) return "";
+  if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("data:")) return value;
+  if (value.startsWith("/assets/uploads/")) return value;
+  if (value.startsWith("assets/uploads/")) return "/" + value;
+  if (value.startsWith("/")) return value;
+  return "/assets/uploads/" + value;
+}
+
 document.getElementById('mode').textContent = cfg.MODE || 'static';
 
 const DISCIPLINES = ['МСГ','ЖСГ','РГ','ТРА','АКРО','АЕ','ГЗА'];
@@ -588,7 +601,15 @@ function bindFormInputs(){
   });
   $('fields').querySelectorAll('[data-upl]').forEach(inp=>inp.addEventListener('change',async()=>{
     const file=inp.files[0];if(!file)return;$('saveMsg').textContent='Се прикачува...';
-    const path=await uploadFile(file);
+    let path;
+    try {
+      path = await uploadFile(file);
+    } catch (e) {
+      console.error(e);
+      $('saveMsg').textContent = e.message || 'Грешка при прикачување';
+      alert(e.message || 'Грешка при прикачување');
+      return;
+    }
     if(!path){$('saveMsg').textContent='Грешка при прикачување';return;}
     const k=inp.dataset.upl;working[k]=path;
     const t=$('fields').querySelector(`input[data-f="${k}"]`);if(t)t.value=path;
@@ -623,11 +644,44 @@ async function save(){
   $('editor').classList.add('hide');await load(current);
 }
 async function delItem(key){if(!confirm('Избриши ја ставката?'))return;await saveContent(current,'DELETE',{key});await load(current);}
-async function uploadFile(f){
-  if(cfg.MODE==='zemi'){const fd=new FormData();fd.append('file',f);const r=await fetch(cfg.UPLOAD_URL,{method:'POST',credentials:'include',body:fd});const j=await r.json();return j.path||null;}
-  const b64=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(f)});
-  const r=await fetch(cfg.UPLOAD_URL,{method:'POST',credentials:'include',headers:{'content-type':'application/json'},body:JSON.stringify({filename:f.name,content:b64})});
-  const j=await r.json();return j.path||null;
+async function uploadFile(file) {
+  if (!file) throw new Error("No file selected");
+
+  const toBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const base64 = await toBase64(file);
+
+  const res = await fetch(`${API_BASE}/upload`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      filename: file.name,
+      content: base64,
+      mimeType: file.type
+    })
+  });
+
+  const text = await res.text();
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error("Upload backend did not return JSON: " + text.slice(0, 200));
+  }
+
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || "Upload failed");
+  }
+
+  const uploadedPath = data.path || data.url || data.file || data.filename;
+  if (!uploadedPath) throw new Error("Upload succeeded but backend returned no file path");
+  return normalizeMediaUrl(uploadedPath);
 }
 
 /* ---- bind list actions ---- */
@@ -642,7 +696,19 @@ $('lightbox').onclick=()=>$('lightbox').classList.add('hide');
 $('newBtn').onclick=()=>{if(current!=='settings')openEditor(null)};
 $('cancelBtn').onclick=()=>$('editor').classList.add('hide');
 $('saveBtn').onclick=save;
-$('uploadBtn').onclick=async()=>{const f=$('file').files[0];if(!f)return;$('uploadPath').value='...';const p=await uploadFile(f);$('uploadPath').value=p||'грешка';};
+$('uploadBtn').onclick=async()=>{
+  const f=$('file').files[0];
+  if(!f)return;
+  $('uploadPath').value='...';
+  try{
+    const p=await uploadFile(f);
+    $('uploadPath').value=p;
+  }catch(e){
+    console.error(e);
+    $('uploadPath').value='грешка';
+    alert(e.message || 'Грешка при прикачување');
+  }
+};
 
 /* ---- auth flow ---- */
 $('loginBtn').onclick=async()=>{$('loginMsg').textContent='...';const r=await auth('login',{password:$('password').value});if(r.ok)start();else $('loginMsg').textContent=r.error||'Грешка';};
