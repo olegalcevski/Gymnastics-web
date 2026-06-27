@@ -1,6 +1,12 @@
 {
   "items": [
     {
+      "published": true,
+      "slug": "branches/msg/general",
+      "title": "Ново правило",
+      "body": "Сите мора да имаат...."
+    },
+    {
       "route": "about",
       "published": true,
       "title": "Федерација на гимнастичките спортови на Македонија",
