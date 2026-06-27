@@ -123,6 +123,16 @@ details.adv textarea{min-height:170px;font-family:Consolas,monospace;margin-top:
 .settings-keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
 .skey{border:1px solid var(--border);border-radius:12px;padding:10px;background:rgba(255,255,255,.03);overflow:hidden}
 .skey pre{margin:6px 0 0;font-size:11px;white-space:pre-wrap;word-break:break-word}
+
+/* formatted page preview */
+.page-preview{display:flex;flex-direction:column;gap:10px}
+.page-preview h2{margin:6px 0 2px;font-size:20px}.page-preview h3{margin:6px 0 2px;font-size:16px}
+.page-preview p{margin:0 0 8px;line-height:1.55}.page-preview ul,.page-preview ol{margin:4px 0 10px 20px;padding:0}.page-preview li{margin:3px 0}
+.page-preview blockquote{margin:8px 0;padding:10px 12px;border-left:3px solid var(--brand);background:rgba(74,163,255,.08);border-radius:8px}
+.page-preview hr{border:0;border-top:1px solid var(--border);margin:12px 0}.page-preview a{color:var(--brand)}
+.page-hero{width:100%;max-height:180px;object-fit:cover;border-radius:12px;border:1px solid var(--border);margin:4px 0 8px}
+.callout{border:1px solid rgba(74,163,255,.32);background:rgba(74,163,255,.09);border-radius:14px;padding:12px;margin:10px 0}.callout b{display:block;margin-bottom:4px}
+.attachments{display:flex;flex-direction:column;gap:6px;margin-top:8px}
 /* lightbox */
 .lb{position:fixed;inset:0;background:rgba(2,7,15,.92);display:flex;align-items:center;justify-content:center;z-index:100;cursor:zoom-out}
 .lb img{max-width:92vw;max-height:92vh;border-radius:10px}
@@ -176,6 +186,19 @@ details.adv textarea{min-height:170px;font-family:Consolas,monospace;margin-top:
 
 <script>
 const cfg = window.APP_CONFIG || { MODE:'static', API_BASE_URL:'' };
+const API_BASE = (cfg.API_BASE_URL || "/.netlify/functions").replace(/\/$/, "");
+
+function normalizeMediaUrl(value) {
+  if (!value) return "";
+  value = String(value).trim();
+  if (!value) return "";
+  if (value.startsWith("http://") || value.startsWith("https://") || value.startsWith("data:")) return value;
+  if (value.startsWith("/assets/uploads/")) return value;
+  if (value.startsWith("assets/uploads/")) return "/" + value;
+  if (value.startsWith("/")) return value;
+  return "/assets/uploads/" + value;
+}
+
 document.getElementById('mode').textContent = cfg.MODE || 'static';
 
 const DISCIPLINES = ['МСГ','ЖСГ','РГ','ТРА','АКРО','АЕ','ГЗА'];
@@ -298,8 +321,20 @@ const SCHEMA = {
   pages: { label:'Страници', view:'pages', filters:[],
     fields:[
       {k:'title',label:'Наслов',type:'text',required:true},
-      {k:'slug',label:'Slug (URL)',type:'text',required:true},
-      {k:'body',label:'Содржина',type:'richtext'},
+      {k:'route',label:'Route ID / URL патека',type:'text',required:true,help:'Ова кажува каде се појавува страницата. Пример: about или branches/msg/general'},
+      {k:'slug',label:'Slug / alias (опционално)',type:'text',help:'Ако е празно, автоматски ќе биде исто како Route ID.'},
+      {k:'summary',label:'Краток опис',type:'textarea'},
+      {k:'image',label:'Главна слика',type:'image'},
+      {k:'image_alt',label:'Алт текст за слика',type:'text'},
+      {k:'body',label:'Содржина (форматирање дозволено)',type:'richtext',help:'Користи ## за наслов, ### за поднаслов, - за листа, **задебелено**, *italic*, [линк](https://...)'},
+      {k:'callout_title',label:'Наслов на истакнат блок',type:'text'},
+      {k:'callout_text',label:'Текст на истакнат блок',type:'textarea'},
+      {k:'attachments',label:'Додатоци / Attachments',type:'textarea',help:'Опционално. Внеси по една патека или линк во ред. Пример: /assets/uploads/file.pdf'},
+      {k:'seo_title',label:'SEO наслов',type:'text'},
+      {k:'seo_description',label:'SEO опис',type:'textarea'},
+      {k:'updated',label:'Датум на ажурирање',type:'date'},
+      {k:'layout',label:'Layout',type:'select',options:['','standard','hero','compact']},
+      {k:'custom_class',label:'Custom CSS class',type:'text'},
       {k:'published',label:'Објавено',type:'bool',default:true},
     ] },
 };
@@ -351,7 +386,7 @@ async function saveContent(type,method,body){const base=cfg.CONTENT_BASE_URL||ap
 /* ---- helpers ---- */
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function clone(x){return JSON.parse(JSON.stringify(x))}
-function keyOf(x){return x.slug||x.id||x.title||x.name||x.date||''}
+function keyOf(x){return x.route||x.slug||x.id||x.title||x.name||x.date||''}
 function currentItems(){const p=store[current]||{};return Array.isArray(p.items)?p.items:[]}
 function parseDate(s){if(!s)return null;if(s instanceof Date)return s;const m=String(s).match(/(\d{4})-(\d{2})-(\d{2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]);const d=new Date(s);return isNaN(d)?null:d;}
 function fmtDate(s){const d=parseDate(s);if(!d)return esc(s||'')||'—';return `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;}
@@ -508,7 +543,65 @@ function viewSocial(items){
 function viewPages(items){
   if(!items.length)return '<p class="muted">Нема страници.</p>';
   const idxOf=new Map(items.map((x,i)=>[x,i]));
-  return items.map(p=>`<article class="item ${p.published===false?'unpub':''}"><div class="row between"><div><b>${esc(p.title||p.slug||'')}</b><div class="muted sm">/${esc(p.slug||'')}</div></div>${actionsCell(idxOf.get(p))}</div></article>`).join('');
+  return items.map(p=>{
+    const route=p.route||p.slug||'';
+    return `<article class="item ${p.published===false?'unpub':''}"><div class="row between"><div><b>${esc(p.title||route||'')}</b><div class="muted sm">Route: ${esc(route||'—')}${p.updated?` · Ажурирано: ${fmtDate(p.updated)}`:''}</div>${p.summary?`<div class="muted sm">${esc(p.summary)}</div>`:''}</div>${actionsCell(idxOf.get(p))}</div></article>`
+  }).join('');
+}
+
+
+function normalizePageItem(item){
+  item = item || {};
+  item.route = String(item.route || item.slug || '').trim().replace(/^\/+|\/+$/g,'');
+  item.slug = String(item.slug || item.route || '').trim().replace(/^\/+|\/+$/g,'');
+  if (item.image) item.image = normalizeMediaUrl(item.image);
+  if (!item.updated) item.updated = new Date().toISOString().slice(0,10);
+  return item;
+}
+function inlineFormat(text){
+  let t = esc(text);
+  t = t.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img class="page-hero" src="$2" alt="$1">');
+  t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+|\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  t = t.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  return t;
+}
+function renderMarkdown(src){
+  const lines = String(src||'').replace(/\r\n/g,'\n').split('\n');
+  let html='', list=null, para=[];
+  function flushPara(){ if(para.length){ html += `<p>${inlineFormat(para.join(' '))}</p>`; para=[]; } }
+  function closeList(){ if(list){ html += `</${list}>`; list=null; } }
+  for(const raw of lines){
+    const line = raw.trim();
+    if(!line){ flushPara(); closeList(); continue; }
+    if(/^---+$/.test(line)){ flushPara(); closeList(); html+='<hr>'; continue; }
+    if(line.startsWith('### ')){ flushPara(); closeList(); html += `<h3>${inlineFormat(line.slice(4))}</h3>`; continue; }
+    if(line.startsWith('## ')){ flushPara(); closeList(); html += `<h2>${inlineFormat(line.slice(3))}</h2>`; continue; }
+    if(line.startsWith('> ')){ flushPara(); closeList(); html += `<blockquote>${inlineFormat(line.slice(2))}</blockquote>`; continue; }
+    if(/^-\s+/.test(line)){ flushPara(); if(list!=='ul'){closeList(); list='ul'; html+='<ul>';} html += `<li>${inlineFormat(line.replace(/^-\s+/,''))}</li>`; continue; }
+    if(/^\d+\.\s+/.test(line)){ flushPara(); if(list!=='ol'){closeList(); list='ol'; html+='<ol>';} html += `<li>${inlineFormat(line.replace(/^\d+\.\s+/,''))}</li>`; continue; }
+    closeList(); para.push(line);
+  }
+  flushPara(); closeList(); return html;
+}
+function renderAttachments(value){
+  if(!value) return '';
+  const rows = String(value).split('\n').map(x=>x.trim()).filter(Boolean);
+  if(!rows.length) return '';
+  return `<div class="attachments">${rows.map((u,i)=>`<a class="linkbtn" href="${esc(u)}" target="_blank" rel="noopener">Додаток ${i+1}</a>`).join('')}</div>`;
+}
+function renderPageContent(x){
+  const route=x.route||x.slug||'';
+  return `<div class="page-preview ${esc(x.custom_class||'')}">
+    ${x.image?`<img class="page-hero" src="${esc(x.image)}" alt="${esc(x.image_alt||x.title||'')}">`:''}
+    <h2>${esc(x.title||'')}</h2>
+    <div class="muted sm">Route: /${esc(route||'')}</div>
+    ${x.summary?`<p class="muted">${esc(x.summary)}</p>`:''}
+    ${renderMarkdown(x.body||'')}
+    ${(x.callout_title||x.callout_text)?`<div class="callout"><b>${esc(x.callout_title||'')}</b><span>${esc(x.callout_text||'')}</span></div>`:''}
+    ${renderAttachments(x.attachments)}
+    ${x.updated?`<div class="muted sm">Ажурирано: ${fmtDate(x.updated)}</div>`:''}
+  </div>`;
 }
 
 /* ---- single-item preview (editor) ---- */
@@ -523,7 +616,7 @@ function previewOne(type,x){
     case 'people':return `<article class="profile" style="max-width:240px;margin:auto"><div class="avatar">${x.image?`<img src="${esc(x.image)}" alt="">`:`<span>${esc((x.name||'?').trim().slice(0,1))}</span>`}</div><h4>${esc(x.name||'')}</h4><div class="role">${esc(x.role||'')}</div><div class="row center gap6">${x.group?`<span class="chip">${esc(x.group)}</span>`:''}${x.branch?`<span class="chip">${esc(x.branch)}</span>`:''}${x.license?`<span class="chip lic">${esc(x.license)}</span>`:''}</div><p class="muted bio">${esc(x.body||'')}</p></article>`;
     case 'partners':return `<article class="partner"><span class="partner-logo">${x.logo?`<img src="${esc(x.logo)}" alt="">`:esc(x.name||'')}</span><b>${esc(x.name||'')}</b></article>`;
     case 'social':{const a=x.active!==false&&x.published!==false;return `<div class="social-row ${a?'':'off'}"><span class="social-icon">${socialGlyph(x)}</span><div class="social-main"><b>${esc(x.platform||'')}</b><span class="muted">${esc(x.url||'')}</span></div><span class="badge ${a?'up':'past'}">${a?'Активно':'Неактивно'}</span></div>`}
-    case 'pages':return `<div class="card" style="margin:0"><b>${esc(x.title||'')}</b><div class="muted sm">/${esc(x.slug||'')}</div></div>`;
+    case 'pages':return renderPageContent(normalizePageItem(clone(x)));
     default:return '';
   }
 }
@@ -567,7 +660,7 @@ function openEditor(key){
   editing=key;$('editor').classList.remove('hide');
   const isSettings=current==='settings';
   const orig=(!isSettings&&key!=null)?currentItems().find(x=>keyOf(x)===key):null;
-  working=isSettings?clone(store.settings||{}):(orig?clone(orig):defaultItem(current));
+  working=isSettings?clone(store.settings||{}):(orig?clone(orig):defaultItem(current)); if(current==='pages' && !isSettings) working=normalizePageItem(working);
   $('editorTitle').textContent=isSettings?'Поставки на почетна / контакт':(orig?'Уреди: '+SCHEMA[current].label:'Нова ставка: '+SCHEMA[current].label);
   $('fields').innerHTML=(isSettings?settingsForm(working):SCHEMA[current].fields.map(f=>inputFor(f,working[f.k])).join('')+datalists(current));
   $('jsonBox').value=JSON.stringify(working,null,2);
@@ -580,6 +673,10 @@ function bindFormInputs(){
     el.addEventListener(ev,()=>{
       if(el.dataset.f==='__all__'){try{working=JSON.parse(el.value)}catch{}}
       else working[el.dataset.f]=typedVal(el);
+      if(current==='pages'){
+        if(el.dataset.f==='route' && !working.slug) working.slug=String(working.route||'').trim().replace(/^\/+|\/+$/g,'');
+        if(el.dataset.f==='slug' && !working.route) working.route=String(working.slug||'').trim().replace(/^\/+|\/+$/g,'');
+      }
       $('jsonBox').value=JSON.stringify(working,null,2);
       const prev=$('fields').querySelector(`[data-prev="${el.dataset.f}"]`);
       if(prev&&el.dataset.type==='image')prev.innerHTML=el.value?`<img src="${esc(el.value)}" alt="">`:'';
@@ -588,7 +685,15 @@ function bindFormInputs(){
   });
   $('fields').querySelectorAll('[data-upl]').forEach(inp=>inp.addEventListener('change',async()=>{
     const file=inp.files[0];if(!file)return;$('saveMsg').textContent='Се прикачува...';
-    const path=await uploadFile(file);
+    let path;
+    try {
+      path = await uploadFile(file);
+    } catch (e) {
+      console.error(e);
+      $('saveMsg').textContent = e.message || 'Грешка при прикачување';
+      alert(e.message || 'Грешка при прикачување');
+      return;
+    }
     if(!path){$('saveMsg').textContent='Грешка при прикачување';return;}
     const k=inp.dataset.upl;working[k]=path;
     const t=$('fields').querySelector(`input[data-f="${k}"]`);if(t)t.value=path;
@@ -616,6 +721,14 @@ function renderSettings(payload){
 async function save(){
   $('saveMsg').textContent='Се зачувува...';
   let item;try{item=JSON.parse($('jsonBox').value)}catch(e){$('saveMsg').textContent='JSON грешка: '+e.message;return;}
+  if(current==='pages'){
+    item=normalizePageItem(item);
+    if(!item.title){$('saveMsg').textContent='Внеси наслов.';return;}
+    if(!item.route){$('saveMsg').textContent='Внеси Route ID / URL патека.';return;}
+    const duplicate=currentItems().find(x=>(x.route||x.slug||'')===item.route && keyOf(x)!==editing);
+    if(duplicate){$('saveMsg').textContent='Веќе постои страница со оваа Route ID патека.';return;}
+    $('jsonBox').value=JSON.stringify(item,null,2);
+  }
   let res;
   if(current==='settings')res=await saveContent('settings','PUT',{payload:item});
   else res=await saveContent(current,editing!=null?'PATCH':'POST',editing!=null?{key:editing,item}:{item});
@@ -623,11 +736,44 @@ async function save(){
   $('editor').classList.add('hide');await load(current);
 }
 async function delItem(key){if(!confirm('Избриши ја ставката?'))return;await saveContent(current,'DELETE',{key});await load(current);}
-async function uploadFile(f){
-  if(cfg.MODE==='zemi'){const fd=new FormData();fd.append('file',f);const r=await fetch(cfg.UPLOAD_URL,{method:'POST',credentials:'include',body:fd});const j=await r.json();return j.path||null;}
-  const b64=await new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result);r.readAsDataURL(f)});
-  const r=await fetch(cfg.UPLOAD_URL,{method:'POST',credentials:'include',headers:{'content-type':'application/json'},body:JSON.stringify({filename:f.name,content:b64})});
-  const j=await r.json();return j.path||null;
+async function uploadFile(file) {
+  if (!file) throw new Error("No file selected");
+
+  const toBase64 = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+  const base64 = await toBase64(file);
+
+  const res = await fetch(`${API_BASE}/upload`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({
+      filename: file.name,
+      content: base64,
+      mimeType: file.type
+    })
+  });
+
+  const text = await res.text();
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    throw new Error("Upload backend did not return JSON: " + text.slice(0, 200));
+  }
+
+  if (!res.ok || !data.ok) {
+    throw new Error(data.error || "Upload failed");
+  }
+
+  const uploadedPath = data.path || data.url || data.file || data.filename;
+  if (!uploadedPath) throw new Error("Upload succeeded but backend returned no file path");
+  return normalizeMediaUrl(uploadedPath);
 }
 
 /* ---- bind list actions ---- */
@@ -642,7 +788,19 @@ $('lightbox').onclick=()=>$('lightbox').classList.add('hide');
 $('newBtn').onclick=()=>{if(current!=='settings')openEditor(null)};
 $('cancelBtn').onclick=()=>$('editor').classList.add('hide');
 $('saveBtn').onclick=save;
-$('uploadBtn').onclick=async()=>{const f=$('file').files[0];if(!f)return;$('uploadPath').value='...';const p=await uploadFile(f);$('uploadPath').value=p||'грешка';};
+$('uploadBtn').onclick=async()=>{
+  const f=$('file').files[0];
+  if(!f)return;
+  $('uploadPath').value='...';
+  try{
+    const p=await uploadFile(f);
+    $('uploadPath').value=p;
+  }catch(e){
+    console.error(e);
+    $('uploadPath').value='грешка';
+    alert(e.message || 'Грешка при прикачување');
+  }
+};
 
 /* ---- auth flow ---- */
 $('loginBtn').onclick=async()=>{$('loginMsg').textContent='...';const r=await auth('login',{password:$('password').value});if(r.ok)start();else $('loginMsg').textContent=r.error||'Грешка';};
