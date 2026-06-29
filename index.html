@@ -714,7 +714,8 @@ const siteTree=[
     n('branches/pk','ПК',[
       n('branches/pk/general','Општо за ПК'),n('branches/pk/national-team','Национален тим'),n('branches/pk/judges','Судии'),n('branches/pk/competitions','Натпревари'),n('branches/pk/documents','Документи'),n('branches/pk/rules','Правилници и пропозиции')
     ],'Паркур — развој, национален тим, судии, натпревари и регулатива.'),
-    n('branches/gfa','Гимнастика за сите',[],'Инклузивни, рекреативни и масовни гимнастички програми за сите возрасти.')
+    n('branches/gfa','Гимнастика за сите',[],'Инклузивни, рекреативни и масовни гимнастички програми за сите возрасти.'),
+    n('branches/acro','АКРО',[n('branches/acro/general','Општо за АКРО'),n('branches/acro/national-team','Национален тим'),n('branches/acro/judges','Судии'),n('branches/acro/competitions','Натпревари'),n('branches/acro/documents','Документи'),n('branches/acro/rules','Правилници и пропозиции')],'Акробатска гимнастика — развој, национален тим, судии, натпревари и документи.')
   ]),
   n('competitions','Натпревари',[
     n('competitions/calendar','Календар'),
@@ -823,7 +824,7 @@ const cmsState={
   ],
   results:[],documents:[],people:[],gallery:[],partners:[],pages:[],social:[]
 };
-const branchLabels={all:'ФГСМ',msg:'МСГ',zsg:'ЖСГ',rg:'РГ',pk:'ПК',gfa:'Гимнастика за сите'};
+const branchLabels={all:'ФГСМ',msg:'МСГ',zsg:'ЖСГ',rg:'РГ',pk:'ПК',gfa:'Гимнастика за сите',acro:'АКРО'};
 
 const groupLabels={
   'leadership':'Раководство',
@@ -839,22 +840,22 @@ const groupLabels={
   'member':'Член'
 };
 const branchAliases={
-  'all':'all','fgsm':'all','фгсм':'all','сите':'all','сите гранки':'all','федерација':'all',
-  'msg':'msg','мсг':'msg','машка спортска гимнастика':'msg',
-  'zsg':'zsg','жсг':'zsg','женска спортска гимнастика':'zsg',
-  'rg':'rg','рг':'rg','ритмичка гимнастика':'rg',
-  'pk':'pk','пк':'pk','паркур':'pk',
-  'gfa':'gfa','гфа':'gfa','гимнастика за сите':'gfa'
+  'all':'all','fgsm':'all','фгсм':'all','сите':'all','сите гранки':'all','федерација':'all','federation':'all',
+  'msg':'msg','msh':'msg','мсг':'msg','машка спортска гимнастика':'msg','машка гимнастика':'msg','маг':'msg',
+  'zsg':'zsg','zsh':'zsg','жсг':'zsg','женска спортска гимнастика':'zsg','женска гимнастика':'zsg','ваг':'zsg',
+  'rg':'rg','рг':'rg','ритмичка гимнастика':'rg','ритмика':'rg','rhythmic':'rg',
+  'pk':'pk','пк':'pk','паркур':'pk','parkour':'pk',
+  'gfa':'gfa','гфа':'gfa','гимнастика за сите':'gfa','gymnastics for all':'gfa',
+  'acro':'acro','akro':'acro','акро':'acro','акробатика':'acro','акробатска гимнастика':'acro','acrobatic':'acro','acrobatic gymnastics':'acro'
 };
 const groupAliases={
-  'leadership':'leadership','раководство':'leadership','претседателство':'leadership',
-  'board':'board','одбор':'board','управен одбор':'board',
-  'staff':'staff','стручен кадар':'staff','тим':'staff',
-  'body':'body','bodies':'body','тело':'body','тела':'body','тело на федерацијата':'body','тела и членови':'body','органи и членови':'body','федерациско тело':'body','федерациски тела':'body',
-  'judge':'judge','судија':'judge','судии':'judge','судиски кадар':'judge',
-  'coach':'coach','тренер':'coach','тренери':'coach','стручен тренер':'coach',
-  'national-team':'national-team','national team':'national-team','национален тим':'national-team','репрезентација':'national-team','репрезентативец':'national-team','репрезентативка':'national-team',
-  'representative':'national-team',
+  'leadership':'leadership','раководство':'leadership','претседателство':'leadership','претседател':'leadership','president':'leadership',
+  'board':'board','одбор':'board','управен одбор':'board','board member':'board',
+  'staff':'staff','стручен кадар':'staff','тим':'staff','администрација':'staff','секретар':'staff','secretary':'staff',
+  'body':'body','bodies':'body','тело':'body','тела':'body','орган':'body','органи':'body','тело на федерацијата':'body','тела и членови':'body','органи и членови':'body','федерациско тело':'body','федерациски тела':'body','член на тело':'body',
+  'judge':'judge','judges':'judge','судија':'judge','судии':'judge','судијка':'judge','судиски кадар':'judge','лиценциран судија':'judge',
+  'coach':'coach','coaches':'coach','trainer':'coach','тренер':'coach','тренери':'coach','тренер по гимнастика':'coach','тренер по гиманстика':'coach','стручен тренер':'coach','лиценциран тренер':'coach',
+  'national-team':'national-team','national team':'national-team','national_team':'national-team','национален тим':'national-team','репрезентација':'national-team','репрезентативец':'national-team','репрезентативка':'national-team','репрезентатор':'national-team','репрезентаторка':'national-team','репрезентативци':'national-team','репрезентатори':'national-team','reprezentator':'national-team','reprezentacija':'national-team','representative':'national-team','athlete':'national-team','гимнастичар':'national-team','гимнастичарка':'national-team',
   'club':'club','клуб':'club','клубови':'club',
   'member':'member','член':'member','членови':'member'
 };
@@ -877,6 +878,22 @@ function groupDisplay(value=''){
   const key=normalizeGroup(value);
   return groupLabels[key]||String(value||'').trim();
 }
+function firstKnownGroup(person={}){
+  const fields=[person.group,person.category,person.type,person.role,person.position,person.function,person.title].filter(Boolean);
+  for(const field of fields){
+    const normalized=normalizeGroup(field);
+    if(groupLabels[normalized])return normalized;
+  }
+  return normalizeGroup(fields[0]||'');
+}
+function firstKnownBranch(person={},fallback='all'){
+  const fields=[person.branch,person.discipline,person.category,person.route,person.page].filter(Boolean);
+  for(const field of fields){
+    const normalized=normalizeBranch(field);
+    if(branchLabels[normalized])return normalized;
+  }
+  return normalizeBranch(fallback);
+}
 function normalizeRoute(value=''){
   return String(value||'').trim().replace(/^#\/?/,'').replace(/^\/+/,'').replace(/\/+$/,'');
 }
@@ -892,7 +909,7 @@ function safeUrl(value=''){const v=String(value||'').trim();if(!v)return '';if(v
 function setText(id,value){const el=document.getElementById(id);if(el&&value!==undefined&&value!==null&&String(value)!=='')el.textContent=String(value);}
 function mkDate(value){if(!value)return '';const d=new Date(`${String(value).slice(0,10)}T12:00:00`);if(Number.isNaN(d.getTime()))return String(value);return new Intl.DateTimeFormat('mk-MK',{day:'2-digit',month:'long',year:'numeric'}).format(d);}
 function eventDate(item){if(item.date_label)return item.date_label;const start=mkDate(item.start_date);const end=mkDate(item.end_date);return end&&end!==start?`${start} — ${end}`:start;}
-function routeBranch(id=''){const value=normalizeRoute(id);for(const key of ['msg','zsg','rg','pk','gfa'])if(value.includes(`/${key}`)||value===`branches/${key}`||value.includes(`results/${key}`))return key;return 'all';}
+function routeBranch(id=''){const value=normalizeRoute(id);for(const key of ['msg','zsg','rg','pk','gfa','acro'])if(value.includes(`/${key}`)||value===`branches/${key}`||value.includes(`results/${key}`))return key;return 'all';}
 function published(items){return (items||[]).filter(item=>item&&item.published!==false&&item.active!==false);}
 function formatBody(text=''){
   const lines=String(text||'').replace(/\r/g,'').split('\n');let html='',inList=false;
@@ -932,7 +949,7 @@ function renderSocial(){const box=document.getElementById('social-grid');if(!box
 /* CALENDAR */
 const calendarTabs=document.getElementById('calendar-tabs'),calendarBoard=document.getElementById('calendar-board');
 let activeCalendarKey='msg';
-[['msg','МСГ'],['zsg','ЖСГ'],['rg','РГ'],['pk','ПК'],['gfa','Гимнастика за сите']].forEach(([id,label],i)=>{const b=document.createElement('button');b.className='calendar-tab'+(i===0?' active':'');b.textContent=label;b.dataset.tab=id;b.setAttribute('role','tab');calendarTabs.appendChild(b);});
+[['msg','МСГ'],['zsg','ЖСГ'],['rg','РГ'],['pk','ПК'],['gfa','Гимнастика за сите'],['acro','АКРО']].forEach(([id,label],i)=>{const b=document.createElement('button');b.className='calendar-tab'+(i===0?' active':'');b.textContent=label;b.dataset.tab=id;b.setAttribute('role','tab');calendarTabs.appendChild(b);});
 function renderCalendar(key=activeCalendarKey){activeCalendarKey=normalizeBranch(key);const items=published(cmsState.events).filter(x=>normalizeBranch(x.branch)===activeCalendarKey).sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length){calendarBoard.innerHTML='<div class="cms-empty"><strong>Нема објавени настани</strong><span>Новиот настан ќе се појави тука веднаш по објавување од административниот панел.</span></div>';return;}calendarBoard.innerHTML=items.map(e=>`<div class="calendar-row"><div class="calendar-date">${escapeHtml(eventDate(e))}</div><div class="calendar-name"><strong>${escapeHtml(e.name)}</strong><span>${escapeHtml(e.category||'')}</span></div><div class="calendar-cell"><span class="calendar-type">${escapeHtml(e.type||'Настан')}</span></div><div class="calendar-cell">${escapeHtml(e.location||'')}</div><div class="calendar-cell"><button class="text-link" data-entry-type="events" data-entry-id="${escapeHtml(e.slug||e.name)}">Детали</button></div></div>`).join('');}
 renderCalendar('msg');calendarTabs.addEventListener('click',e=>{const btn=e.target.closest('.calendar-tab');if(!btn)return;calendarTabs.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));renderCalendar(btn.dataset.tab);});
 
@@ -945,7 +962,7 @@ renderNews();
 const portal=document.getElementById('portal-overlay'),portalTitle=document.getElementById('portal-title'),portalSummary=document.getElementById('portal-summary'),portalBreadcrumbs=document.getElementById('portal-breadcrumbs'),portalContent=document.getElementById('portal-content'),sidebar=document.getElementById('portal-sidebar-tree');
 let currentRoute='about';
 function nodeSummary(node){return node.summary||genericSummaries[node.label]||`Официјална секција на ФГСМ: ${node.label}. Содржината е организирана според федерациската хиерархија и е подготвена за внес на потврдени материјали.`;}
-function branchContext(parents){const labels=parents.map(p=>p.label);if(labels.includes('МСГ'))return 'машката спортска гимнастика';if(labels.includes('ЖСГ'))return 'женската спортска гимнастика';if(labels.includes('РГ'))return 'ритмичката гимнастика';if(labels.includes('ПК'))return 'паркур';return 'македонската гимнастика';}
+function branchContext(parents){const labels=parents.map(p=>p.label);if(labels.includes('МСГ'))return 'машката спортска гимнастика';if(labels.includes('ЖСГ'))return 'женската спортска гимнастика';if(labels.includes('РГ'))return 'ритмичката гимнастика';if(labels.includes('ПК'))return 'паркур';if(labels.includes('АКРО'))return 'акробатската гимнастика';if(labels.includes('Гимнастика за сите'))return 'гимнастиката за сите';return 'македонската гимнастика';}
 function customPageFor(route){const wanted=normalizeRoute(route);return published(cmsState.pages).find(x=>sameRoute(x.route,wanted)||sameRoute(x.slug,wanted))||null;}
 function customPageHtml(page){if(!page)return '';return `${page.title?`<h2>${escapeHtml(page.title)}</h2>`:''}${page.body?formatBody(page.body):''}${page.callout_title||page.callout_text?`<div class="portal-callout"><strong>${escapeHtml(page.callout_title||'Важно')}</strong><p>${escapeHtml(page.callout_text||'')}</p></div>`:''}${page.updated?`<div class="cms-updated">Последно ажурирање: ${escapeHtml(mkDate(page.updated))}</div>`:''}`;}
 function emptyHtml(title='Содржината се подготвува',text='Официјалните информации ќе бидат објавени тука по нивната потврда.') {return `<div class="cms-empty"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(text)}</span></div>`;}
@@ -969,22 +986,36 @@ function peopleHtml(route,groups=[],branch='all'){
   const wantedBranch=normalizeBranch(branch);
   const wantedRoute=normalizeRoute(route);
   let items=published(cmsState.people).filter(x=>{
-    const group=normalizeGroup(x.group||x.category||x.type||x.role||'');
-    const itemBranch=normalizeBranch(x.branch||x.discipline||'all');
+    const group=firstKnownGroup(x);
+    const itemBranch=firstKnownBranch(x,'all');
     const itemRoute=normalizeRoute(x.route||x.page||x.slug||'');
+    const routeOk=sameRoute(itemRoute,wantedRoute)||!itemRoute||sameRoute(itemRoute,normalizeRoute(wantedRoute.split('/').slice(0,2).join('/')));
     const groupOk=!wanted.length||wanted.includes(group);
-    const routeOk=sameRoute(itemRoute,wantedRoute)||!itemRoute;
-    const branchOk=wantedBranch==='all'||!itemBranch||itemBranch==='all'||itemBranch===wantedBranch;
+    const branchOk=wantedBranch==='all'||itemBranch==='all'||itemBranch===wantedBranch||sameRoute(itemRoute,wantedRoute);
     return groupOk&&routeOk&&branchOk;
   });
+
+  /* Fallback: if an admin entered a valid group but used an unsupported branch like АКРО before the route existed,
+     show it on the matching section instead of hiding it completely. */
+  if(!items.length&&wantedBranch!=='all'){
+    items=published(cmsState.people).filter(x=>{
+      const group=firstKnownGroup(x);
+      const itemRoute=normalizeRoute(x.route||x.page||x.slug||'');
+      const groupOk=!wanted.length||wanted.includes(group);
+      const routeOk=sameRoute(itemRoute,wantedRoute)||!itemRoute;
+      return groupOk&&routeOk;
+    });
+  }
+
   items.sort((a,b)=>(Number(a.order||99)-Number(b.order||99))||String(a.name||a.title||'').localeCompare(String(b.name||b.title||''),'mk'));
   if(!items.length)return emptyHtml('Нема објавени лица','Составите и функциите ќе бидат прикажани по официјална потврда.');
   return `<div class="cms-people">${items.map(x=>{
     const photo=safeUrl(x.photo||x.image||x.avatar||x.picture||'');
+    const group=firstKnownGroup(x);
     const rawGroup=x.group||x.category||x.type||'';
-    const role=x.role||x.position||x.function||groupDisplay(rawGroup)||'';
+    const role=x.role||x.position||x.function||groupDisplay(group)||'';
     const description=x.bio||x.body||x.description||'';
-    const meta=[groupDisplay(rawGroup),branchDisplay(x.branch||x.discipline),x.club,x.license,x.mandate].filter(Boolean);
+    const meta=[groupDisplay(group||rawGroup),branchDisplay(x.branch||x.discipline),x.club,x.license,x.mandate].filter(Boolean);
     return `<article class="person-card">
       <div class="person-photo" ${photo?`data-bg="${escapeHtml(photo)}"`:''}></div>
       <div class="person-body">
@@ -1005,7 +1036,7 @@ function contentFor(node,parents){
   if(node.id==='gallery')return `${custom||'<h2>Галерија</h2><p>Визуелен архив од федерациски активности и натпревари.</p>'}${galleryHtml()}`;
   if(node.id==='documents'||node.label==='Документи')return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјална библиотека за ${escapeHtml(context)}.</p>`}${documentsHtml(node.id,branch)}`;
   if(node.id==='about/bodies')return `${custom||'<h2>Тела и членови</h2><p>Официјална организациска структура на Федерацијата.</p>'}${peopleHtml(node.id,['leadership','board','staff','body','bodies','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело'],'all')}`;
-  if(node.id.includes('national-team'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Национална селекција за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['national-team','coach','staff'],branch)}`;
+  if(node.id.includes('national-team'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Национална селекција за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['national-team','representative','coach','staff'],branch)}`;
   if(node.id.includes('judges'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Судиски кадар и лиценцирани лица за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['judge'],branch)}`;
   if(node.id==='education/coaches-judges')return `${custom||'<h2>Тренери и судии</h2><p>Стручен кадар, едукација и лиценцирање.</p>'}${peopleHtml(node.id,['coach','judge','staff'],'all')}`;
   if(node.id.includes('results'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјални резултати и архиви.</p>`}${resultArchiveHtml(branch)}`;
