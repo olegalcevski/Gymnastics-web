@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "published": false,
+      "published": true,
       "route": "about/bodies",
       "slug": "about/bodies",
       "updated": "2026-06-29",
