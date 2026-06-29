@@ -322,10 +322,92 @@ footer{background:#0d0d1a;color:#fff;border-top:1px solid rgba(201,168,76,.18);p
 .cms-action:hover{border-color:var(--gold)}
 .cms-meta-row{display:flex;gap:.55rem;flex-wrap:wrap;margin:.3rem 0 .8rem}
 .cms-pill{display:inline-flex;padding:.3rem .48rem;background:rgba(201,168,76,.13);color:var(--gold-2);border-radius:2px;font-size:.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.cms-people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.4rem}
-.person-card{background:#fff;border:1px solid var(--line);border-radius:5px;overflow:hidden}
-.person-photo{aspect-ratio:4/3;background:linear-gradient(135deg,#2d2d43,#6e1220);background-size:cover;background-position:center}
-.person-body{padding:1.1rem}.person-body h3{font-size:1.25rem;margin:0 0 .25rem}.person-role{color:var(--red);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.cms-people{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:1.35rem;
+  margin-top:1.6rem;
+  align-items:stretch;
+}
+.person-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  min-height:340px;
+  box-shadow:0 14px 35px rgba(20,18,28,.08);
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.person-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 20px 48px rgba(20,18,28,.12);
+  border-color:rgba(139,26,43,.22);
+}
+.person-photo{
+  width:100%;
+  aspect-ratio:4/3;
+  background:linear-gradient(135deg,#2d2d43,#6e1220);
+  background-size:cover;
+  background-position:center;
+}
+.person-photo:not([data-bg]){
+  display:grid;
+  place-items:center;
+}
+.person-photo:not([data-bg])::after{
+  content:'ФГСМ';
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem;
+  font-weight:700;
+  color:rgba(255,255,255,.72);
+}
+.person-body{
+  padding:1.25rem 1.2rem 1.35rem;
+  display:flex;
+  flex-direction:column;
+  gap:.55rem;
+  flex:1;
+}
+.person-body h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.55rem;
+  line-height:1.1;
+  margin:0;
+  color:var(--dark);
+}
+.person-role{
+  color:var(--red);
+  font-size:.7rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.075em;
+}
+.person-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.4rem;
+  margin:.1rem 0 .25rem;
+}
+.person-meta span{
+  display:inline-flex;
+  align-items:center;
+  padding:.3rem .5rem;
+  background:rgba(201,168,76,.13);
+  color:var(--gold-2);
+  border-radius:999px;
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.04em;
+}
+.person-body p{
+  font-size:.82rem;
+  line-height:1.65;
+  color:var(--gray);
+  margin:0;
+}
+@media(max-width:620px){.cms-people{grid-template-columns:1fr}.person-card{min-height:auto}}
 .cms-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin-top:1.4rem}
 .cms-gallery figure{background:#fff;border:1px solid var(--line);border-radius:5px;overflow:hidden}
 .cms-gallery img{width:100%;aspect-ratio:4/3;object-fit:cover}.cms-gallery figcaption{padding:.85rem;font-size:.76rem;line-height:1.5;color:var(--gray)}
@@ -372,213 +454,6 @@ footer{background:#0d0d1a;color:#fff;border-top:1px solid rgba(201,168,76,.18);p
 </style>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
-<style>
-.fgsm-bodies-section {
-  padding: 80px 24px;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.fgsm-bodies-section .section-head {
-  max-width: 900px;
-  margin: 0 auto 36px;
-  text-align: center;
-}
-
-.fgsm-bodies-grid {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-  max-width: 1180px;
-  margin: 0 auto;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.fgsm-body-card {
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  min-height: 320px;
-  padding: 28px 22px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 18px 45px rgba(0,0,0,0.18);
-  color: inherit;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.fgsm-body-card img {
-  display: block !important;
-  width: 112px;
-  height: 112px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin: 0 auto 18px;
-  border: 3px solid rgba(255,255,255,0.22);
-}
-
-.fgsm-body-card h3 {
-  display: block !important;
-  margin: 0 0 8px;
-  font-size: 1.25rem;
-  line-height: 1.25;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.fgsm-body-card .role {
-  display: block !important;
-  font-weight: 700;
-  margin-bottom: 10px;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-.fgsm-body-card .meta {
-  display: block !important;
-  font-size: 0.9rem;
-  opacity: 0.75 !important;
-  margin-bottom: 14px;
-  visibility: visible !important;
-}
-
-.fgsm-body-card p {
-  display: block !important;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  opacity: 0.86 !important;
-  margin: 0;
-  visibility: visible !important;
-}
-
-@media (max-width: 760px) {
-  .fgsm-bodies-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .fgsm-bodies-section {
-    padding: 56px 18px;
-  }
-}
-</style>
-<script>
-(function(){
-  const BODY_GROUPS = [
-    "Тело на федерацијата",
-    "Тела и членови",
-    "Органи и членови",
-    "Федерациско тело"
-  ];
-
-  async function getPeople(){
-    const cfg = window.APP_CONFIG || {};
-    const urls = [];
-
-    if (cfg.CONTENT_BASE_URL) {
-      urls.push(cfg.CONTENT_BASE_URL + (cfg.CONTENT_BASE_URL.includes("?") ? "&" : "?") + "type=people");
-    }
-
-    if (cfg.API_BASE_URL) {
-      urls.push(cfg.API_BASE_URL.replace(/\/$/, "") + "/content?type=people");
-    }
-
-    urls.push("/content/people.json");
-
-    for (const url of urls) {
-      try {
-        const res = await fetch(url, { cache: "no-store", credentials: "include" });
-        if (!res.ok) continue;
-        const data = await res.json();
-        if (data && Array.isArray(data.items)) return data.items;
-      } catch(e) {}
-    }
-
-    return [];
-  }
-
-  function isBodiesRoute(){
-    const hash = location.hash.replace(/^#\/?/, "");
-    return hash === "about/bodies" || hash === "/about/bodies";
-  }
-
-  function escapeHtml(value){
-    return String(value || "").replace(/[&<>"']/g, function(m){
-      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m];
-    });
-  }
-
-  function renderBodies(items){
-    const people = items.filter(function(p){
-      return p.published !== false && BODY_GROUPS.includes(p.group);
-    });
-
-    const html = `
-      <section class="section fgsm-bodies-section">
-        <div class="section-head">
-          <span class="eyebrow">Федерација</span>
-          <h2>Тела и членови</h2>
-          <p>Преглед на федерациските тела, членови и одговорни лица.</p>
-        </div>
-
-        ${
-          people.length
-          ? `<div class="fgsm-bodies-grid">
-              ${people.map(function(p){
-                return `
-                  <article class="fgsm-body-card">
-                    ${p.image ? `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">` : ""}
-                    <h3>${escapeHtml(p.name)}</h3>
-                    <div class="role">${escapeHtml(p.role)}</div>
-                    <div class="meta">
-                      ${escapeHtml(p.group || "")}
-                      ${p.branch ? " · " + escapeHtml(p.branch) : ""}
-                      ${p.license ? " · " + escapeHtml(p.license) : ""}
-                    </div>
-                    ${p.body ? `<p>${escapeHtml(p.body)}</p>` : ""}
-                  </article>
-                `;
-              }).join("")}
-            </div>`
-          : `<p>Нема внесени членови во оваа секција.</p>`
-        }
-      </section>
-    `;
-
-    const main = document.querySelector("main") || document.querySelector("#app") || document.body;
-
-    const old = document.querySelector(".fgsm-bodies-section");
-    if (old) old.remove();
-
-    const placeholders = Array.from(document.querySelectorAll("p, div, section")).filter(function(el){
-      return el.textContent && el.textContent.includes("route ID: about/bodies");
-    });
-
-    if (placeholders[0]) {
-      const target = placeholders[0].closest("section") || placeholders[0];
-      target.outerHTML = html;
-    } else {
-      main.insertAdjacentHTML("beforeend", html);
-    }
-  }
-
-  async function bootBodies(){
-    if (!isBodiesRoute()) return;
-    const people = await getPeople();
-    renderBodies(people);
-  }
-
-  window.addEventListener("hashchange", bootBodies);
-  window.addEventListener("DOMContentLoaded", function(){
-    setTimeout(bootBodies, 300);
-    setTimeout(bootBodies, 1000);
-  });
-})();
-</script>
 </head>
 <body>
 <a href="#main" class="skip-link">Прескокни до содржината</a>
@@ -1007,14 +882,40 @@ const portal=document.getElementById('portal-overlay'),portalTitle=document.getE
 let currentRoute='about';
 function nodeSummary(node){return node.summary||genericSummaries[node.label]||`Официјална секција на ФГСМ: ${node.label}. Содржината е организирана според федерациската хиерархија и е подготвена за внес на потврдени материјали.`;}
 function branchContext(parents){const labels=parents.map(p=>p.label);if(labels.includes('МСГ'))return 'машката спортска гимнастика';if(labels.includes('ЖСГ'))return 'женската спортска гимнастика';if(labels.includes('РГ'))return 'ритмичката гимнастика';if(labels.includes('ПК'))return 'паркур';return 'македонската гимнастика';}
-function customPageFor(route){return published(cmsState.pages).find(x=>x.route===route)||null;}
+function customPageFor(route){return published(cmsState.pages).find(x=>x.route===route||x.slug===route)||null;}
 function customPageHtml(page){if(!page)return '';return `${page.title?`<h2>${escapeHtml(page.title)}</h2>`:''}${page.body?formatBody(page.body):''}${page.callout_title||page.callout_text?`<div class="portal-callout"><strong>${escapeHtml(page.callout_title||'Важно')}</strong><p>${escapeHtml(page.callout_text||'')}</p></div>`:''}${page.updated?`<div class="cms-updated">Последно ажурирање: ${escapeHtml(mkDate(page.updated))}</div>`:''}`;}
 function emptyHtml(title='Содржината се подготвува',text='Официјалните информации ќе бидат објавени тука по нивната потврда.') {return `<div class="cms-empty"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(text)}</span></div>`;}
 function newsArchiveHtml(){const items=published(cmsState.news).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени новости','Нова објава се додава преку административниот панел.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-media" ${x.image?`data-bg="${escapeHtml(x.image)}"`:''}></div><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(x.category||'Новости')} · ${escapeHtml(mkDate(x.date))}</div><h3>${escapeHtml(x.title)}</h3><p>${escapeHtml(x.excerpt||'')}</p><div class="cms-card-actions"><button class="cms-action primary" data-entry-type="news" data-entry-id="${escapeHtml(x.slug||x.title)}">Прочитај</button></div></div></article>`).join('')}</div>`;}
 function eventArchiveHtml(branch='all'){let items=published(cmsState.events);if(branch!=='all')items=items.filter(x=>x.branch===branch);items.sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length)return emptyHtml('Нема објавени настани','Календарот ќе се ажурира по официјална потврда.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(branchLabels[x.branch]||'ФГСМ')} · ${escapeHtml(eventDate(x))}</div><h3>${escapeHtml(x.name)}</h3><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(x.type||'Настан')}</span><span class="cms-pill">${escapeHtml(x.location||'')}</span></div><p>${escapeHtml(x.description||x.category||'')}</p><div class="cms-card-actions"><button class="cms-action primary" data-entry-type="events" data-entry-id="${escapeHtml(x.slug||x.name)}">Детали</button>${safeUrl(x.bulletin)?`<a class="cms-action" href="${escapeHtml(safeUrl(x.bulletin))}" target="_blank" rel="noopener">Билтен</a>`:''}</div></div></article>`).join('')}</div>`;}
 function resultArchiveHtml(branch='all'){let items=published(cmsState.results);if(branch!=='all')items=items.filter(x=>x.branch===branch);items.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени резултати','PDF резултатите ќе се појават тука веднаш по објавувањето.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(branchLabels[x.branch]||'ФГСМ')} · ${escapeHtml(mkDate(x.date))}</div><h3>${escapeHtml(x.title)}</h3><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(x.competition_type||'Резултати')}</span><span class="cms-pill">${escapeHtml(x.category||'')}</span></div><p>${escapeHtml(x.summary||x.location||'')}</p><div class="cms-card-actions">${safeUrl(x.file)?`<a class="cms-action primary" href="${escapeHtml(safeUrl(x.file))}" target="_blank" rel="noopener">Отвори резултати</a>`:''}</div></div></article>`).join('')}</div>`;}
 function documentsHtml(route,branch='all'){let items=published(cmsState.documents).filter(x=>x.route===route||(route==='documents'&&(x.route==='documents'||!x.route))||(branch!=='all'&&x.branch===branch&&(!x.route||x.route==='documents')));items.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени документи','Документите, правилниците и програмите се додаваат преку административниот панел.');return `<table class="resource-table"><thead><tr><th>Документ</th><th>Категорија</th><th>Датум / верзија</th><th></th></tr></thead><tbody>${items.map(x=>`<tr><td><strong>${escapeHtml(x.title)}</strong>${x.description?`<br><small>${escapeHtml(x.description)}</small>`:''}</td><td>${escapeHtml(x.category||branchLabels[x.branch]||'ФГСМ')}</td><td>${escapeHtml(mkDate(x.date))}${x.version?`<br><span class="resource-status">${escapeHtml(x.version)}</span>`:''}</td><td>${safeUrl(x.file)?`<a class="cms-action primary" href="${escapeHtml(safeUrl(x.file))}" target="_blank" rel="noopener">Отвори</a>`:''}</td></tr>`).join('')}</tbody></table>`;}
-function peopleHtml(route,groups,branch='all'){let items=published(cmsState.people).filter(x=>(!groups.length||groups.includes(x.group))&&(x.route===route||(!x.route&&(x.branch===branch||x.branch==='all'))));items.sort((a,b)=>(a.order||10)-(b.order||10));if(!items.length)return emptyHtml('Нема објавени лица','Составите и функциите ќе бидат прикажани по официјална потврда.');return `<div class="cms-people">${items.map(x=>`<article class="person-card"><div class="person-photo" ${x.photo?`data-bg="${escapeHtml(x.photo)}"`:''}></div><div class="person-body"><div class="person-role">${escapeHtml(x.role||'')}</div><h3>${escapeHtml(x.name)}</h3>${x.club?`<p>${escapeHtml(x.club)}</p>`:''}${x.mandate?`<p><small>${escapeHtml(x.mandate)}</small></p>`:''}${x.bio?`<p>${escapeHtml(x.bio)}</p>`:''}</div></article>`).join('')}</div>`;}
+function peopleHtml(route,groups=[],branch='all'){
+  const wanted=(groups||[]).map(g=>String(g||'').trim().toLowerCase());
+  let items=published(cmsState.people).filter(x=>{
+    const group=String(x.group||'').trim().toLowerCase();
+    const groupOk=!wanted.length||wanted.includes(group);
+    const routeOk=x.route===route||x.slug===route||!x.route;
+    const branchOk=branch==='all'||!x.branch||x.branch==='all'||x.branch===branch;
+    return groupOk&&routeOk&&branchOk;
+  });
+  items.sort((a,b)=>(Number(a.order||99)-Number(b.order||99))||String(a.name||'').localeCompare(String(b.name||''),'mk'));
+  if(!items.length)return emptyHtml('Нема објавени лица','Составите и функциите ќе бидат прикажани по официјална потврда.');
+  return `<div class="cms-people">${items.map(x=>{
+    const photo=safeUrl(x.photo||x.image||x.avatar||x.picture||'');
+    const role=x.role||x.position||x.function||'';
+    const description=x.bio||x.body||x.description||'';
+    const meta=[x.group,x.branch,x.club,x.license,x.mandate].filter(Boolean);
+    return `<article class="person-card">
+      <div class="person-photo" ${photo?`data-bg="${escapeHtml(photo)}"`:''}></div>
+      <div class="person-body">
+        ${role?`<div class="person-role">${escapeHtml(role)}</div>`:''}
+        <h3>${escapeHtml(x.name||x.title||'Име')}</h3>
+        ${meta.length?`<div class="person-meta">${meta.map(m=>`<span>${escapeHtml(m)}</span>`).join('')}</div>`:''}
+        ${description?`<p>${escapeHtml(description)}</p>`:''}
+      </div>
+    </article>`;
+  }).join('')}</div>`;
+}
 function galleryHtml(){const items=published(cmsState.gallery).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Галеријата се подготвува','Фотографиите ќе бидат објавени по избор и одобрување.');return `<div class="cms-gallery">${items.map(x=>`<figure><img src="${escapeHtml(safeUrl(x.image))}" alt="${escapeHtml(x.alt||x.title)}" loading="lazy"><figcaption><strong>${escapeHtml(x.title)}</strong><br>${escapeHtml(x.caption||'')}<br><small>${escapeHtml(mkDate(x.date))}</small></figcaption></figure>`).join('')}</div>`;}
 function hydrateDynamicMedia(root){root.querySelectorAll('[data-bg]').forEach(el=>{const u=safeUrl(el.dataset.bg);if(u)el.style.backgroundImage=`url("${u.replace(/"/g,'%22')}")`;});}
 function contentFor(node,parents){
@@ -1023,7 +924,7 @@ function contentFor(node,parents){
   if(node.id==='news')return `${custom||'<h2>Новости</h2><p>Официјални вести, соопштенија и активности на ФГСМ.</p>'}${newsArchiveHtml()}`;
   if(node.id==='gallery')return `${custom||'<h2>Галерија</h2><p>Визуелен архив од федерациски активности и натпревари.</p>'}${galleryHtml()}`;
   if(node.id==='documents'||node.label==='Документи')return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјална библиотека за ${escapeHtml(context)}.</p>`}${documentsHtml(node.id,branch)}`;
-  if(node.id==='about/bodies')return `${custom||'<h2>Тела и членови</h2><p>Официјална организациска структура на Федерацијата.</p>'}${peopleHtml(node.id,['leadership','board','staff'],'all')}`;
+  if(node.id==='about/bodies')return `${custom||'<h2>Тела и членови</h2><p>Официјална организациска структура на Федерацијата.</p>'}${peopleHtml(node.id,['leadership','board','staff','body','bodies','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело'],'all')}`;
   if(node.id.includes('national-team'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Национална селекција за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['national-team','coach','staff'],branch)}`;
   if(node.id.includes('judges'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Судиски кадар и лиценцирани лица за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['judge'],branch)}`;
   if(node.id==='education/coaches-judges')return `${custom||'<h2>Тренери и судии</h2><p>Стручен кадар, едукација и лиценцирање.</p>'}${peopleHtml(node.id,['coach','judge','staff'],'all')}`;
