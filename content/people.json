@@ -1,9 +1,9 @@
 {
   "items": [
     {
-      "featured": false,
+      "featured": true,
       "published": true,
-      "name": "Петаргимнастилар",
+      "name": "Петар",
       "role": "судија",
       "license": "гимнастилар",
       "group": "Судија",
