@@ -1,6 +1,17 @@
 {
   "items": [
     {
+      "published": false,
+      "route": "about/bodies",
+      "slug": "about/bodies",
+      "updated": "2026-06-29",
+      "title": "Petar",
+      "summary": "Професор по физичко и лиценциран гимнастичар, дел од тимот на партизан-гимнастички клуб",
+      "image": "/assets/uploads/1782763000035-481023361_1139367657981768_3435747911416757114_n.jpg",
+      "layout": "hero",
+      "attachments": "/assets/uploads/1782763560114-Fake-Resume.pdf"
+    },
+    {
       "route": "branches/msg/general",
       "published": true,
       "title": "Нови правила",
