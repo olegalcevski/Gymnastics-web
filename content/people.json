@@ -1,6 +1,18 @@
 {
   "items": [
     {
+      "featured": false,
+      "published": true,
+      "name": "Петар",
+      "group": "Тело на федерацијата",
+      "role": "орган",
+      "branch": "МСГ",
+      "license": "гимнастичар",
+      "image": "/assets/uploads/1782770236673-481023361_1139367657981768_3435747911416757114_n.jpg",
+      "body": "тело на фгсм",
+      "id": "item-1782770253275"
+    },
+    {
       "featured": true,
       "published": true,
       "name": "Петар",
