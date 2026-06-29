@@ -452,6 +452,7 @@ footer{background:#0d0d1a;color:#fff;border-top:1px solid rgba(201,168,76,.18);p
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
+<script src="/app-config.js"></script>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
 </head>
@@ -905,7 +906,7 @@ function blurIfInside(root){
   if(active&&root&&root.contains(active)&&typeof active.blur==='function')active.blur();
 }
 function escapeHtml(value=''){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));}
-function safeUrl(value=''){const v=String(value||'').trim();if(!v)return '';if(v.startsWith('/')||v.startsWith('./')||v.startsWith('../')||/^https?:\/\//i.test(v)||/^mailto:/i.test(v)||/^tel:/i.test(v))return v;return '';}
+function safeUrl(value=''){const v=String(value||'').trim();if(!v)return '';if(/^(javascript|data|vbscript):/i.test(v))return '';if(/^[a-z][a-z0-9+.-]*:/i.test(v)&&!/^https?:/i.test(v)&&!/^mailto:/i.test(v)&&!/^tel:/i.test(v))return '';return v;}
 function setText(id,value){const el=document.getElementById(id);if(el&&value!==undefined&&value!==null&&String(value)!=='')el.textContent=String(value);}
 function mkDate(value){if(!value)return '';const d=new Date(`${String(value).slice(0,10)}T12:00:00`);if(Number.isNaN(d.getTime()))return String(value);return new Intl.DateTimeFormat('mk-MK',{day:'2-digit',month:'long',year:'numeric'}).format(d);}
 function eventDate(item){if(item.date_label)return item.date_label;const start=mkDate(item.start_date);const end=mkDate(item.end_date);return end&&end!==start?`${start} — ${end}`:start;}
@@ -916,10 +917,53 @@ function formatBody(text=''){
   const closeList=()=>{if(inList){html+='</ul>';inList=false;}};
   lines.forEach(raw=>{const line=raw.trim();if(!line){closeList();return;}if(line.startsWith('### ')){closeList();html+=`<h3>${escapeHtml(line.slice(4))}</h3>`;}else if(line.startsWith('## ')){closeList();html+=`<h2>${escapeHtml(line.slice(3))}</h2>`;}else if(line.startsWith('- ')){if(!inList){html+='<ul>';inList=true;}html+=`<li>${escapeHtml(line.slice(2))}</li>`;}else{closeList();html+=`<p>${escapeHtml(line)}</p>`;}});closeList();return `<div class="cms-rich">${html}</div>`;
 }
-async function fetchCmsFile(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(`${path}: ${response.status}`);return response.json();}
+function cmsTypeFromPath(path=''){
+  const clean=String(path||'').split('?')[0].replace(/^https?:\/\/[^/]+/i,'');
+  const match=clean.match(/(?:^|\/)content\/([a-z0-9_-]+)\.json$/i);
+  return match?match[1]:'';
+}
+function withTypeParam(url,type){
+  if(!url||!type)return '';
+  return `${url}${String(url).includes('?')?'&':'?'}type=${encodeURIComponent(type)}`;
+}
+function cmsBackendUrl(type){
+  const cfg=window.APP_CONFIG||{};
+  const mode=String(cfg.MODE||'static').toLowerCase();
+  const base=String(cfg.CONTENT_BASE_URL||cfg.API_BASE_URL||'').replace(/\/+$/,'');
+  if(cfg.CONTENT_BASE_URL)return withTypeParam(String(cfg.CONTENT_BASE_URL).replace(/\/+$/,''),type);
+  if(/content\.php$/i.test(base)||/\/content$/i.test(base))return withTypeParam(base,type);
+  if(/\.netlify\/functions$/i.test(base)||mode==='netlify')return withTypeParam((base||'/.netlify/functions')+'/content',type);
+  if(/\/api$/i.test(base)||['zemi','php','cpanel','database','mysql'].includes(mode))return withTypeParam((base||'/api')+'/content.php',type);
+  return '';
+}
+function cmsItems(data){
+  if(Array.isArray(data))return data;
+  if(data&&Array.isArray(data.items))return data.items;
+  if(data&&Array.isArray(data.data))return data.data;
+  if(data&&data.data&&Array.isArray(data.data.items))return data.data.items;
+  return [];
+}
+async function fetchJson(url){
+  const response=await fetch(url,{cache:'no-store',credentials:'same-origin'});
+  if(!response.ok)throw new Error(`${url}: ${response.status}`);
+  return response.json();
+}
+async function fetchCmsFile(path){
+  const type=cmsTypeFromPath(path);
+  const urls=[];
+  const backend=type?cmsBackendUrl(type):'';
+  if(backend)urls.push(backend);
+  urls.push(path);
+  const unique=[...new Set(urls.filter(Boolean))];
+  let lastError;
+  for(const url of unique){
+    try{return await fetchJson(url);}catch(error){lastError=error;}
+  }
+  throw lastError||new Error(`${path}: unable to load`);
+}
 async function loadCmsContent(){
   const entries=Object.entries(CMS_FILES);const loaded=await Promise.allSettled(entries.map(([,path])=>fetchCmsFile(path)));
-  loaded.forEach((result,index)=>{if(result.status!=='fulfilled')return;const key=entries[index][0],data=result.value;if(key==='settings')cmsState.settings=data||{};else cmsState[key]=Array.isArray(data)?data:(data&&Array.isArray(data.items)?data.items:[]);});
+  loaded.forEach((result,index)=>{if(result.status!=='fulfilled')return;const key=entries[index][0],data=result.value;if(key==='settings')cmsState.settings=(data&&data.data&&!Array.isArray(data.data)?data.data:data)||{};else cmsState[key]=cmsItems(data);});
   applySettings();renderCalendar(activeCalendarKey);renderNews();renderPartners();renderSocial();
   if(document.getElementById('portal-overlay').classList.contains('open'))openRoute(currentRoute,false);
 }
@@ -1007,7 +1051,7 @@ function peopleHtml(route,groups=[],branch='all'){
     });
   }
 
-  items.sort((a,b)=>(Number(a.order||99)-Number(b.order||99))||String(a.name||a.title||'').localeCompare(String(b.name||b.title||''),'mk'));
+  items.sort((a,b)=>(Number(Boolean(b.featured))-Number(Boolean(a.featured)))||(Number(a.order||99)-Number(b.order||99))||String(a.name||a.title||'').localeCompare(String(b.name||b.title||''),'mk'));
   if(!items.length)return emptyHtml('Нема објавени лица','Составите и функциите ќе бидат прикажани по официјална потврда.');
   return `<div class="cms-people">${items.map(x=>{
     const photo=safeUrl(x.photo||x.image||x.avatar||x.picture||'');
@@ -1035,7 +1079,7 @@ function contentFor(node,parents){
   if(node.id==='news')return `${custom||'<h2>Новости</h2><p>Официјални вести, соопштенија и активности на ФГСМ.</p>'}${newsArchiveHtml()}`;
   if(node.id==='gallery')return `${custom||'<h2>Галерија</h2><p>Визуелен архив од федерациски активности и натпревари.</p>'}${galleryHtml()}`;
   if(node.id==='documents'||node.label==='Документи')return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјална библиотека за ${escapeHtml(context)}.</p>`}${documentsHtml(node.id,branch)}`;
-  if(node.id==='about/bodies')return `${custom||'<h2>Тела и членови</h2><p>Официјална организациска структура на Федерацијата.</p>'}${peopleHtml(node.id,['leadership','board','staff','body','bodies','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело'],'all')}`;
+  if(node.id==='about/bodies')return `${custom||'<h2>Тела и членови</h2><p>Официјална организациска структура на Федерацијата.</p>'}${peopleHtml(node.id,['leadership','board','staff','body','bodies','member','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело','Стручен совет'],'all')}`;
   if(node.id.includes('national-team'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Национална селекција за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['national-team','representative','coach','staff'],branch)}`;
   if(node.id.includes('judges'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Судиски кадар и лиценцирани лица за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['judge'],branch)}`;
   if(node.id==='education/coaches-judges')return `${custom||'<h2>Тренери и судии</h2><p>Стручен кадар, едукација и лиценцирање.</p>'}${peopleHtml(node.id,['coach','judge','staff'],'all')}`;
