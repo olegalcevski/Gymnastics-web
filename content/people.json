@@ -4,6 +4,18 @@
       "featured": true,
       "published": true,
       "name": "Петар",
+      "group": "Тренер",
+      "role": "тренер по гиманстика",
+      "branch": "РГ",
+      "license": "гимнастичар",
+      "image": "/assets/uploads/1782770093850-624253781_1409241404327724_7009278633732774388_n.jpg",
+      "body": "Професионален тренер по гимнастика",
+      "id": "item-1782770110688"
+    },
+    {
+      "featured": true,
+      "published": true,
+      "name": "Петар",
       "role": "судија",
       "license": "гимнастилар",
       "group": "Судија",
