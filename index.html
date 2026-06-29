@@ -372,6 +372,155 @@ footer{background:#0d0d1a;color:#fff;border-top:1px solid rgba(201,168,76,.18);p
 </style>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
+<style>
+.fgsm-bodies-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:28px;
+}
+.fgsm-body-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+}
+.fgsm-body-card img{
+  width:96px;
+  height:96px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:12px;
+}
+.fgsm-body-card h3{
+  margin:8px 0 4px;
+}
+.fgsm-body-card .role{
+  opacity:.8;
+  font-size:14px;
+  margin-bottom:10px;
+}
+.fgsm-body-card .meta{
+  font-size:12px;
+  opacity:.7;
+  margin-bottom:10px;
+}
+</style>
+
+<script>
+(function(){
+  const BODY_GROUPS = [
+    "Тело на федерацијата",
+    "Тела и членови",
+    "Органи и членови",
+    "Федерациско тело"
+  ];
+
+  async function getPeople(){
+    const cfg = window.APP_CONFIG || {};
+    const urls = [];
+
+    if (cfg.CONTENT_BASE_URL) {
+      urls.push(cfg.CONTENT_BASE_URL + (cfg.CONTENT_BASE_URL.includes("?") ? "&" : "?") + "type=people");
+    }
+
+    if (cfg.API_BASE_URL) {
+      urls.push(cfg.API_BASE_URL.replace(/\/$/, "") + "/content?type=people");
+    }
+
+    urls.push("/content/people.json");
+
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, { cache: "no-store", credentials: "include" });
+        if (!res.ok) continue;
+        const data = await res.json();
+        if (data && Array.isArray(data.items)) return data.items;
+      } catch(e) {}
+    }
+
+    return [];
+  }
+
+  function isBodiesRoute(){
+    const hash = location.hash.replace(/^#\/?/, "");
+    return hash === "about/bodies" || hash === "/about/bodies";
+  }
+
+  function escapeHtml(value){
+    return String(value || "").replace(/[&<>"']/g, function(m){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m];
+    });
+  }
+
+  function renderBodies(items){
+    const people = items.filter(function(p){
+      return p.published !== false && BODY_GROUPS.includes(p.group);
+    });
+
+    const html = `
+      <section class="section fgsm-bodies-section">
+        <div class="section-head">
+          <span class="eyebrow">Федерација</span>
+          <h2>Тела и членови</h2>
+          <p>Преглед на федерациските тела, членови и одговорни лица.</p>
+        </div>
+
+        ${
+          people.length
+          ? `<div class="fgsm-bodies-grid">
+              ${people.map(function(p){
+                return `
+                  <article class="fgsm-body-card">
+                    ${p.image ? `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}">` : ""}
+                    <h3>${escapeHtml(p.name)}</h3>
+                    <div class="role">${escapeHtml(p.role)}</div>
+                    <div class="meta">
+                      ${escapeHtml(p.group || "")}
+                      ${p.branch ? " · " + escapeHtml(p.branch) : ""}
+                      ${p.license ? " · " + escapeHtml(p.license) : ""}
+                    </div>
+                    ${p.body ? `<p>${escapeHtml(p.body)}</p>` : ""}
+                  </article>
+                `;
+              }).join("")}
+            </div>`
+          : `<p>Нема внесени членови во оваа секција.</p>`
+        }
+      </section>
+    `;
+
+    const main = document.querySelector("main") || document.querySelector("#app") || document.body;
+
+    const old = document.querySelector(".fgsm-bodies-section");
+    if (old) old.remove();
+
+    const placeholders = Array.from(document.querySelectorAll("p, div, section")).filter(function(el){
+      return el.textContent && el.textContent.includes("route ID: about/bodies");
+    });
+
+    if (placeholders[0]) {
+      const target = placeholders[0].closest("section") || placeholders[0];
+      target.outerHTML = html;
+    } else {
+      main.insertAdjacentHTML("beforeend", html);
+    }
+  }
+
+  async function bootBodies(){
+    if (!isBodiesRoute()) return;
+    const people = await getPeople();
+    renderBodies(people);
+  }
+
+  window.addEventListener("hashchange", bootBodies);
+  window.addEventListener("DOMContentLoaded", function(){
+    setTimeout(bootBodies, 300);
+    setTimeout(bootBodies, 1000);
+  });
+})();
+</script>
 <body>
 <a href="#main" class="skip-link">Прескокни до содржината</a>
 
