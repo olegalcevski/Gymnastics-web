@@ -4,6 +4,18 @@
       "featured": true,
       "published": true,
       "name": "Петар",
+      "group": "Репрезентација",
+      "role": "репрезентатор",
+      "branch": "АКРО",
+      "license": "гимнастичар",
+      "body": "Дел од репрезентација",
+      "image": "/assets/uploads/1782770146098-624253781_1409241404327724_7009278633732774388_n.jpg",
+      "id": "item-1782770160557"
+    },
+    {
+      "featured": true,
+      "published": true,
+      "name": "Петар",
       "group": "Тренер",
       "role": "тренер по гиманстика",
       "branch": "РГ",
