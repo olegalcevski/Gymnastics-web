@@ -1,6 +1,18 @@
 {
   "items": [
     {
+      "featured": false,
+      "published": true,
+      "name": "Петаргимнастилар",
+      "role": "судија",
+      "license": "гимнастилар",
+      "group": "Судија",
+      "branch": "ЖСГ",
+      "image": "/assets/uploads/1782768221375-481023361_1139367657981768_3435747911416757114_n.jpg",
+      "body": "Судија по ....",
+      "id": "item-1782768223234"
+    },
+    {
       "featured": true,
       "published": true,
       "name": "Петар",
