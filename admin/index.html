@@ -291,11 +291,11 @@ const SCHEMA = {
       {k:'featured',label:'Истакнато',type:'bool',default:false},
       {k:'published',label:'Објавено',type:'bool',default:true},
     ] },
-  people: { label:'Судии / Репрезентација / Тела', view:'profiles', filters:['group','branch'],
+  people: { label:'Лица: судии / репрезентација / тренери / тела', view:'profiles', filters:['group','branch'],
     fields:[
       {k:'name',label:'Име и презиме',type:'text',required:true},
       {k:'role',label:'Функција / Улога',type:'text'},
-      {k:'group',label:'Група',type:'select',options:['','Судија','Репрезентација','Тело на федерацијата','Тренер','Стручен совет']},
+      {k:'group',label:'Група / кадар',type:'select',options:['','Судија','Репрезентација','Тренер','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело','Стручен совет']},
       {k:'branch',label:'Дисциплина',type:'discipline'},
       {k:'license',label:'Лиценца',type:'text'},
       {k:'image',label:'Фотографија',type:'image'},
