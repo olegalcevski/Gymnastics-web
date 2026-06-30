@@ -1,3 +1,14 @@
 {
-  "items": []
+  "items": [
+    {
+      "featured": false,
+      "published": true,
+      "title": "Гимнастика за сите",
+      "category": "сите",
+      "year": 2026,
+      "branch": "ГЗА",
+      "file": "/assets/uploads/1782784009391-en_Gymnastics-for-All-Manual--Edition-2023.pdf",
+      "id": "item-1782784013719"
+    }
+  ]
 }
