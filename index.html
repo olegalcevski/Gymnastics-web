@@ -864,7 +864,14 @@ function normText(value=''){
   return String(value||'').trim().toLowerCase().replace(/\s+/g,' ');
 }
 function normalizeBranch(value=''){
-  const key=normText(value);
+  const raw=String(value||'').trim();
+  const key=normText(raw);
+  if(!key)return 'all';
+  const route=normalizeRoute(raw);
+  const routeMatch=route.match(/(?:^|\/)branches\/(msg|zsg|rg|pk|gfa|acro|akro)(?:\/|$)/i);
+  if(routeMatch)return routeMatch[1].toLowerCase()==='akro'?'acro':routeMatch[1].toLowerCase();
+  const shortRoute=route.match(/(?:^|\/)(msg|zsg|rg|pk|gfa|acro|akro)(?:\/|$)/i);
+  if(shortRoute)return shortRoute[1].toLowerCase()==='akro'?'acro':shortRoute[1].toLowerCase();
   return branchAliases[key]||key||'all';
 }
 function branchDisplay(value=''){
@@ -887,10 +894,20 @@ function firstKnownGroup(person={}){
   }
   return normalizeGroup(fields[0]||'');
 }
+function itemRoutes(item={}){
+  const values=[];
+  ['route','page','slug','section','display_route','displayRoute','target_route','targetRoute'].forEach(k=>{if(item[k])values.push(item[k]);});
+  ['routes','pages','sections','displayOn','display_on'].forEach(k=>{if(Array.isArray(item[k]))values.push(...item[k]);else if(item[k])values.push(item[k]);});
+  return values.map(normalizeRoute).filter(Boolean);
+}
 function firstKnownBranch(person={},fallback='all'){
-  const fields=[person.branch,person.discipline,person.category,person.route,person.page].filter(Boolean);
-  for(const field of fields){
+  const explicit=[person.branch,person.discipline,person.sport,person.discipline_key].filter(Boolean);
+  for(const field of explicit){
     const normalized=normalizeBranch(field);
+    if(branchLabels[normalized])return normalized;
+  }
+  for(const route of itemRoutes(person)){
+    const normalized=normalizeBranch(route);
     if(branchLabels[normalized])return normalized;
   }
   return normalizeBranch(fallback);
@@ -910,7 +927,7 @@ function safeUrl(value=''){const v=String(value||'').trim();if(!v)return '';if(/
 function setText(id,value){const el=document.getElementById(id);if(el&&value!==undefined&&value!==null&&String(value)!=='')el.textContent=String(value);}
 function mkDate(value){if(!value)return '';const d=new Date(`${String(value).slice(0,10)}T12:00:00`);if(Number.isNaN(d.getTime()))return String(value);return new Intl.DateTimeFormat('mk-MK',{day:'2-digit',month:'long',year:'numeric'}).format(d);}
 function eventDate(item){if(item.date_label)return item.date_label;const start=mkDate(item.start_date);const end=mkDate(item.end_date);return end&&end!==start?`${start} — ${end}`:start;}
-function routeBranch(id=''){const value=normalizeRoute(id);for(const key of ['msg','zsg','rg','pk','gfa','acro'])if(value.includes(`/${key}`)||value===`branches/${key}`||value.includes(`results/${key}`))return key;return 'all';}
+function routeBranch(id=''){const value=normalizeRoute(id);for(const key of ['msg','zsg','rg','pk','gfa','acro'])if(value.includes(`/${key}`)||value===`branches/${key}`||value.includes(`results/${key}`))return key;const legacy=value.match(/(?:^|\/)branches\/akro(?:\/|$)/i);return legacy?'acro':'all';}
 function published(items){return (items||[]).filter(item=>item&&item.published!==false&&item.active!==false);}
 function formatBody(text=''){
   const lines=String(text||'').replace(/\r/g,'').split('\n');let html='',inList=false;
@@ -941,12 +958,18 @@ function cmsItems(data){
   if(data&&Array.isArray(data.items))return data.items;
   if(data&&Array.isArray(data.data))return data.data;
   if(data&&data.data&&Array.isArray(data.data.items))return data.data.items;
+  if(data&&data.payload&&Array.isArray(data.payload.items))return data.payload.items;
+  if(data&&data.result&&Array.isArray(data.result.items))return data.result.items;
   return [];
 }
 async function fetchJson(url){
   const response=await fetch(url,{cache:'no-store',credentials:'same-origin'});
-  if(!response.ok)throw new Error(`${url}: ${response.status}`);
-  return response.json();
+  const text=await response.text();
+  if(!response.ok)throw new Error(`${url}: ${response.status}${text?` — ${text.slice(0,160)}`:''}`);
+  let data;
+  try{data=text?JSON.parse(text):{};}catch(error){throw new Error(`${url}: invalid JSON`);}
+  if(data&&data.ok===false)throw new Error(`${url}: ${data.error||'backend returned ok:false'}`);
+  return data;
 }
 async function fetchCmsFile(path){
   const type=cmsTypeFromPath(path);
@@ -1025,29 +1048,47 @@ function documentsHtml(route,branch='all'){
   if(!items.length)return emptyHtml('Нема објавени документи','Документите, правилниците и програмите се додаваат преку административниот панел.');
   return `<table class="resource-table"><thead><tr><th>Документ</th><th>Категорија</th><th>Датум / верзија</th><th></th></tr></thead><tbody>${items.map(x=>`<tr><td><strong>${escapeHtml(x.title)}</strong>${x.description?`<br><small>${escapeHtml(x.description)}</small>`:''}</td><td>${escapeHtml(x.category||branchDisplay(x.branch)||'ФГСМ')}</td><td>${escapeHtml(mkDate(x.date))}${x.version?`<br><span class="resource-status">${escapeHtml(x.version)}</span>`:''}</td><td>${safeUrl(x.file)?`<a class="cms-action primary" href="${escapeHtml(safeUrl(x.file))}" target="_blank" rel="noopener">Отвори</a>`:''}</td></tr>`).join('')}</tbody></table>`;
 }
+function routeIsInside(route,parent){
+  const r=normalizeRoute(route),p=normalizeRoute(parent);
+  return !!r&&!!p&&(r===p||r.startsWith(p+'/'));
+}
+function personExplicitlyTargetsRoute(person,wantedRoute){
+  const wanted=normalizeRoute(wantedRoute);
+  const wantedRoot=wanted.split('/').slice(0,2).join('/');
+  return itemRoutes(person).some(route=>sameRoute(route,wanted)||sameRoute(route,wantedRoot)||routeIsInside(wanted,route)||routeIsInside(route,wanted));
+}
+function personConflictsWithRoute(person,wantedRoute,wantedBranch){
+  const routes=itemRoutes(person);
+  if(!routes.length)return false;
+  return routes.some(route=>{
+    if(personExplicitlyTargetsRoute({route},wantedRoute))return false;
+    const routeBranchKey=normalizeBranch(route);
+    return branchLabels[routeBranchKey]&&wantedBranch!=='all'&&routeBranchKey!==wantedBranch;
+  });
+}
 function peopleHtml(route,groups=[],branch='all'){
-  const wanted=(groups||[]).map(normalizeGroup).filter(Boolean);
+  const wanted=[...new Set((groups||[]).map(normalizeGroup).filter(Boolean))];
   const wantedBranch=normalizeBranch(branch);
   const wantedRoute=normalizeRoute(route);
-  let items=published(cmsState.people).filter(x=>{
+  const source=published(cmsState.people);
+  let items=source.filter(x=>{
     const group=firstKnownGroup(x);
     const itemBranch=firstKnownBranch(x,'all');
-    const itemRoute=normalizeRoute(x.route||x.page||x.slug||'');
-    const routeOk=sameRoute(itemRoute,wantedRoute)||!itemRoute||sameRoute(itemRoute,normalizeRoute(wantedRoute.split('/').slice(0,2).join('/')));
     const groupOk=!wanted.length||wanted.includes(group);
-    const branchOk=wantedBranch==='all'||itemBranch==='all'||itemBranch===wantedBranch||sameRoute(itemRoute,wantedRoute);
-    return groupOk&&routeOk&&branchOk;
+    if(!groupOk)return false;
+    const directRoute=personExplicitlyTargetsRoute(x,wantedRoute);
+    if(directRoute)return true;
+    if(personConflictsWithRoute(x,wantedRoute,wantedBranch))return false;
+    if(wantedBranch==='all')return true;
+    return itemBranch==='all'||itemBranch===wantedBranch;
   });
 
-  /* Fallback: if an admin entered a valid group but used an unsupported branch like АКРО before the route existed,
-     show it on the matching section instead of hiding it completely. */
+  // Last-resort branch fallback: if a valid person was entered but the branch spelling is unusual,
+  // do not hide the whole route. Show matching groups instead of returning an empty client page.
   if(!items.length&&wantedBranch!=='all'){
-    items=published(cmsState.people).filter(x=>{
+    items=source.filter(x=>{
       const group=firstKnownGroup(x);
-      const itemRoute=normalizeRoute(x.route||x.page||x.slug||'');
-      const groupOk=!wanted.length||wanted.includes(group);
-      const routeOk=sameRoute(itemRoute,wantedRoute)||!itemRoute;
-      return groupOk&&routeOk;
+      return (!wanted.length||wanted.includes(group))&&!personConflictsWithRoute(x,wantedRoute,wantedBranch);
     });
   }
 
@@ -1059,7 +1100,8 @@ function peopleHtml(route,groups=[],branch='all'){
     const rawGroup=x.group||x.category||x.type||'';
     const role=x.role||x.position||x.function||groupDisplay(group)||'';
     const description=x.bio||x.body||x.description||'';
-    const meta=[groupDisplay(group||rawGroup),branchDisplay(x.branch||x.discipline),x.club,x.license,x.mandate].filter(Boolean);
+    const visibleBranch=firstKnownBranch(x,'all');
+    const meta=[groupDisplay(group||rawGroup),visibleBranch!=='all'?branchDisplay(visibleBranch):'',x.club,x.license,x.mandate].filter(Boolean);
     return `<article class="person-card">
       <div class="person-photo" ${photo?`data-bg="${escapeHtml(photo)}"`:''}></div>
       <div class="person-body">
@@ -1071,7 +1113,7 @@ function peopleHtml(route,groups=[],branch='all'){
     </article>`;
   }).join('')}</div>`;
 }
-function galleryHtml(){const items=published(cmsState.gallery).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Галеријата се подготвува','Фотографиите ќе бидат објавени по избор и одобрување.');return `<div class="cms-gallery">${items.map(x=>`<figure><img src="${escapeHtml(safeUrl(x.image))}" alt="${escapeHtml(x.alt||x.title)}" loading="lazy"><figcaption><strong>${escapeHtml(x.title)}</strong><br>${escapeHtml(x.caption||'')}<br><small>${escapeHtml(mkDate(x.date))}</small></figcaption></figure>`).join('')}</div>`;}
+function galleryHtml(){const items=published(cmsState.gallery).filter(x=>safeUrl(x.image)).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Галеријата се подготвува','Фотографиите ќе бидат објавени по избор и одобрување.');return `<div class="cms-gallery">${items.map(x=>`<figure><img src="${escapeHtml(safeUrl(x.image))}" alt="${escapeHtml(x.alt||x.image_alt||x.title||'ФГСМ галерија')}" loading="lazy"><figcaption><strong>${escapeHtml(x.title||'Фотографија')}</strong><br>${escapeHtml(x.caption||'')}<br><small>${escapeHtml(mkDate(x.date))}</small></figcaption></figure>`).join('')}</div>`;}
 function hydrateDynamicMedia(root){root.querySelectorAll('[data-bg]').forEach(el=>{const u=safeUrl(el.dataset.bg);if(u)el.style.backgroundImage=`url("${u.replace(/"/g,'%22')}")`;});}
 function contentFor(node,parents){
   const context=branchContext([...parents,node]),branch=routeBranch(node.id),custom=customPageHtml(customPageFor(node.id));
@@ -1080,9 +1122,11 @@ function contentFor(node,parents){
   if(node.id==='gallery')return `${custom||'<h2>Галерија</h2><p>Визуелен архив од федерациски активности и натпревари.</p>'}${galleryHtml()}`;
   if(node.id==='documents'||node.label==='Документи')return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјална библиотека за ${escapeHtml(context)}.</p>`}${documentsHtml(node.id,branch)}`;
   if(node.id==='about/bodies')return `${custom||'<h2>Тела и членови</h2><p>Официјална организациска структура на Федерацијата.</p>'}${peopleHtml(node.id,['leadership','board','staff','body','bodies','member','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело','Стручен совет'],'all')}`;
+  // IMPORTANT: this exact education route must run before the generic '/judges' check below.
+  // Otherwise "education/coaches-judges" matches node.id.includes('judges') and only судии are shown.
+  if(node.id==='education/coaches-judges')return `${custom||'<h2>Тренери и судии</h2><p>Стручен кадар, едукација и лиценцирање.</p>'}${peopleHtml(node.id,['coach','judge','staff'],'all')}`;
   if(node.id.includes('national-team'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Национална селекција за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['national-team','representative','coach','staff'],branch)}`;
   if(node.id.includes('judges'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Судиски кадар и лиценцирани лица за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['judge'],branch)}`;
-  if(node.id==='education/coaches-judges')return `${custom||'<h2>Тренери и судии</h2><p>Стручен кадар, едукација и лиценцирање.</p>'}${peopleHtml(node.id,['coach','judge','staff'],'all')}`;
   if(node.id.includes('results'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјални резултати и архиви.</p>`}${resultArchiveHtml(branch)}`;
   if(node.id==='competitions'||node.id==='competitions/calendar'||node.id.endsWith('/competitions'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Календар и информации за натпреварите.</p>`}${eventArchiveHtml(branch)}`;
   if(custom)return custom;
