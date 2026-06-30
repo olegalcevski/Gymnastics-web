@@ -295,8 +295,8 @@ const SCHEMA = {
     fields:[
       {k:'name',label:'Име и презиме',type:'text',required:true},
       {k:'role',label:'Функција / Улога',type:'text'},
-      {k:'group',label:'Група / кадар',type:'select',options:['','Судија','Репрезентација','Тренер','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело','Стручен совет']},
-      {k:'branch',label:'Дисциплина',type:'discipline'},
+      {k:'group',label:'Групи / кадар (може повеќе)',type:'multiselect',options:['Судија','Репрезентација','Тренер','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело','Стручен совет'],help:'Избери една или повеќе опции. Пример: ист човек може да биде и Тренер и Судија.'},
+      {k:'branch',label:'Дисциплини / гранки (може повеќе)',type:'multiselect',options:DISCIPLINES,help:'Избери една или повеќе дисциплини. Ако не избереш ништо, лицето се смета за општо/федерациско.'},
       {k:'license',label:'Лиценца',type:'text'},
       {k:'image',label:'Фотографија',type:'image'},
       {k:'body',label:'Биографија',type:'richtext'},
@@ -399,7 +399,14 @@ function chip(v){return v?`<span class="chip">${esc(v)}</span>`:'<span class="mu
 function statusBadge(e){const st=String(e.status||'').toLowerCase();if(st&&!['претстои','завршен'].includes(st))return `<span class="badge live">${esc(e.status)}</span>`;return isPast(e)?'<span class="badge past">Завршен</span>':'<span class="badge up">Претстои</span>';}
 function linkCell(url,label){return url?`<a class="linkbtn" href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`:'—'}
 function twoLinks(a,b){const arr=[a,b].filter(x=>x&&x!=='—');return arr.length?arr.join(' '):'—'}
-function uniq(items,key){return [...new Set(items.map(x=>x[key]).filter(Boolean))]}
+function valueList(value){
+  if(value==null||value==='')return [];
+  if(Array.isArray(value))return value.flatMap(valueList);
+  return String(value).split(/[\n,;|]+/).map(v=>v.trim()).filter(Boolean);
+}
+function valueText(value){return valueList(value).join(', ')}
+function hasValue(value,wanted){return valueList(value).includes(wanted)}
+function uniq(items,key){return [...new Set(items.flatMap(x=>valueList(x[key])).filter(Boolean))]}
 function actionsCell(i){return `<div class="rowact"><button class="small secondary" data-edit data-i="${i}">Уреди</button><button class="small danger" data-del data-i="${i}">Избриши</button></div>`}
 function socialGlyph(s){const t=(s.platform||s.icon||'?').trim();return esc(t.slice(0,2))}
 
@@ -454,9 +461,9 @@ function applyFilters(type,items){
   const st=getFilter(type);let r=items;
   if(st.year)r=r.filter(x=>String(yearOfAny(x))===String(st.year));
   if(st.category)r=r.filter(x=>(x.category||'')===st.category);
-  if(st.branch)r=r.filter(x=>(x.branch||'')===st.branch);
+  if(st.branch)r=r.filter(x=>hasValue(x.branch,st.branch));
   if(st.city)r=r.filter(x=>(x.city||'')===st.city);
-  if(st.group)r=r.filter(x=>(x.group||'')===st.group);
+  if(st.group)r=r.filter(x=>hasValue(x.group,st.group));
   if(st.status)r=r.filter(x=>st.status==='past'?isPast(x):!isPast(x));
   return r;
 }
@@ -521,7 +528,7 @@ function viewProfiles(items){
     <article class="profile ${p.published===false?'unpub':''}">
       <div class="avatar">${p.image?`<img src="${esc(p.image)}" alt="">`:`<span>${esc((p.name||'?').trim().slice(0,1))}</span>`}</div>
       <h4>${esc(p.name||'')}</h4><div class="role">${esc(p.role||'')}</div>
-      <div class="row center gap6">${p.group?`<span class="chip">${esc(p.group)}</span>`:''}${p.branch?`<span class="chip">${esc(p.branch)}</span>`:''}${p.license?`<span class="chip lic">Лиценца: ${esc(p.license)}</span>`:''}</div>
+      <div class="row center gap6">${valueList(p.group).map(g=>`<span class="chip">${esc(g)}</span>`).join('')}${valueList(p.branch).map(b=>`<span class="chip">${esc(b)}</span>`).join('')}${p.license?`<span class="chip lic">Лиценца: ${esc(p.license)}</span>`:''}</div>
       <p class="muted bio">${esc(p.body||'')}</p>${actionsCell(idxOf.get(p))}</article>`).join('')}</div>`;
 }
 function viewPartners(items){
@@ -556,6 +563,13 @@ function normalizePageItem(item){
   item.slug = String(item.slug || item.route || '').trim().replace(/^\/+|\/+$/g,'');
   if (item.image) item.image = normalizeMediaUrl(item.image);
   if (!item.updated) item.updated = new Date().toISOString().slice(0,10);
+  return item;
+}
+function normalizePeopleItem(item){
+  item = item || {};
+  item.group = valueList(item.group);
+  item.branch = valueList(item.branch);
+  if(item.image) item.image = normalizeMediaUrl(item.image);
   return item;
 }
 function inlineFormat(text){
@@ -613,7 +627,7 @@ function previewOne(type,x){
     case 'documents':return `<div class="card" style="margin:0"><b>${esc(x.title||'')}</b>${x.description?`<div class="muted sm">${esc(x.description)}</div>`:''}<div class="row gap6" style="margin:8px 0">${chip(x.category)}${chip(x.branch)}${x.year?`<span class="chip">${esc(x.year)}</span>`:''}</div>${linkCell(x.file,'Преземи')}</div>`;
     case 'gallery':return `<figure class="gal-item" style="max-width:220px">${x.image?`<img src="${esc(x.image)}" alt="">`:'<div class="ph"></div>'}<figcaption><b>${esc(x.title||'')}</b><span class="muted">${[fmtDate(x.date),esc(x.category||'')].filter(v=>v&&v!=='—').join(' · ')}</span></figcaption></figure>`;
     case 'clubs':return `<div class="card" style="margin:0"><div class="row gap6">${x.logo?`<img class="thumb" src="${esc(x.logo)}" alt="">`:'<div class="thumb ph"></div>'}<b>${esc(x.name||'')}</b></div><div class="muted sm" style="margin:8px 0">${esc(x.city||'')}${x.contact?' · '+esc(x.contact):''}</div>${linkCell(x.website,'Веб-страница')}</div>`;
-    case 'people':return `<article class="profile" style="max-width:240px;margin:auto"><div class="avatar">${x.image?`<img src="${esc(x.image)}" alt="">`:`<span>${esc((x.name||'?').trim().slice(0,1))}</span>`}</div><h4>${esc(x.name||'')}</h4><div class="role">${esc(x.role||'')}</div><div class="row center gap6">${x.group?`<span class="chip">${esc(x.group)}</span>`:''}${x.branch?`<span class="chip">${esc(x.branch)}</span>`:''}${x.license?`<span class="chip lic">${esc(x.license)}</span>`:''}</div><p class="muted bio">${esc(x.body||'')}</p></article>`;
+    case 'people':return `<article class="profile" style="max-width:240px;margin:auto"><div class="avatar">${x.image?`<img src="${esc(x.image)}" alt="">`:`<span>${esc((x.name||'?').trim().slice(0,1))}</span>`}</div><h4>${esc(x.name||'')}</h4><div class="role">${esc(x.role||'')}</div><div class="row center gap6">${valueList(x.group).map(g=>`<span class="chip">${esc(g)}</span>`).join('')}${valueList(x.branch).map(b=>`<span class="chip">${esc(b)}</span>`).join('')}${x.license?`<span class="chip lic">${esc(x.license)}</span>`:''}</div><p class="muted bio">${esc(x.body||'')}</p></article>`;
     case 'partners':return `<article class="partner"><span class="partner-logo">${x.logo?`<img src="${esc(x.logo)}" alt="">`:esc(x.name||'')}</span><b>${esc(x.name||'')}</b></article>`;
     case 'social':{const a=x.active!==false&&x.published!==false;return `<div class="social-row ${a?'':'off'}"><span class="social-icon">${socialGlyph(x)}</span><div class="social-main"><b>${esc(x.platform||'')}</b><span class="muted">${esc(x.url||'')}</span></div><span class="badge ${a?'up':'past'}">${a?'Активно':'Неактивно'}</span></div>`}
     case 'pages':return renderPageContent(normalizePageItem(clone(x)));
@@ -640,6 +654,7 @@ function inputFor(f,v){
     case 'number':inner=`<input type="number" ${c} value="${esc(v??'')}">`;break;
     case 'url':inner=`<input type="url" ${c} value="${esc(v??'')}" placeholder="https://...">`;break;
     case 'bool':inner=`<label class="toggle"><input type="checkbox" ${c} ${v?'checked':''}><span></span></label>`;break;
+    case 'multiselect':{const selected=new Set(valueList(v));inner=`<select ${c} multiple size="${Math.min(Math.max((f.options||[]).length,4),8)}">${(f.options||[]).map(o=>`<option value="${esc(o)}" ${selected.has(o)?'selected':''}>${esc(o)}</option>`).join('')}</select>`;break;}
     case 'select':inner=`<select ${c}>${(f.options||[]).map(o=>`<option value="${esc(o)}" ${String(v||'')===o?'selected':''}>${esc(o||'—')}</option>`).join('')}</select>`;break;
     case 'discipline':inner=`<input ${c} list="dl_branch" value="${esc(v??'')}" placeholder="МСГ, ЖСГ, РГ...">`;break;
     case 'image':case 'file':inner=uplField(f,v);break;
@@ -654,7 +669,7 @@ function uplField(f,v){
     `<label class="btn secondary small uplbtn">Прикачи<input type="file" accept="${accept}" data-upl="${f.k}" hidden></label></div>`+
     `<div class="thumb-prev" data-prev="${f.k}">${v&&f.type==='image'?`<img src="${esc(v)}" alt="">`:''}</div></div>`;
 }
-function typedVal(el){if(el.type==='checkbox')return el.checked;if(el.dataset.type==='number')return el.value===''?'':Number(el.value);if(el.dataset.type==='json'){try{return JSON.parse(el.value)}catch{return el.value}}return el.value;}
+function typedVal(el){if(el.multiple)return Array.from(el.selectedOptions).map(o=>o.value).filter(Boolean);if(el.type==='checkbox')return el.checked;if(el.dataset.type==='number')return el.value===''?'':Number(el.value);if(el.dataset.type==='json'){try{return JSON.parse(el.value)}catch{return el.value}}return el.value;}
 
 function openEditor(key){
   editing=key;$('editor').classList.remove('hide');
@@ -721,6 +736,10 @@ function renderSettings(payload){
 async function save(){
   $('saveMsg').textContent='Се зачувува...';
   let item;try{item=JSON.parse($('jsonBox').value)}catch(e){$('saveMsg').textContent='JSON грешка: '+e.message;return;}
+  if(current==='people'){
+    item=normalizePeopleItem(item);
+    $('jsonBox').value=JSON.stringify(item,null,2);
+  }
   if(current==='pages'){
     item=normalizePageItem(item);
     if(!item.title){$('saveMsg').textContent='Внеси наслов.';return;}
