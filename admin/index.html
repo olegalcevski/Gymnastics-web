@@ -202,6 +202,7 @@ function normalizeMediaUrl(value) {
 document.getElementById('mode').textContent = cfg.MODE || 'static';
 
 const DISCIPLINES = ['МСГ','ЖСГ','РГ','ПК','АКРО','ТРА','АЕ','ГЗА'];
+const OFFICIAL_BRANCH_FILTERS = DISCIPLINES.map(x => [x, x]);
 
 /* ---- per-type schema: fields (form) + view (preview) + filters ---- */
 const SCHEMA = {
@@ -296,7 +297,7 @@ const SCHEMA = {
       {k:'name',label:'Име и презиме',type:'text',required:true},
       {k:'role',label:'Функција / Улога',type:'text'},
       {k:'group',label:'Групи / кадар (може повеќе)',type:'multiselect',options:['Судија','Репрезентација','Тренер','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело','Стручен совет'],help:'Избери една или повеќе опции. Пример: ист човек може да биде и Тренер и Судија.'},
-      {k:'branch',label:'Дисциплини / гранки (може повеќе)',type:'multiselect',options:DISCIPLINES,help:'Избери една или повеќе дисциплини/гранки: МСГ, ЖСГ, РГ, ПК, АКРО итн. Ако не избереш ништо, лицето се смета за општо/федерациско.'},
+      {k:'branch',label:'Дисциплини / гранки (може повеќе)',type:'multiselect',options:DISCIPLINES,help:'Избери една или повеќе дисциплини/гранки. Новите официјални опции ПК и АКРО се целосно поддржани. Ако не избереш ништо, лицето се смета за општо/федерациско.'},
       {k:'license',label:'Лиценца',type:'text'},
       {k:'image',label:'Фотографија',type:'image'},
       {k:'body',label:'Биографија',type:'richtext'},
@@ -447,7 +448,10 @@ function renderFilters(type,items){
   defs.forEach(d=>{
     if(d==='year')parts.push(selectFilter('year','Сите години',[...new Set(items.map(yearOfAny).filter(Boolean))].sort((a,b)=>b-a),st.year));
     else if(d==='category')parts.push(selectFilter('category','Сите категории',uniq(items,'category'),st.category));
-    else if(d==='branch')parts.push(selectFilter('branch','Сите дисциплини',uniq(items,'branch'),st.branch));
+    else if(d==='branch'){
+      const branchOptions=[...new Set([...DISCIPLINES,...uniq(items,'branch')])];
+      parts.push(selectFilter('branch','Сите дисциплини',branchOptions,st.branch));
+    }
     else if(d==='city')parts.push(selectFilter('city','Сите градови',uniq(items,'city'),st.city));
     else if(d==='group')parts.push(selectFilter('group','Сите групи',uniq(items,'group'),st.group));
     else if(d==='status')parts.push(selectFilter('status','Сите статуси',[['up','Претстои'],['past','Завршен']],st.status));
