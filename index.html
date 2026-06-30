@@ -928,6 +928,12 @@ function branchValues(person={},fallback='all'){
 function firstKnownBranch(person={},fallback='all'){
   return branchValues(person,fallback)[0]||normalizeBranch(fallback);
 }
+function matchesBranchStrict(item={},wantedBranch='all'){
+  const wanted=normalizeBranch(wantedBranch);
+  if(wanted==='all')return true;
+  const branches=branchValues(item,'').filter(b=>b&&b!=='all');
+  return branches.includes(wanted);
+}
 function normalizeRoute(value=''){
   return String(value||'').trim().replace(/^#\/?/,'').replace(/^\/+/,'').replace(/\/+$/,'');
 }
@@ -1033,7 +1039,7 @@ function renderSocial(){const box=document.getElementById('social-grid');if(!box
 const calendarTabs=document.getElementById('calendar-tabs'),calendarBoard=document.getElementById('calendar-board');
 let activeCalendarKey='msg';
 [['msg','МСГ'],['zsg','ЖСГ'],['rg','РГ'],['pk','ПК'],['gfa','Гимнастика за сите'],['acro','АКРО']].forEach(([id,label],i)=>{const b=document.createElement('button');b.className='calendar-tab'+(i===0?' active':'');b.textContent=label;b.dataset.tab=id;b.setAttribute('role','tab');calendarTabs.appendChild(b);});
-function renderCalendar(key=activeCalendarKey){activeCalendarKey=normalizeBranch(key);const items=published(cmsState.events).filter(x=>normalizeBranch(x.branch)===activeCalendarKey).sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length){calendarBoard.innerHTML='<div class="cms-empty"><strong>Нема објавени настани</strong><span>Новиот настан ќе се појави тука веднаш по објавување од административниот панел.</span></div>';return;}calendarBoard.innerHTML=items.map(e=>`<div class="calendar-row"><div class="calendar-date">${escapeHtml(eventDate(e))}</div><div class="calendar-name"><strong>${escapeHtml(e.name)}</strong><span>${escapeHtml(e.category||'')}</span></div><div class="calendar-cell"><span class="calendar-type">${escapeHtml(e.type||'Настан')}</span></div><div class="calendar-cell">${escapeHtml(e.location||'')}</div><div class="calendar-cell"><button class="text-link" data-entry-type="events" data-entry-id="${escapeHtml(e.slug||e.name)}">Детали</button></div></div>`).join('');}
+function renderCalendar(key=activeCalendarKey){activeCalendarKey=normalizeBranch(key);const items=published(cmsState.events).filter(x=>matchesBranchStrict(x,activeCalendarKey)).sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length){calendarBoard.innerHTML='<div class="cms-empty"><strong>Нема објавени настани</strong><span>Новиот настан ќе се појави тука веднаш по објавување од административниот панел.</span></div>';return;}calendarBoard.innerHTML=items.map(e=>`<div class="calendar-row"><div class="calendar-date">${escapeHtml(eventDate(e))}</div><div class="calendar-name"><strong>${escapeHtml(e.name)}</strong><span>${escapeHtml(e.category||'')}</span></div><div class="calendar-cell"><span class="calendar-type">${escapeHtml(e.type||'Настан')}</span></div><div class="calendar-cell">${escapeHtml(e.location||'')}</div><div class="calendar-cell"><button class="text-link" data-entry-type="events" data-entry-id="${escapeHtml(e.slug||e.name)}">Детали</button></div></div>`).join('');}
 renderCalendar('msg');calendarTabs.addEventListener('click',e=>{const btn=e.target.closest('.calendar-tab');if(!btn)return;calendarTabs.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));renderCalendar(btn.dataset.tab);});
 
 /* NEWS */
@@ -1050,14 +1056,14 @@ function customPageFor(route){const wanted=normalizeRoute(route);return publishe
 function customPageHtml(page){if(!page)return '';return `${page.title?`<h2>${escapeHtml(page.title)}</h2>`:''}${page.body?formatBody(page.body):''}${page.callout_title||page.callout_text?`<div class="portal-callout"><strong>${escapeHtml(page.callout_title||'Важно')}</strong><p>${escapeHtml(page.callout_text||'')}</p></div>`:''}${page.updated?`<div class="cms-updated">Последно ажурирање: ${escapeHtml(mkDate(page.updated))}</div>`:''}`;}
 function emptyHtml(title='Содржината се подготвува',text='Официјалните информации ќе бидат објавени тука по нивната потврда.') {return `<div class="cms-empty"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(text)}</span></div>`;}
 function newsArchiveHtml(){const items=published(cmsState.news).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени новости','Нова објава се додава преку административниот панел.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-media" ${x.image?`data-bg="${escapeHtml(x.image)}"`:''}></div><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(x.category||'Новости')} · ${escapeHtml(mkDate(x.date))}</div><h3>${escapeHtml(x.title)}</h3><p>${escapeHtml(x.excerpt||'')}</p><div class="cms-card-actions"><button class="cms-action primary" data-entry-type="news" data-entry-id="${escapeHtml(x.slug||x.title)}">Прочитај</button></div></div></article>`).join('')}</div>`;}
-function eventArchiveHtml(branch='all'){let items=published(cmsState.events);const wantedBranch=normalizeBranch(branch);if(wantedBranch!=='all')items=items.filter(x=>normalizeBranch(x.branch)===wantedBranch);items.sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length)return emptyHtml('Нема објавени настани','Календарот ќе се ажурира по официјална потврда.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(branchDisplay(x.branch)||'ФГСМ')} · ${escapeHtml(eventDate(x))}</div><h3>${escapeHtml(x.name)}</h3><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(x.type||'Настан')}</span><span class="cms-pill">${escapeHtml(x.location||'')}</span></div><p>${escapeHtml(x.description||x.category||'')}</p><div class="cms-card-actions"><button class="cms-action primary" data-entry-type="events" data-entry-id="${escapeHtml(x.slug||x.name)}">Детали</button>${safeUrl(x.bulletin)?`<a class="cms-action" href="${escapeHtml(safeUrl(x.bulletin))}" target="_blank" rel="noopener">Билтен</a>`:''}</div></div></article>`).join('')}</div>`;}
-function resultArchiveHtml(branch='all'){let items=published(cmsState.results);const wantedBranch=normalizeBranch(branch);if(wantedBranch!=='all')items=items.filter(x=>normalizeBranch(x.branch)===wantedBranch);items.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени резултати','PDF резултатите ќе се појават тука веднаш по објавувањето.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(branchDisplay(x.branch)||'ФГСМ')} · ${escapeHtml(mkDate(x.date))}</div><h3>${escapeHtml(x.title)}</h3><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(x.competition_type||'Резултати')}</span><span class="cms-pill">${escapeHtml(x.category||'')}</span></div><p>${escapeHtml(x.summary||x.location||'')}</p><div class="cms-card-actions">${safeUrl(x.file)?`<a class="cms-action primary" href="${escapeHtml(safeUrl(x.file))}" target="_blank" rel="noopener">Отвори резултати</a>`:''}</div></div></article>`).join('')}</div>`;}
+function eventArchiveHtml(branch='all'){let items=published(cmsState.events);const wantedBranch=normalizeBranch(branch);if(wantedBranch!=='all')items=items.filter(x=>matchesBranchStrict(x,wantedBranch));items.sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length)return emptyHtml('Нема објавени настани','Календарот ќе се ажурира по официјална потврда.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(branchValues(x,'').map(branchDisplay).filter(Boolean).join(' · ')||'ФГСМ')} · ${escapeHtml(eventDate(x))}</div><h3>${escapeHtml(x.name)}</h3><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(x.type||'Настан')}</span><span class="cms-pill">${escapeHtml(x.location||'')}</span></div><p>${escapeHtml(x.description||x.category||'')}</p><div class="cms-card-actions"><button class="cms-action primary" data-entry-type="events" data-entry-id="${escapeHtml(x.slug||x.name)}">Детали</button>${safeUrl(x.bulletin)?`<a class="cms-action" href="${escapeHtml(safeUrl(x.bulletin))}" target="_blank" rel="noopener">Билтен</a>`:''}</div></div></article>`).join('')}</div>`;}
+function resultArchiveHtml(branch='all'){let items=published(cmsState.results);const wantedBranch=normalizeBranch(branch);if(wantedBranch!=='all')items=items.filter(x=>matchesBranchStrict(x,wantedBranch));items.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Нема објавени резултати','PDF резултатите ќе се појават тука веднаш по објавувањето.');return `<div class="cms-grid">${items.map(x=>`<article class="cms-card"><div class="cms-card-body"><div class="cms-kicker">${escapeHtml(branchValues(x,'').map(branchDisplay).filter(Boolean).join(' · ')||'ФГСМ')} · ${escapeHtml(mkDate(x.date))}</div><h3>${escapeHtml(x.title)}</h3><div class="cms-meta-row"><span class="cms-pill">${escapeHtml(x.competition_type||'Резултати')}</span><span class="cms-pill">${escapeHtml(x.category||'')}</span></div><p>${escapeHtml(x.summary||x.location||'')}</p><div class="cms-card-actions">${safeUrl(x.file)?`<a class="cms-action primary" href="${escapeHtml(safeUrl(x.file))}" target="_blank" rel="noopener">Отвори резултати</a>`:''}</div></div></article>`).join('')}</div>`;}
 function documentsHtml(route,branch='all'){
   const wantedRoute=normalizeRoute(route),wantedBranch=normalizeBranch(branch);
   let items=published(cmsState.documents).filter(x=>{
     const itemRoute=normalizeRoute(x.route);
-    const itemBranch=normalizeBranch(x.branch);
-    const routeOk=sameRoute(itemRoute,wantedRoute)||(wantedRoute==='documents'&&(sameRoute(itemRoute,'documents')||!itemRoute))||(wantedBranch!=='all'&&itemBranch===wantedBranch&&(!itemRoute||sameRoute(itemRoute,'documents')));
+    const branchOk=matchesBranchStrict(x,wantedBranch);
+    const routeOk=sameRoute(itemRoute,wantedRoute)||(wantedRoute==='documents'&&(sameRoute(itemRoute,'documents')||!itemRoute))||(wantedBranch!=='all'&&branchOk&&(!itemRoute||sameRoute(itemRoute,'documents')));
     return routeOk;
   });
   items.sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));
@@ -1087,26 +1093,23 @@ function peopleHtml(route,groups=[],branch='all'){
   const wantedBranch=normalizeBranch(branch);
   const wantedRoute=normalizeRoute(route);
   const source=published(cmsState.people);
-  let items=source.filter(x=>{
+  const items=source.filter(x=>{
     const personGroups=groupValues(x);
-    const itemBranches=branchValues(x,'all');
     const groupOk=!wanted.length||personGroups.some(group=>wanted.includes(group));
     if(!groupOk)return false;
+
+    // Exact route targeting is allowed, but branch routes stay strict.
+    // Example: a manually targeted branches/msg/national-team item can show there.
     const directRoute=personExplicitlyTargetsRoute(x,wantedRoute);
     if(directRoute)return true;
-    if(personConflictsWithRoute(x,wantedRoute,wantedBranch))return false;
-    if(wantedBranch==='all')return true;
-    return itemBranches.includes('all')||itemBranches.includes(wantedBranch);
-  });
 
-  // Last-resort branch fallback: if a valid person was entered but the branch spelling is unusual,
-  // do not hide the whole route. Show matching groups instead of returning an empty client page.
-  if(!items.length&&wantedBranch!=='all'){
-    items=source.filter(x=>{
-      const personGroups=groupValues(x);
-      return (!wanted.length||personGroups.some(group=>wanted.includes(group)))&&!personConflictsWithRoute(x,wantedRoute,wantedBranch);
-    });
-  }
+    // Global pages (about/bodies and education/coaches-judges) intentionally ignore branch.
+    if(wantedBranch==='all')return true;
+
+    // Branch pages must be exact: АКРО only in acro, ЖСГ only in zsg, РГ only in rg, etc.
+    // No fallback, no cross-branch guesses.
+    return matchesBranchStrict(x,wantedBranch);
+  });
 
   items.sort((a,b)=>(Number(Boolean(b.featured))-Number(Boolean(a.featured)))||(Number(a.order||99)-Number(b.order||99))||String(a.name||a.title||'').localeCompare(String(b.name||b.title||''),'mk'));
   if(!items.length)return emptyHtml('Нема објавени лица','Составите и функциите ќе бидат прикажани по официјална потврда.');
@@ -1116,7 +1119,7 @@ function peopleHtml(route,groups=[],branch='all'){
     const rawGroup=x.group||x.category||x.type||'';
     const role=x.role||x.position||x.function||groupDisplay(groupsForPerson[0]||rawGroup)||'';
     const description=x.bio||x.body||x.description||'';
-    const branchesForPerson=branchValues(x,'all').filter(b=>b!=='all');
+    const branchesForPerson=branchValues(x,'').filter(b=>b&&b!=='all');
     const meta=[...groupsForPerson.map(groupDisplay),...branchesForPerson.map(branchDisplay),x.club,x.license,x.mandate].filter(Boolean);
     return `<article class="person-card">
       <div class="person-photo" ${photo?`data-bg="${escapeHtml(photo)}"`:''}></div>
@@ -1129,6 +1132,7 @@ function peopleHtml(route,groups=[],branch='all'){
     </article>`;
   }).join('')}</div>`;
 }
+
 function galleryHtml(){const items=published(cmsState.gallery).filter(x=>safeUrl(x.image)).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')));if(!items.length)return emptyHtml('Галеријата се подготвува','Фотографиите ќе бидат објавени по избор и одобрување.');return `<div class="cms-gallery">${items.map(x=>`<figure><img src="${escapeHtml(safeUrl(x.image))}" alt="${escapeHtml(x.alt||x.image_alt||x.title||'ФГСМ галерија')}" loading="lazy"><figcaption><strong>${escapeHtml(x.title||'Фотографија')}</strong><br>${escapeHtml(x.caption||'')}<br><small>${escapeHtml(mkDate(x.date))}</small></figcaption></figure>`).join('')}</div>`;}
 function hydrateDynamicMedia(root){root.querySelectorAll('[data-bg]').forEach(el=>{const u=safeUrl(el.dataset.bg);if(u)el.style.backgroundImage=`url("${u.replace(/"/g,'%22')}")`;});}
 function contentFor(node,parents){
