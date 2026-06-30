@@ -1,6 +1,25 @@
 {
   "items": [
     {
+      "featured": false,
+      "published": true,
+      "name": "Петар",
+      "role": "судија и дел од репрезентација",
+      "group": [
+        "Судија",
+        "Репрезентација"
+      ],
+      "branch": [
+        "МСГ",
+        "РГ",
+        "АКРО",
+        "ТРА"
+      ],
+      "license": "гимнастичар",
+      "image": "/assets/uploads/1782815575975-182aea32aebefef989c6c51f449b66bc.jpg",
+      "id": "item-1782815587241"
+    },
+    {
       "featured": true,
       "published": true,
       "name": "Петар",
