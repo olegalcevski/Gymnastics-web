@@ -297,7 +297,7 @@ const SCHEMA = {
       {k:'name',label:'Име и презиме',type:'text',required:true},
       {k:'role',label:'Функција / Улога',type:'text'},
       {k:'group',label:'Групи / кадар (може повеќе)',type:'multiselect',options:['Судија','Репрезентација','Тренер','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело','Стручен совет'],help:'Избери една или повеќе опции. Пример: ист човек може да биде и Тренер и Судија.'},
-      {k:'branch',label:'Дисциплини / гранки (може повеќе)',type:'multiselect',options:DISCIPLINES,help:'Избери една или повеќе дисциплини/гранки. Новите официјални опции ПК и АКРО се целосно поддржани. Ако не избереш ништо, лицето се смета за општо/федерациско.'},
+      {k:'branch',label:'Дисциплини / гранки (може повеќе)',type:'multiselect',options:DISCIPLINES,help:'Избери една или повеќе дисциплини/гранки. Сите официјални опции МСГ, ЖСГ, РГ, ПК, АКРО, ТРА, АЕ и ГЗА се поддржани. Ако не избереш ништо, лицето се смета за општо/федерациско.'},
       {k:'license',label:'Лиценца',type:'text'},
       {k:'image',label:'Фотографија',type:'image'},
       {k:'body',label:'Биографија',type:'richtext'},
@@ -660,7 +660,7 @@ function inputFor(f,v){
     case 'bool':inner=`<label class="toggle"><input type="checkbox" ${c} ${v?'checked':''}><span></span></label>`;break;
     case 'multiselect':{const selected=new Set(valueList(v));inner=`<select ${c} multiple size="${Math.min(Math.max((f.options||[]).length,4),8)}">${(f.options||[]).map(o=>`<option value="${esc(o)}" ${selected.has(o)?'selected':''}>${esc(o)}</option>`).join('')}</select>`;break;}
     case 'select':inner=`<select ${c}>${(f.options||[]).map(o=>`<option value="${esc(o)}" ${String(v||'')===o?'selected':''}>${esc(o||'—')}</option>`).join('')}</select>`;break;
-    case 'discipline':inner=`<input ${c} list="dl_branch" value="${esc(v??'')}" placeholder="МСГ, ЖСГ, РГ, ПК, АКРО...">`;break;
+    case 'discipline':inner=`<input ${c} list="dl_branch" value="${esc(v??'')}" placeholder="МСГ, ЖСГ, РГ, ПК, АКРО, ТРА, АЕ, ГЗА...">`;break;
     case 'image':case 'file':inner=uplField(f,v);break;
     default:inner=`<input ${c} value="${esc(v??'')}" ${f.list?`list="dl_${f.list}"`:''} placeholder="${esc(f.ph||'')}">`;
   }
