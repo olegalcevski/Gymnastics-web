@@ -760,7 +760,7 @@ function indexTree(nodes,parents=[]){nodes.forEach(node=>{routeMap.set(node.id,{
 indexTree(allRoots);
 
 const genericSummaries={
-  'МСГ':'Машка спортска гимнастика','ЖСГ':'Женска спортска гимнастика','РГ':'Ритмичка гимнастика','ПК':'Паркур',
+  'МСГ':'Машка спортска гимнастика','ЖСГ':'Женска спортска гимнастика','РГ':'Ритмичка гимнастика','ПК':'Паркур','АКРО':'Акробатска гимнастика','Гимнастика за сите':'Гимнастика за сите',
   'Дигитален прирачник':'Структурирана библиотека на национални програми, категории и елементи.',
   'Документи':'Официјални материјали, обрасци, одлуки и федерациски документи.',
   'Натпревари':'Календар, категории, резултати и официјални информации за натпреварувачкиот систем.',
@@ -955,7 +955,17 @@ function safeUrl(value=''){const v=String(value||'').trim();if(!v)return '';if(/
 function setText(id,value){const el=document.getElementById(id);if(el&&value!==undefined&&value!==null&&String(value)!=='')el.textContent=String(value);}
 function mkDate(value){if(!value)return '';const d=new Date(`${String(value).slice(0,10)}T12:00:00`);if(Number.isNaN(d.getTime()))return String(value);return new Intl.DateTimeFormat('mk-MK',{day:'2-digit',month:'long',year:'numeric'}).format(d);}
 function eventDate(item){if(item.date_label)return item.date_label;const start=mkDate(item.start_date);const end=mkDate(item.end_date);return end&&end!==start?`${start} — ${end}`:start;}
-function routeBranch(id=''){const value=normalizeRoute(id);for(const key of ['msg','zsg','rg','pk','gfa','acro'])if(value.includes(`/${key}`)||value===`branches/${key}`||value.includes(`results/${key}`))return key;const legacy=value.match(/(?:^|\/)branches\/akro(?:\/|$)/i);return legacy?'acro':'all';}
+function routeBranch(id=''){
+  const value=normalizeRoute(id);
+  if(/(?:^|\/)branches\/akro(?:\/|$)/i.test(value))return 'acro';
+  if(/(?:^|\/)(branches\/acro|competitions\/results\/acrobatic)(?:\/|$)/i.test(value))return 'acro';
+  if(/(?:^|\/)(branches\/pk|competitions\/results\/parkour)(?:\/|$)/i.test(value))return 'pk';
+  if(/(?:^|\/)(branches\/rg|competitions\/results\/rhythmic)(?:\/|$)/i.test(value))return 'rg';
+  if(/(?:^|\/)branches\/gfa(?:\/|$)/i.test(value))return 'gfa';
+  if(/(?:^|\/)branches\/zsg(?:\/|$)/i.test(value))return 'zsg';
+  if(/(?:^|\/)branches\/msg(?:\/|$)/i.test(value))return 'msg';
+  return 'all';
+}
 function published(items){return (items||[]).filter(item=>item&&item.published!==false&&item.active!==false);}
 function formatBody(text=''){
   const lines=String(text||'').replace(/\r/g,'').split('\n');let html='',inList=false;
@@ -1044,7 +1054,7 @@ function renderSocial(){const box=document.getElementById('social-grid');if(!box
 /* CALENDAR */
 const calendarTabs=document.getElementById('calendar-tabs'),calendarBoard=document.getElementById('calendar-board');
 let activeCalendarKey='msg';
-[['msg','МСГ'],['zsg','ЖСГ'],['rg','РГ'],['pk','ПК'],['gfa','Гимнастика за сите'],['acro','АКРО']].forEach(([id,label],i)=>{const b=document.createElement('button');b.className='calendar-tab'+(i===0?' active':'');b.textContent=label;b.dataset.tab=id;b.setAttribute('role','tab');calendarTabs.appendChild(b);});
+[['msg','МСГ'],['zsg','ЖСГ'],['rg','РГ'],['pk','ПК'],['acro','АКРО'],['gfa','Гимнастика за сите']].forEach(([id,label],i)=>{const b=document.createElement('button');b.className='calendar-tab'+(i===0?' active':'');b.textContent=label;b.dataset.tab=id;b.setAttribute('role','tab');calendarTabs.appendChild(b);});
 function renderCalendar(key=activeCalendarKey){activeCalendarKey=normalizeBranch(key);const items=published(cmsState.events).filter(x=>matchesBranchStrict(x,activeCalendarKey)).sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length){calendarBoard.innerHTML='<div class="cms-empty"><strong>Нема објавени настани</strong><span>Новиот настан ќе се појави тука веднаш по објавување од административниот панел.</span></div>';return;}calendarBoard.innerHTML=items.map(e=>`<div class="calendar-row"><div class="calendar-date">${escapeHtml(eventDate(e))}</div><div class="calendar-name"><strong>${escapeHtml(e.name)}</strong><span>${escapeHtml(e.category||'')}</span></div><div class="calendar-cell"><span class="calendar-type">${escapeHtml(e.type||'Настан')}</span></div><div class="calendar-cell">${escapeHtml(e.location||'')}</div><div class="calendar-cell"><button class="text-link" data-entry-type="events" data-entry-id="${escapeHtml(e.slug||e.name)}">Детали</button></div></div>`).join('');}
 renderCalendar('msg');calendarTabs.addEventListener('click',e=>{const btn=e.target.closest('.calendar-tab');if(!btn)return;calendarTabs.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));renderCalendar(btn.dataset.tab);});
 
