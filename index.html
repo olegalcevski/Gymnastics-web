@@ -488,7 +488,7 @@ footer{background:#0d0d1a;color:#fff;border-top:1px solid rgba(201,168,76,.18);p
         <a class="btn-outline js-scroll" id="hero-secondary" href="#calendar">Календар на натпревари</a>
       </div>
       <div class="hero-stats" id="hero-stats" aria-label="Федерациски показатели">
-        <div class="hero-stat"><strong>4+</strong><span>Гимнастички гранки</span></div>
+        <div class="hero-stat"><strong>6+</strong><span>Гимнастички гранки</span></div>
         <div class="hero-stat"><strong>FIG</strong><span>Меѓународни стандарди</span></div>
         <div class="hero-stat"><strong>365</strong><span>Дена поддршка</span></div>
       </div>
@@ -612,7 +612,7 @@ footer{background:#0d0d1a;color:#fff;border-top:1px solid rgba(201,168,76,.18);p
         <div class="footer-socials"><a href="https://www.facebook.com/p/%D0%A4%D0%B5%D0%B4%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D1%98%D0%B0-%D0%BD%D0%B0-%D0%93%D0%B8%D0%BC%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%BA%D0%B8%D1%82%D0%B5-%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D0%BE%D0%B2%D0%B8-%D0%BD%D0%B0-%D0%A0%D0%B5%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0-%D0%9C%D0%B0%D0%BA%D0%B5%D0%B4%D0%BE%D0%BD%D0%B8%D1%98%D0%B0-61587880341323/" target="_blank" rel="noopener" aria-label="Facebook">f</a><a href="mailto:contact.fgsm.bt@gmail.com" aria-label="Е-пошта">@</a></div>
       </div>
       <div class="footer-col"><h4>Федерација</h4><ul><li><button class="route-btn" data-route="about">За ФГСМ</button></li><li><button class="route-btn" data-route="about/bodies">Тела и членови</button></li><li><button class="route-btn" data-route="news">Новости</button></li><li><button class="route-btn" data-route="contact">Контакт</button></li></ul></div>
-      <div class="footer-col"><h4>Гимнастика</h4><ul><li><button class="route-btn" data-route="branches/msg">МСГ</button></li><li><button class="route-btn" data-route="branches/zsg">ЖСГ</button></li><li><button class="route-btn" data-route="branches/rg">РГ</button></li><li><button class="route-btn" data-route="branches/pk">ПК</button></li><li><button class="route-btn" data-route="branches/gfa">Гимнастика за сите</button></li></ul></div>
+      <div class="footer-col"><h4>Гимнастика</h4><ul><li><button class="route-btn" data-route="branches/msg">МСГ</button></li><li><button class="route-btn" data-route="branches/zsg">ЖСГ</button></li><li><button class="route-btn" data-route="branches/rg">РГ</button></li><li><button class="route-btn" data-route="branches/pk">ПК</button></li><li><button class="route-btn" data-route="branches/acro">АКРО</button></li><li><button class="route-btn" data-route="branches/gfa">Гимнастика за сите</button></li></ul></div>
       <div class="footer-col"><h4>Контакт</h4><div class="footer-contact" id="footer-contact">contact.fgsm.bt@gmail.com<br>+389 78 863 136<br>Битола / Скопје, Македонија<br><br><a href="https://www.fgsrm.com/" target="_blank" rel="noopener">Официјална веб-страна ↗</a></div></div>
     </div>
     <div class="footer-bottom"><span>© 2026 ФГСМ. Сите права задржани.</span><div class="footer-legal"><button class="route-btn" data-route="privacy">Правила за приватност</button><button class="route-btn" data-route="privacy/statement">Изјава за приватност</button><button class="route-btn" data-route="terms">Услови на користење</button></div></div>
@@ -715,8 +715,10 @@ const siteTree=[
     n('branches/pk','ПК',[
       n('branches/pk/general','Општо за ПК'),n('branches/pk/national-team','Национален тим'),n('branches/pk/judges','Судии'),n('branches/pk/competitions','Натпревари'),n('branches/pk/documents','Документи'),n('branches/pk/rules','Правилници и пропозиции')
     ],'Паркур — развој, национален тим, судии, натпревари и регулатива.'),
-    n('branches/gfa','Гимнастика за сите',[],'Инклузивни, рекреативни и масовни гимнастички програми за сите возрасти.'),
-    n('branches/acro','АКРО',[n('branches/acro/general','Општо за АКРО'),n('branches/acro/national-team','Национален тим'),n('branches/acro/judges','Судии'),n('branches/acro/competitions','Натпревари'),n('branches/acro/documents','Документи'),n('branches/acro/rules','Правилници и пропозиции')],'Акробатска гимнастика — развој, национален тим, судии, натпревари и документи.')
+    n('branches/acro','АКРО',[
+      n('branches/acro/general','Општо за АКРО'),n('branches/acro/national-team','Национален тим'),n('branches/acro/judges','Судии'),n('branches/acro/competitions','Натпревари'),n('branches/acro/documents','Документи'),n('branches/acro/rules','Правилници и пропозиции')
+    ],'Акробатска гимнастика — развој, национален тим, судии, натпревари и документи.'),
+    n('branches/gfa','Гимнастика за сите',[],'Инклузивни, рекреативни и масовни гимнастички програми за сите возрасти.')
   ]),
   n('competitions','Натпревари',[
     n('competitions/calendar','Календар'),
@@ -734,6 +736,9 @@ const siteTree=[
       ]),
       n('competitions/results/parkour','Паркур',[
         n('competitions/results/parkour/cup','Куп на Македонија'),n('competitions/results/parkour/championship','Првенство на Македонија'),n('competitions/results/parkour/world-cup','Светски куп')
+      ]),
+      n('competitions/results/acrobatic','Акробатска гимнастика',[
+        n('competitions/results/acrobatic/national','Првенство и Куп на Македонија'),n('competitions/results/acrobatic/international','Меѓународни настапи')
       ])
     ]),
     n('competitions/absolute','Апсолутно првенство')
@@ -821,7 +826,8 @@ const cmsState={
     {slug:'nacionalen-kalendar-msg-2026',published:true,branch:'msg',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — МСГ',category:'Сите категории',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
     {slug:'nacionalen-kalendar-zsg-2026',published:true,branch:'zsg',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ЖСГ',category:'Сите категории',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
     {slug:'nacionalen-kalendar-rg-2026',published:true,branch:'rg',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — РГ',category:'Индивидуално / групно',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
-    {slug:'nacionalen-kalendar-pk-2026',published:true,branch:'pk',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ПК',category:'Фристајл / брзина',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'}
+    {slug:'nacionalen-kalendar-pk-2026',published:true,branch:'pk',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ПК',category:'Фристајл / брзина',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
+    {slug:'nacionalen-kalendar-acro-2026',published:true,branch:'acro',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — АКРО',category:'Акробатска гимнастика',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'}
   ],
   results:[],documents:[],people:[],gallery:[],partners:[],pages:[],social:[]
 };
