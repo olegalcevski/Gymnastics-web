@@ -863,6 +863,12 @@ const groupAliases={
 function normText(value=''){
   return String(value||'').trim().toLowerCase().replace(/\s+/g,' ');
 }
+function valueList(value){
+  if(value==null||value==='')return [];
+  if(Array.isArray(value))return value.flatMap(valueList);
+  return String(value).split(/[\n,;|]+/).map(v=>v.trim()).filter(Boolean);
+}
+function uniqueList(values){return [...new Set((values||[]).filter(Boolean))];}
 function normalizeBranch(value=''){
   const raw=String(value||'').trim();
   const key=normText(raw);
@@ -886,31 +892,41 @@ function groupDisplay(value=''){
   const key=normalizeGroup(value);
   return groupLabels[key]||String(value||'').trim();
 }
-function firstKnownGroup(person={}){
-  const fields=[person.group,person.category,person.type,person.role,person.position,person.function,person.title].filter(Boolean);
+function groupValues(person={}){
+  const fields=[person.groups,person.group,person.category,person.type,person.roles,person.role,person.position,person.function,person.title].flatMap(valueList);
+  const groups=[];
   for(const field of fields){
     const normalized=normalizeGroup(field);
-    if(groupLabels[normalized])return normalized;
+    if(groupLabels[normalized])groups.push(normalized);
   }
-  return normalizeGroup(fields[0]||'');
+  if(!groups.length&&fields.length)groups.push(normalizeGroup(fields[0]));
+  return uniqueList(groups);
+}
+function firstKnownGroup(person={}){
+  return groupValues(person)[0]||'';
 }
 function itemRoutes(item={}){
   const values=[];
   ['route','page','slug','section','display_route','displayRoute','target_route','targetRoute'].forEach(k=>{if(item[k])values.push(item[k]);});
   ['routes','pages','sections','displayOn','display_on'].forEach(k=>{if(Array.isArray(item[k]))values.push(...item[k]);else if(item[k])values.push(item[k]);});
-  return values.map(normalizeRoute).filter(Boolean);
+  return values.flatMap(valueList).map(normalizeRoute).filter(Boolean);
 }
-function firstKnownBranch(person={},fallback='all'){
-  const explicit=[person.branch,person.discipline,person.sport,person.discipline_key].filter(Boolean);
+function branchValues(person={},fallback='all'){
+  const explicit=[person.branches,person.branch,person.disciplines,person.discipline,person.sport,person.discipline_key].flatMap(valueList);
+  const branches=[];
   for(const field of explicit){
     const normalized=normalizeBranch(field);
-    if(branchLabels[normalized])return normalized;
+    if(branchLabels[normalized])branches.push(normalized);
   }
   for(const route of itemRoutes(person)){
     const normalized=normalizeBranch(route);
-    if(branchLabels[normalized])return normalized;
+    if(branchLabels[normalized])branches.push(normalized);
   }
-  return normalizeBranch(fallback);
+  if(!branches.length)branches.push(normalizeBranch(fallback));
+  return uniqueList(branches);
+}
+function firstKnownBranch(person={},fallback='all'){
+  return branchValues(person,fallback)[0]||normalizeBranch(fallback);
 }
 function normalizeRoute(value=''){
   return String(value||'').trim().replace(/^#\/?/,'').replace(/^\/+/,'').replace(/\/+$/,'');
@@ -1072,23 +1088,23 @@ function peopleHtml(route,groups=[],branch='all'){
   const wantedRoute=normalizeRoute(route);
   const source=published(cmsState.people);
   let items=source.filter(x=>{
-    const group=firstKnownGroup(x);
-    const itemBranch=firstKnownBranch(x,'all');
-    const groupOk=!wanted.length||wanted.includes(group);
+    const personGroups=groupValues(x);
+    const itemBranches=branchValues(x,'all');
+    const groupOk=!wanted.length||personGroups.some(group=>wanted.includes(group));
     if(!groupOk)return false;
     const directRoute=personExplicitlyTargetsRoute(x,wantedRoute);
     if(directRoute)return true;
     if(personConflictsWithRoute(x,wantedRoute,wantedBranch))return false;
     if(wantedBranch==='all')return true;
-    return itemBranch==='all'||itemBranch===wantedBranch;
+    return itemBranches.includes('all')||itemBranches.includes(wantedBranch);
   });
 
   // Last-resort branch fallback: if a valid person was entered but the branch spelling is unusual,
   // do not hide the whole route. Show matching groups instead of returning an empty client page.
   if(!items.length&&wantedBranch!=='all'){
     items=source.filter(x=>{
-      const group=firstKnownGroup(x);
-      return (!wanted.length||wanted.includes(group))&&!personConflictsWithRoute(x,wantedRoute,wantedBranch);
+      const personGroups=groupValues(x);
+      return (!wanted.length||personGroups.some(group=>wanted.includes(group)))&&!personConflictsWithRoute(x,wantedRoute,wantedBranch);
     });
   }
 
@@ -1096,12 +1112,12 @@ function peopleHtml(route,groups=[],branch='all'){
   if(!items.length)return emptyHtml('Нема објавени лица','Составите и функциите ќе бидат прикажани по официјална потврда.');
   return `<div class="cms-people">${items.map(x=>{
     const photo=safeUrl(x.photo||x.image||x.avatar||x.picture||'');
-    const group=firstKnownGroup(x);
+    const groupsForPerson=groupValues(x);
     const rawGroup=x.group||x.category||x.type||'';
-    const role=x.role||x.position||x.function||groupDisplay(group)||'';
+    const role=x.role||x.position||x.function||groupDisplay(groupsForPerson[0]||rawGroup)||'';
     const description=x.bio||x.body||x.description||'';
-    const visibleBranch=firstKnownBranch(x,'all');
-    const meta=[groupDisplay(group||rawGroup),visibleBranch!=='all'?branchDisplay(visibleBranch):'',x.club,x.license,x.mandate].filter(Boolean);
+    const branchesForPerson=branchValues(x,'all').filter(b=>b!=='all');
+    const meta=[...groupsForPerson.map(groupDisplay),...branchesForPerson.map(branchDisplay),x.club,x.license,x.mandate].filter(Boolean);
     return `<article class="person-card">
       <div class="person-photo" ${photo?`data-bg="${escapeHtml(photo)}"`:''}></div>
       <div class="person-body">
