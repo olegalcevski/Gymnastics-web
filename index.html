@@ -612,7 +612,7 @@ footer{background:#0d0d1a;color:#fff;border-top:1px solid rgba(201,168,76,.18);p
         <div class="footer-socials"><a href="https://www.facebook.com/p/%D0%A4%D0%B5%D0%B4%D0%B5%D1%80%D0%B0%D1%86%D0%B8%D1%98%D0%B0-%D0%BD%D0%B0-%D0%93%D0%B8%D0%BC%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%BA%D0%B8%D1%82%D0%B5-%D0%A1%D0%BF%D0%BE%D1%80%D1%82%D0%BE%D0%B2%D0%B8-%D0%BD%D0%B0-%D0%A0%D0%B5%D0%BF%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0-%D0%9C%D0%B0%D0%BA%D0%B5%D0%B4%D0%BE%D0%BD%D0%B8%D1%98%D0%B0-61587880341323/" target="_blank" rel="noopener" aria-label="Facebook">f</a><a href="mailto:contact.fgsm.bt@gmail.com" aria-label="Е-пошта">@</a></div>
       </div>
       <div class="footer-col"><h4>Федерација</h4><ul><li><button class="route-btn" data-route="about">За ФГСМ</button></li><li><button class="route-btn" data-route="about/bodies">Тела и членови</button></li><li><button class="route-btn" data-route="news">Новости</button></li><li><button class="route-btn" data-route="contact">Контакт</button></li></ul></div>
-      <div class="footer-col"><h4>Гимнастика</h4><ul><li><button class="route-btn" data-route="branches/msg">МСГ</button></li><li><button class="route-btn" data-route="branches/zsg">ЖСГ</button></li><li><button class="route-btn" data-route="branches/rg">РГ</button></li><li><button class="route-btn" data-route="branches/pk">ПК</button></li><li><button class="route-btn" data-route="branches/acro">АКРО</button></li><li><button class="route-btn" data-route="branches/gfa">Гимнастика за сите</button></li></ul></div>
+      <div class="footer-col"><h4>Гимнастика</h4><ul><li><button class="route-btn" data-route="branches/msg">МСГ</button></li><li><button class="route-btn" data-route="branches/zsg">ЖСГ</button></li><li><button class="route-btn" data-route="branches/rg">РГ</button></li><li><button class="route-btn" data-route="branches/pk">ПК</button></li><li><button class="route-btn" data-route="branches/acro">АКРО</button></li><li><button class="route-btn" data-route="branches/tra">ТРА</button></li><li><button class="route-btn" data-route="branches/ae">АЕ</button></li><li><button class="route-btn" data-route="branches/gfa">Гимнастика за сите</button></li></ul></div>
       <div class="footer-col"><h4>Контакт</h4><div class="footer-contact" id="footer-contact">contact.fgsm.bt@gmail.com<br>+389 78 863 136<br>Битола / Скопје, Македонија<br><br><a href="https://www.fgsrm.com/" target="_blank" rel="noopener">Официјална веб-страна ↗</a></div></div>
     </div>
     <div class="footer-bottom"><span>© 2026 ФГСМ. Сите права задржани.</span><div class="footer-legal"><button class="route-btn" data-route="privacy">Правила за приватност</button><button class="route-btn" data-route="privacy/statement">Изјава за приватност</button><button class="route-btn" data-route="terms">Услови на користење</button></div></div>
@@ -718,7 +718,15 @@ const siteTree=[
     n('branches/acro','АКРО',[
       n('branches/acro/general','Општо за АКРО'),n('branches/acro/national-team','Национален тим'),n('branches/acro/judges','Судии'),n('branches/acro/competitions','Натпревари'),n('branches/acro/documents','Документи'),n('branches/acro/rules','Правилници и пропозиции')
     ],'Акробатска гимнастика — развој, национален тим, судии, натпревари и документи.'),
-    n('branches/gfa','Гимнастика за сите',[],'Инклузивни, рекреативни и масовни гимнастички програми за сите возрасти.')
+    n('branches/tra','ТРА',[
+      n('branches/tra/general','Општо за ТРА'),n('branches/tra/national-team','Национален тим'),n('branches/tra/judges','Судии'),n('branches/tra/competitions','Натпревари'),n('branches/tra/documents','Документи'),n('branches/tra/rules','Правилници и пропозиции')
+    ],'Трамболина — развој, национален тим, судии, натпревари и документи.'),
+    n('branches/ae','АЕ',[
+      n('branches/ae/general','Општо за АЕ'),n('branches/ae/national-team','Национален тим'),n('branches/ae/judges','Судии'),n('branches/ae/competitions','Натпревари'),n('branches/ae/documents','Документи'),n('branches/ae/rules','Правилници и пропозиции')
+    ],'Аеробик гимнастика — развој, национален тим, судии, натпревари и документи.'),
+    n('branches/gfa','Гимнастика за сите',[
+      n('branches/gfa/general','Општо за ГЗА'),n('branches/gfa/national-team','Национален тим'),n('branches/gfa/judges','Судии'),n('branches/gfa/competitions','Настани'),n('branches/gfa/documents','Документи'),n('branches/gfa/rules','Правилници и пропозиции')
+    ],'Инклузивни, рекреативни и масовни гимнастички програми за сите возрасти.')
   ]),
   n('competitions','Натпревари',[
     n('competitions/calendar','Календар'),
@@ -739,6 +747,15 @@ const siteTree=[
       ]),
       n('competitions/results/acrobatic','Акробатска гимнастика',[
         n('competitions/results/acrobatic/national','Првенство и Куп на Македонија'),n('competitions/results/acrobatic/international','Меѓународни настапи')
+      ]),
+      n('competitions/results/trampoline','Трамболина',[
+        n('competitions/results/trampoline/national','Првенство и Куп на Македонија'),n('competitions/results/trampoline/international','Меѓународни настапи')
+      ]),
+      n('competitions/results/aerobic','Аеробик гимнастика',[
+        n('competitions/results/aerobic/national','Првенство и Куп на Македонија'),n('competitions/results/aerobic/international','Меѓународни настапи')
+      ]),
+      n('competitions/results/gfa','Гимнастика за сите',[
+        n('competitions/results/gfa/events','Настани и фестивали'),n('competitions/results/gfa/international','Меѓународни настапи')
       ])
     ]),
     n('competitions/absolute','Апсолутно првенство')
@@ -827,11 +844,14 @@ const cmsState={
     {slug:'nacionalen-kalendar-zsg-2026',published:true,branch:'zsg',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ЖСГ',category:'Сите категории',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
     {slug:'nacionalen-kalendar-rg-2026',published:true,branch:'rg',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — РГ',category:'Индивидуално / групно',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
     {slug:'nacionalen-kalendar-pk-2026',published:true,branch:'pk',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ПК',category:'Фристајл / брзина',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
-    {slug:'nacionalen-kalendar-acro-2026',published:true,branch:'acro',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — АКРО',category:'Акробатска гимнастика',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'}
+    {slug:'nacionalen-kalendar-acro-2026',published:true,branch:'acro',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — АКРО',category:'Акробатска гимнастика',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
+    {slug:'nacionalen-kalendar-tra-2026',published:true,branch:'tra',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ТРА',category:'Трамболина',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
+    {slug:'nacionalen-kalendar-ae-2026',published:true,branch:'ae',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — АЕ',category:'Аеробик гимнастика',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'},
+    {slug:'nacionalen-kalendar-gfa-2026',published:true,branch:'gfa',date_label:'Сезона 2026',start_date:'2026-09-01',name:'Национален календар — ГЗА',category:'Гимнастика за сите',type:'Федерациски календар',location:'Македонија',description:'Официјалните термини ќе бидат објавени по потврда од Федерацијата.'}
   ],
   results:[],documents:[],people:[],gallery:[],partners:[],pages:[],social:[]
 };
-const branchLabels={all:'ФГСМ',msg:'МСГ',zsg:'ЖСГ',rg:'РГ',pk:'ПК',gfa:'Гимнастика за сите',acro:'АКРО'};
+const branchLabels={all:'ФГСМ',msg:'МСГ',zsg:'ЖСГ',rg:'РГ',pk:'ПК',acro:'АКРО',tra:'ТРА',ae:'АЕ',gfa:'Гимнастика за сите'};
 
 const groupLabels={
   'leadership':'Раководство',
@@ -852,8 +872,10 @@ const branchAliases={
   'zsg':'zsg','zsh':'zsg','жсг':'zsg','женска спортска гимнастика':'zsg','женска гимнастика':'zsg','ваг':'zsg',
   'rg':'rg','рг':'rg','ритмичка гимнастика':'rg','ритмика':'rg','rhythmic':'rg',
   'pk':'pk','пк':'pk','паркур':'pk','parkour':'pk',
-  'gfa':'gfa','гфа':'gfa','гимнастика за сите':'gfa','gymnastics for all':'gfa',
-  'acro':'acro','akro':'acro','акро':'acro','акробатика':'acro','акробатска гимнастика':'acro','acrobatic':'acro','acrobatic gymnastics':'acro'
+  'acro':'acro','akro':'acro','акро':'acro','акробатика':'acro','акробатска гимнастика':'acro','acrobatic':'acro','acrobatic gymnastics':'acro',
+  'tra':'tra','тра':'tra','трамболина':'tra','трамболини':'tra','trampoline':'tra','trampoline gymnastics':'tra',
+  'ae':'ae','ае':'ae','аеробик':'ae','аеробик гимнастика':'ae','aerobic':'ae','aerobic gymnastics':'ae',
+  'gfa':'gfa','гфа':'gfa','гза':'gfa','гимнастика за сите':'gfa','gymnastics for all':'gfa'
 };
 const groupAliases={
   'leadership':'leadership','раководство':'leadership','претседателство':'leadership','претседател':'leadership','president':'leadership',
@@ -880,9 +902,9 @@ function normalizeBranch(value=''){
   const key=normText(raw);
   if(!key)return 'all';
   const route=normalizeRoute(raw);
-  const routeMatch=route.match(/(?:^|\/)branches\/(msg|zsg|rg|pk|gfa|acro|akro)(?:\/|$)/i);
+  const routeMatch=route.match(/(?:^|\/)branches\/(msg|zsg|rg|pk|acro|akro|tra|ae|gfa)(?:\/|$)/i);
   if(routeMatch)return routeMatch[1].toLowerCase()==='akro'?'acro':routeMatch[1].toLowerCase();
-  const shortRoute=route.match(/(?:^|\/)(msg|zsg|rg|pk|gfa|acro|akro)(?:\/|$)/i);
+  const shortRoute=route.match(/(?:^|\/)(msg|zsg|rg|pk|acro|akro|tra|ae|gfa)(?:\/|$)/i);
   if(shortRoute)return shortRoute[1].toLowerCase()==='akro'?'acro':shortRoute[1].toLowerCase();
   return branchAliases[key]||key||'all';
 }
@@ -959,9 +981,11 @@ function routeBranch(id=''){
   const value=normalizeRoute(id);
   if(/(?:^|\/)branches\/akro(?:\/|$)/i.test(value))return 'acro';
   if(/(?:^|\/)(branches\/acro|competitions\/results\/acrobatic)(?:\/|$)/i.test(value))return 'acro';
+  if(/(?:^|\/)(branches\/tra|competitions\/results\/trampoline)(?:\/|$)/i.test(value))return 'tra';
+  if(/(?:^|\/)(branches\/ae|competitions\/results\/aerobic)(?:\/|$)/i.test(value))return 'ae';
   if(/(?:^|\/)(branches\/pk|competitions\/results\/parkour)(?:\/|$)/i.test(value))return 'pk';
   if(/(?:^|\/)(branches\/rg|competitions\/results\/rhythmic)(?:\/|$)/i.test(value))return 'rg';
-  if(/(?:^|\/)branches\/gfa(?:\/|$)/i.test(value))return 'gfa';
+  if(/(?:^|\/)(branches\/gfa|competitions\/results\/gfa)(?:\/|$)/i.test(value))return 'gfa';
   if(/(?:^|\/)branches\/zsg(?:\/|$)/i.test(value))return 'zsg';
   if(/(?:^|\/)branches\/msg(?:\/|$)/i.test(value))return 'msg';
   return 'all';
@@ -1054,7 +1078,7 @@ function renderSocial(){const box=document.getElementById('social-grid');if(!box
 /* CALENDAR */
 const calendarTabs=document.getElementById('calendar-tabs'),calendarBoard=document.getElementById('calendar-board');
 let activeCalendarKey='msg';
-[['msg','МСГ'],['zsg','ЖСГ'],['rg','РГ'],['pk','ПК'],['acro','АКРО'],['gfa','Гимнастика за сите']].forEach(([id,label],i)=>{const b=document.createElement('button');b.className='calendar-tab'+(i===0?' active':'');b.textContent=label;b.dataset.tab=id;b.setAttribute('role','tab');calendarTabs.appendChild(b);});
+[['msg','МСГ'],['zsg','ЖСГ'],['rg','РГ'],['pk','ПК'],['acro','АКРО'],['tra','ТРА'],['ae','АЕ'],['gfa','Гимнастика за сите']].forEach(([id,label],i)=>{const b=document.createElement('button');b.className='calendar-tab'+(i===0?' active':'');b.textContent=label;b.dataset.tab=id;b.setAttribute('role','tab');calendarTabs.appendChild(b);});
 function renderCalendar(key=activeCalendarKey){activeCalendarKey=normalizeBranch(key);const items=published(cmsState.events).filter(x=>matchesBranchStrict(x,activeCalendarKey)).sort((a,b)=>String(a.start_date||'').localeCompare(String(b.start_date||'')));if(!items.length){calendarBoard.innerHTML='<div class="cms-empty"><strong>Нема објавени настани</strong><span>Новиот настан ќе се појави тука веднаш по објавување од административниот панел.</span></div>';return;}calendarBoard.innerHTML=items.map(e=>`<div class="calendar-row"><div class="calendar-date">${escapeHtml(eventDate(e))}</div><div class="calendar-name"><strong>${escapeHtml(e.name)}</strong><span>${escapeHtml(e.category||'')}</span></div><div class="calendar-cell"><span class="calendar-type">${escapeHtml(e.type||'Настан')}</span></div><div class="calendar-cell">${escapeHtml(e.location||'')}</div><div class="calendar-cell"><button class="text-link" data-entry-type="events" data-entry-id="${escapeHtml(e.slug||e.name)}">Детали</button></div></div>`).join('');}
 renderCalendar('msg');calendarTabs.addEventListener('click',e=>{const btn=e.target.closest('.calendar-tab');if(!btn)return;calendarTabs.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));renderCalendar(btn.dataset.tab);});
 
@@ -1067,7 +1091,7 @@ renderNews();
 const portal=document.getElementById('portal-overlay'),portalTitle=document.getElementById('portal-title'),portalSummary=document.getElementById('portal-summary'),portalBreadcrumbs=document.getElementById('portal-breadcrumbs'),portalContent=document.getElementById('portal-content'),sidebar=document.getElementById('portal-sidebar-tree');
 let currentRoute='about';
 function nodeSummary(node){return node.summary||genericSummaries[node.label]||`Официјална секција на ФГСМ: ${node.label}. Содржината е организирана според федерациската хиерархија и е подготвена за внес на потврдени материјали.`;}
-function branchContext(parents){const labels=parents.map(p=>p.label);if(labels.includes('МСГ'))return 'машката спортска гимнастика';if(labels.includes('ЖСГ'))return 'женската спортска гимнастика';if(labels.includes('РГ'))return 'ритмичката гимнастика';if(labels.includes('ПК'))return 'паркур';if(labels.includes('АКРО'))return 'акробатската гимнастика';if(labels.includes('Гимнастика за сите'))return 'гимнастиката за сите';return 'македонската гимнастика';}
+function branchContext(parents){const labels=parents.map(p=>p.label);if(labels.includes('МСГ'))return 'машката спортска гимнастика';if(labels.includes('ЖСГ'))return 'женската спортска гимнастика';if(labels.includes('РГ'))return 'ритмичката гимнастика';if(labels.includes('ПК'))return 'паркур';if(labels.includes('АКРО'))return 'акробатската гимнастика';if(labels.includes('ТРА'))return 'трамболина';if(labels.includes('АЕ'))return 'аеробик гимнастиката';if(labels.includes('Гимнастика за сите'))return 'гимнастиката за сите';return 'македонската гимнастика';}
 function customPageFor(route){const wanted=normalizeRoute(route);return published(cmsState.pages).find(x=>sameRoute(x.route,wanted)||sameRoute(x.slug,wanted))||null;}
 function customPageHtml(page){if(!page)return '';return `${page.title?`<h2>${escapeHtml(page.title)}</h2>`:''}${page.body?formatBody(page.body):''}${page.callout_title||page.callout_text?`<div class="portal-callout"><strong>${escapeHtml(page.callout_title||'Важно')}</strong><p>${escapeHtml(page.callout_text||'')}</p></div>`:''}${page.updated?`<div class="cms-updated">Последно ажурирање: ${escapeHtml(mkDate(page.updated))}</div>`:''}`;}
 function emptyHtml(title='Содржината се подготвува',text='Официјалните информации ќе бидат објавени тука по нивната потврда.') {return `<div class="cms-empty"><strong>${escapeHtml(title)}</strong><span>${escapeHtml(text)}</span></div>`;}
