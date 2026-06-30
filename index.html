@@ -1140,8 +1140,10 @@ function contentFor(node,parents){
   if(node.id==='about/bodies')return `${custom||'<h2>Тела и членови</h2><p>Официјална организациска структура на Федерацијата.</p>'}${peopleHtml(node.id,['leadership','board','staff','body','bodies','member','Тело на федерацијата','Тела и членови','Органи и членови','Федерациско тело','Стручен совет'],'all')}`;
   // IMPORTANT: this exact education route must run before the generic '/judges' check below.
   // Otherwise "education/coaches-judges" matches node.id.includes('judges') and only судии are shown.
+  // Multi-role rule: if a person has both Тренер and Судија selected, they show here and on the correct judge routes.
+  // If a person has Репрезентација selected too, they also show on the correct national-team route.
   if(node.id==='education/coaches-judges')return `${custom||'<h2>Тренери и судии</h2><p>Стручен кадар, едукација и лиценцирање.</p>'}${peopleHtml(node.id,['coach','judge','staff'],'all')}`;
-  if(node.id.includes('national-team'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Национална селекција за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['national-team','representative','coach','staff'],branch)}`;
+  if(node.id.includes('national-team'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Национална селекција за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['national-team','representative'],branch)}`;
   if(node.id.includes('judges'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Судиски кадар и лиценцирани лица за ${escapeHtml(context)}.</p>`}${peopleHtml(node.id,['judge'],branch)}`;
   if(node.id.includes('results'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Официјални резултати и архиви.</p>`}${resultArchiveHtml(branch)}`;
   if(node.id==='competitions'||node.id==='competitions/calendar'||node.id.endsWith('/competitions'))return `${custom||`<h2>${escapeHtml(node.label)}</h2><p>Календар и информации за натпреварите.</p>`}${eventArchiveHtml(branch)}`;
