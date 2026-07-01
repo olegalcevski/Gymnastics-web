@@ -1,6 +1,23 @@
 {
   "items": [
     {
+      "featured": true,
+      "published": true,
+      "name": "Cece",
+      "role": "тренер по гиманстика",
+      "group": [
+        "Тренер",
+        "Тело на федерацијата"
+      ],
+      "branch": [
+        "ЖСГ"
+      ],
+      "license": "гимнастичар",
+      "image": "/assets/uploads/1782902145200-134142567711773168.jpg",
+      "body": ".........",
+      "id": "item-1782902155940"
+    },
+    {
       "featured": false,
       "published": true,
       "name": "Петар",
