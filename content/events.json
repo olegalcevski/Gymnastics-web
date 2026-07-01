@@ -3,6 +3,23 @@
     {
       "featured": true,
       "published": true,
+      "name": "Пролетен натпревар",
+      "slug": "proleten-natprevar",
+      "end_date": "2026-07-16",
+      "branch": "МСГ",
+      "category": "Индивидуално / групно",
+      "start_date": "2026-07-03",
+      "type": "слободен",
+      "location": "Скопје",
+      "organizer": "фгсм",
+      "description": "",
+      "bulletin": "/assets/uploads/1782900810120--------16_05_2026-------------.pdf",
+      "results_url": "C:\\Users\\Dell\\Downloads\\REZULTATI-UNIVERZALNI-I-APSOLUTNI-PROGRAM.pdf",
+      "status": "во тек"
+    },
+    {
+      "featured": true,
+      "published": true,
       "name": "Натпревар Лето",
       "slug": "natprevar-leten",
       "start_date": "2026-06-20",
